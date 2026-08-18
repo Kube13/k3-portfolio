@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">K3 Portfolio</title>
+  <desc id="desc">Purple, black and white K3 portfolio social preview.</desc>
+  <rect width="1200" height="630" fill="#08070b"/>
+  <path d="M0 0h1200v630H0z" fill="url(#grid)"/>
+  <path d="M848 86h188l94 94v188l-94 94H848l-94-94V180z" fill="none" stroke="#b9a6ff" stroke-width="3"/>
+  <path d="M909 147h66l33 33v66l-33 33h-66l-33-33v-66z" fill="#825cff"/>
+  <text x="86" y="190" fill="#f4f1fb" font-family="Arial, Helvetica, sans-serif" font-size="54" font-weight="700">K3</text>
+  <text x="86" y="290" fill="#f4f1fb" font-family="Arial, Helvetica, sans-serif" font-size="76" font-weight="800">Data Analyst</text>
+  <text x="86" y="382" fill="#b9a6ff" font-family="Arial, Helvetica, sans-serif" font-size="76" font-weight="800">Automation Engineer</text>
+  <text x="86" y="474" fill="#f4f1fb" font-family="Arial, Helvetica, sans-serif" font-size="76" font-weight="800">Product Builder</text>
+  <text x="90" y="548" fill="#9d98aa" font-family="Consolas, monospace" font-size="22">Portfolio · Websites · Wisp</text>
+  <defs>
+    <pattern id="grid" width="80" height="80" patternUnits="userSpaceOnUse">
+      <path d="M80 0H0v80" fill="none" stroke="#2b2733" stroke-width="1" opacity=".45"/>
+    </pattern>
+  </defs>
+</svg>
