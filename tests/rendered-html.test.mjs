@@ -55,6 +55,8 @@ test("exports the shared accessible navigation on portfolio entry routes", () =>
     const menuId = html.match(/aria-controls="([^"]+)"/)?.[1];
 
     assert.match(html, /class="site-nav-toggle"/);
+    assert.match(html, /<header class="site-header">/);
+    assert.match(html, /class="nav site-nav site-header__inner shell"/);
     assert.match(html, /aria-expanded="false"/);
     assert.ok(menuId, `${route}: menu toggle controls an in-flow panel`);
     assert.match(html, new RegExp(`id="${menuId}"[^>]*hidden`));
@@ -148,9 +150,19 @@ test("exports the geometric sakura theme and accessible decorative system", () =
   const ogImage = readFileSync(join(outDir.pathname, "og-image.svg"), "utf8");
 
   assert.match(homepage, /hero-garden/);
+  assert.match(homepage, /viewBox="0 0 320 300"/);
+  assert.match(homepage, /M34 28h42v96l72-96h51l-91 119 84 125h-54l-62-94v94H34Z/);
+  assert.match(homepage, /M213 61c45-3 76 18 76 54/);
   assert.match(homepage, /sakura-branch/);
   assert.match(homepage, /aria-hidden="true"/);
   assert.match(css, /#f8f5ff/i);
+  assert.match(css, /--k3-base:#f8f5ff/);
+  assert.match(css, /--k3-secondary:#eee8fa/);
+  assert.match(css, /--k3-accent:#4b267d/);
+  assert.match(css, /--k3-plum:#211335/);
+  assert.match(css, /--k3-muted:#70627f/);
+  assert.match(css, /--k3-border:rgba\(75,38,125,.14\)/);
+  assert.match(css, /--k3-decoration:rgba\(75,38,125,.2\)/);
   assert.match(css, /--line-hairline:1px/);
   assert.match(css, /--line-soft:1\.25px/);
   assert.match(css, /--line-emphasis:1\.5px/);
@@ -167,6 +179,9 @@ test("exports responsive navigation and overflow safeguards without root masking
   const css = readdirSync(cssDir).filter(file => file.endsWith(".css")).map(file => readFileSync(join(cssDir, file), "utf8")).join("\n");
 
   assert.match(css, /\.site-nav-menu\[hidden\]\{display:none\}/);
+  assert.match(css, /\.site-header\{[^}]*width:100%[^}]*background:var\(--k3-base\)/);
+  assert.match(css, /\.site-header__inner\{[^}]*background:transparent/);
+  assert.match(css, /::-webkit-scrollbar-track\{background:var\(--k3-base\)\}/);
   assert.match(css, /\.site-nav-toggle\{[^}]*width:44px[^}]*height:44px/);
   assert.match(css, /prefers-reduced-motion:reduce/);
   assert.doesNotMatch(css, /html\{[^}]*overflow-x:hidden/);

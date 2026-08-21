@@ -86,11 +86,11 @@ export function GeometricGrid({ className = "" }: DecorativeProps) {
 }
 
 export function K3Monogram({ className = "" }: DecorativeProps) {
-  return <svg className={`k3-monogram ${className}`} viewBox="0 0 280 300" aria-hidden="true" focusable="false">
-    <path d="M35 28v244h43V174l84 98h57L111 151l102-123h-56L78 128V28H35Z" className="k3-mark-fill" />
-    <path d="M174 76c37-2 62 15 62 44c0 22-13 37-34 43c27 5 43 23 43 50c0 37-30 62-76 60" className="k3-mark-three" />
-    <path d="M25 18h205M25 282h230" className="k3-mark-guide" />
-    <circle cx="230" cy="18" r="4" /><circle cx="255" cy="282" r="4" />
+  return <svg className={`k3-monogram ${className}`} viewBox="0 0 320 300" aria-hidden="true" focusable="false">
+    <path d="M34 28h42v96l72-96h51l-91 119 84 125h-54l-62-94v94H34Z" className="k3-mark-fill" />
+    <path d="M213 61c45-3 76 18 76 54c0 23-14 40-37 47c28 7 44 27 44 53c0 39-31 62-84 57" className="k3-mark-three" />
+    <path d="M24 18h276M24 282h276" className="k3-mark-guide" />
+    <circle cx="300" cy="18" r="4" /><circle cx="300" cy="282" r="4" />
   </svg>;
 }
 
