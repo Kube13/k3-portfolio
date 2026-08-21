@@ -73,13 +73,6 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--k3-violet);outline-
 .sakura-branch-lines path{fill:none;stroke:var(--k3-violet);stroke-width:var(--line-hairline);stroke-linecap:round;vector-effect:non-scaling-stroke}
 .sakura-branch-nodes circle{fill:var(--k3-bg);stroke:var(--k3-violet);stroke-width:var(--line-hairline)}
 .sakura-branch .sakura-petal-shape{fill:rgba(183,156,255,.14)}
-.wind-lines path,.wind-lines circle,.mountain-lines path,.circle-motif-line,.circle-motif-ticks,.geometric-grid path{fill:none;stroke:var(--k3-violet);stroke-width:var(--line-hairline);vector-effect:non-scaling-stroke}
-.wind-lines circle,.circle-motif-node,.geometric-grid circle{fill:var(--k3-violet)}
-.circle-motif-fill{fill:var(--k3-secondary)}
-.circle-motif-line-one{stroke-dasharray:650 210;opacity:.55}
-.circle-motif-line-two{stroke-dasharray:270 560;opacity:.35}
-.circle-motif-ticks{opacity:.3}.circle-motif-node{opacity:.65}
-.geometric-grid{opacity:.12}.mountain-lines{opacity:.18}.wind-lines{opacity:.29}
 .section-ornament{width:min(1180px,calc(100% - 48px));height:48px;margin:auto;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:18px}
 .section-ornament>span{height:1px;background:linear-gradient(90deg,transparent,var(--k3-line))}
 .section-ornament>span:last-child{background:linear-gradient(90deg,var(--k3-line),transparent)}
@@ -104,32 +97,22 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--k3-violet);outline-
 .hero-focused .hero-statement em{color:var(--k3-violet);font-family:var(--k3-serif);font-weight:400;font-style:italic;letter-spacing:-.035em}
 .hero-intro{max-width:600px;margin:28px 0 0;color:var(--k3-text-muted);font:16px/1.72 var(--font-geist-sans)}
 .hero-copy .actions{margin-top:32px}
-.hero-garden{min-height:600px;position:relative;isolation:isolate;overflow:hidden}
-.hero-garden-grid{position:absolute;right:0;top:52px;width:72%;height:auto}
-.hero-garden-circle{position:absolute;right:3%;top:1%;width:min(100%,560px);height:auto}
-.hero-garden-mountains{position:absolute;right:0;bottom:42px;width:94%;height:auto}
-.hero-garden-wind{position:absolute;left:4%;top:31%;width:70%;height:auto}
-.hero-garden-mark{position:absolute;left:50%;top:49%;width:35%;height:auto;transform:translate(-50%,-49%);filter:drop-shadow(0 20px 32px rgba(75,38,125,.1))}
-.k3-mark-fill{fill:var(--k3-accent)}
-.k3-mark-three{fill:none;stroke:var(--k3-violet);stroke-width:10.5;stroke-linecap:round}
-.k3-mark-guide{fill:none;stroke:var(--k3-violet);stroke-width:var(--line-hairline);opacity:.4}
-.k3-monogram circle{fill:var(--k3-violet)}
-.hero-garden-branch{position:absolute;right:-4%;top:0;width:76%;height:auto;opacity:.7}
-.hero-garden-branch .sakura-branch-lines path{stroke:var(--k3-decoration)}
-.hero-garden-branch .sakura-branch-lines path{stroke-dasharray:620;stroke-dashoffset:620;animation:branch-draw 1.8s .25s cubic-bezier(.22,1,.36,1) forwards}
-.hero-garden-branch .sakura-branch-flowers{opacity:0;animation:flower-appear .8s 1.3s ease forwards}
-.falling-petals{position:absolute;inset:0;pointer-events:none}
-.falling-petals span{position:absolute;top:-12%;width:13px;height:20px;opacity:.34;animation:petal-drift 18s linear infinite}
-.falling-petals svg{width:100%;height:100%;fill:rgba(183,156,255,.32);stroke:var(--k3-violet);stroke-width:var(--line-hairline)}
-.falling-petals span:nth-child(1){left:12%;animation-duration:17s;animation-delay:-8s}
-.falling-petals span:nth-child(2){left:31%;animation-duration:22s;animation-delay:-16s}
-.falling-petals span:nth-child(3){left:48%;animation-duration:15s;animation-delay:-3s}
-.falling-petals span:nth-child(4){left:67%;animation-duration:24s;animation-delay:-14s}
-.falling-petals span:nth-child(5){left:81%;animation-duration:19s;animation-delay:-10s}
-.falling-petals span:nth-child(6){left:93%;animation-duration:21s;animation-delay:-5s}
-@keyframes branch-draw{to{stroke-dashoffset:0}}
-@keyframes flower-appear{to{opacity:1}}
-@keyframes petal-drift{0%{transform:translate3d(0,-25px,0) rotate(0);opacity:0}10%{opacity:.34}55%{transform:translate3d(30px,330px,0) rotate(170deg)}100%{transform:translate3d(-18px,690px,0) rotate(340deg);opacity:0}}
+.hero-garden{min-height:600px;display:grid;place-items:center;position:relative;isolation:isolate;overflow:hidden}
+.hero-garden-art{width:min(100%,640px);height:auto;overflow:visible}
+.hero-garden-disc{fill:rgba(183,156,255,.1)}
+.hero-garden-wind path{fill:none;stroke:rgba(75,38,125,.16);stroke-width:var(--line-hairline);stroke-linecap:round;vector-effect:non-scaling-stroke}
+.hero-garden-branch path{fill:none;stroke:var(--k3-accent);stroke-width:1.25px;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
+.hero-garden-branch path:not(.hero-garden-branch-main){stroke:rgba(75,38,125,.72);stroke-width:var(--line-hairline)}
+.hero-garden-nodes circle{fill:var(--k3-base);stroke:var(--k3-accent);stroke-width:var(--line-hairline);opacity:.68;vector-effect:non-scaling-stroke}
+.hero-sakura-petal{fill:rgba(183,156,255,.12);stroke:#6d43a8;stroke-width:var(--line-hairline);vector-effect:non-scaling-stroke}
+.hero-sakura-core{fill:var(--k3-base);stroke:var(--k3-accent);stroke-width:var(--line-hairline);vector-effect:non-scaling-stroke}
+.hero-garden-leaves path{fill:rgba(183,156,255,.17);stroke:rgba(75,38,125,.58);stroke-width:var(--line-hairline);stroke-linejoin:round;vector-effect:non-scaling-stroke}
+.hero-garden-loose-petals{opacity:.36}
+.hero-garden-loose-petals path{fill:rgba(183,156,255,.2);stroke:rgba(75,38,125,.48);stroke-width:var(--line-hairline);vector-effect:non-scaling-stroke}
+.hero-garden-mountains path{fill:none;stroke:rgba(75,38,125,.1);stroke-width:var(--line-hairline);stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
+.hero-garden-signature path{fill:none;stroke:var(--k3-accent);stroke-width:1.5px;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
+.hero-garden-signature .hero-garden-signature-guide{stroke-width:var(--line-hairline);opacity:.32}
+.hero-garden-signature circle{fill:var(--k3-accent)}
 
 /* Selected work and technical previews */
 .feature-card{overflow:hidden;border:1px solid var(--k3-line);border-radius:24px;background:var(--k3-base);box-shadow:var(--k3-shadow)}
@@ -345,10 +328,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--k3-violet);outline-
   .section-ornament{width:calc(100% - 30px)}
   .hero-focused{padding-top:62px}
   .hero-garden{min-height:460px}
-  .hero-garden-circle{right:5%;width:90%}
-  .hero-garden-mark{width:34%}
-  .hero-garden-branch{width:70%}
-  .falling-petals span:nth-child(n+5){display:none}
+  .hero-garden-art{width:min(100%,620px)}
   .work-branch{display:none}
   .subpage-sakura,.case-hero-sakura{width:280px;right:0;opacity:.09}
   .case-section-orbit:before{display:none}
@@ -361,10 +341,8 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--k3-violet);outline-
   .lang-my .hero-focused .hero-statement{font-size:34px;line-height:1.52}
   .hero-intro{font-size:15px}
   .hero-garden{min-height:300px}
-  .hero-garden-grid,.hero-garden-mountains,.hero-garden-wind,.falling-petals{display:none}
-  .hero-garden-circle{top:0}
-  .hero-garden-mark{width:33%}
-  .hero-garden-branch{right:0;width:72%}
+  .hero-garden-art{width:100%}
+  .hero-garden-mountains,.hero-garden-wind,.hero-garden-loose-petals{display:none}
   .feature-card,.selected-project,.homepage-demo-card,.dual-contact article,.website-card,.case-split>article,.architecture-grid,.funnel-evidence,.lab-workbench{border-radius:16px}
   .dual-contact>.shell{gap:12px}
   .footer{padding-block:52px}
@@ -372,8 +350,5 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--k3-violet);outline-
 }
 
 @media(prefers-reduced-motion:reduce){
-  .hero-garden-branch .sakura-branch-lines path{stroke-dasharray:none;stroke-dashoffset:0;animation:none}
-  .hero-garden-branch .sakura-branch-flowers{opacity:1;animation:none}
-  .falling-petals{display:none}
   .section,.subpage-section,.case-section,.case-diagram{animation:none!important;transform:none!important}
 }
