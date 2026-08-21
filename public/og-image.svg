@@ -1,18 +1,29 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
-  <title id="title">K3 Portfolio</title>
-  <desc id="desc">Purple, black and white K3 portfolio social preview.</desc>
-  <rect width="1200" height="630" fill="#08070b"/>
-  <path d="M0 0h1200v630H0z" fill="url(#grid)"/>
-  <path d="M848 86h188l94 94v188l-94 94H848l-94-94V180z" fill="none" stroke="#b9a6ff" stroke-width="3"/>
-  <path d="M909 147h66l33 33v66l-33 33h-66l-33-33v-66z" fill="#825cff"/>
-  <text x="86" y="190" fill="#f4f1fb" font-family="Arial, Helvetica, sans-serif" font-size="54" font-weight="700">K3</text>
-  <text x="86" y="290" fill="#f4f1fb" font-family="Arial, Helvetica, sans-serif" font-size="76" font-weight="800">Data Analyst</text>
-  <text x="86" y="382" fill="#b9a6ff" font-family="Arial, Helvetica, sans-serif" font-size="76" font-weight="800">Automation Engineer</text>
-  <text x="86" y="474" fill="#f4f1fb" font-family="Arial, Helvetica, sans-serif" font-size="76" font-weight="800">Product Builder</text>
-  <text x="90" y="548" fill="#9d98aa" font-family="Consolas, monospace" font-size="22">Portfolio · Websites · Wisp</text>
-  <defs>
-    <pattern id="grid" width="80" height="80" patternUnits="userSpaceOnUse">
-      <path d="M80 0H0v80" fill="none" stroke="#2b2733" stroke-width="1" opacity=".45"/>
-    </pattern>
-  </defs>
+  <title id="title">K3Labs portfolio</title>
+  <desc id="desc">A pale lavender portfolio preview with a geometric K3 monogram, abstract sakura branch, and data and automation positioning.</desc>
+  <rect width="1200" height="630" fill="#F8F5FF"/>
+  <circle cx="938" cy="302" r="238" fill="#B79CFF" opacity=".13"/>
+  <circle cx="938" cy="302" r="194" fill="none" stroke="#4B267D" stroke-width="1.5" stroke-dasharray="620 600" opacity=".35"/>
+  <g opacity=".12" stroke="#4B267D" stroke-width="1">
+    <path d="M760 74v452M840 74v452M920 74v452M1000 74v452M1080 74v452"/>
+    <path d="M720 126h440M720 206h440M720 286h440M720 366h440M720 446h440"/>
+  </g>
+  <path d="M828 170v275h48V332l95 113h65L915 308l115-138h-63l-91 112V170h-48Z" fill="#4B267D" opacity=".9"/>
+  <path d="M1000 225c43-3 72 17 72 49c0 25-15 42-39 49c31 6 49 26 49 57c0 42-34 70-87 68" fill="none" stroke="#211335" stroke-width="13" stroke-linecap="round"/>
+  <g fill="none" stroke="#4B267D" stroke-width="1.2" opacity=".42">
+    <path d="M770 150c97-12 142-43 200-91c50-41 102-49 182-38"/>
+    <path d="M924 92c-20-23-44-35-79-38"/>
+    <path d="M1021 49c-8-18-8-28-3-42"/>
+  </g>
+  <g transform="translate(846 54)" fill="#B79CFF" fill-opacity=".12" stroke="#4B267D" stroke-width="1">
+    <path d="M0-7-4-14 0-23 4-14Z"/><path d="M0-7-4-14 0-23 4-14Z" transform="rotate(72)"/><path d="M0-7-4-14 0-23 4-14Z" transform="rotate(144)"/><path d="M0-7-4-14 0-23 4-14Z" transform="rotate(216)"/><path d="M0-7-4-14 0-23 4-14Z" transform="rotate(288)"/><circle r="3" fill="#F8F5FF"/>
+  </g>
+  <path d="M716 522l77-66 40 37 72-86 71 73 42-40 79 82" fill="none" stroke="#4B267D" stroke-width="1.2" opacity=".15"/>
+  <text x="78" y="112" fill="#4B267D" font-family="Consolas, monospace" font-size="18" font-weight="700" letter-spacing="4">K3LABS · PORTFOLIO</text>
+  <text x="78" y="215" fill="#211335" font-family="Arial, Helvetica, sans-serif" font-size="66" font-weight="750">Data Analyst &amp;</text>
+  <text x="78" y="292" fill="#211335" font-family="Arial, Helvetica, sans-serif" font-size="66" font-weight="750">Automation Engineer</text>
+  <text x="78" y="372" fill="#4B267D" font-family="Georgia, serif" font-size="63" font-style="italic">Product Builder</text>
+  <text x="82" y="455" fill="#70627F" font-family="Arial, Helvetica, sans-serif" font-size="22">Data systems · automated workflows · applied AI</text>
+  <path d="M80 526h430" stroke="#4B267D" stroke-width="1" opacity=".24"/>
+  <circle cx="530" cy="526" r="4" fill="#4B267D" opacity=".6"/>
 </svg>

@@ -2,9 +2,9 @@
 
 Career-first portfolio for K3, positioned around:
 
-`Data Analyst · Automation Engineer · Product Builder`
+`Data Analyst & Automation Engineer · Product Builder`
 
-The site also includes secondary freelance website-development positioning, bilingual English/Burmese copy, Wisp product motion, case-study evidence, and concept website demos.
+The site also includes secondary freelance website-development positioning, bilingual English/Burmese copy, Wisp product motion, case-study evidence, concept website demos, and a lightweight geometric sakura visual system built with CSS and reusable SVG components.
 
 ## Stack
 
@@ -56,6 +56,7 @@ This builds the site and checks that the main routes, SEO files, CV, and certifi
 - `/services`
 - `/websites`
 - `/case-studies/wisp`
+- `/case-studies/personal-intelligence-lab`
 - `/demos/cafe`
 - `/demos/restaurant`
 - `/demos/law-firm`
@@ -68,10 +69,10 @@ This builds the site and checks that the main routes, SEO files, CV, and certifi
 Metadata is defined with the Next.js metadata API. The default canonical base is:
 
 ```text
-https://k3-portfolio.pages.dev
+https://k3labs.me
 ```
 
-To change canonical and sitemap URLs after connecting a custom domain, set this build-time environment variable in Cloudflare Pages:
+The production canonical is `https://k3labs.me`. To override it for a preview environment, set this build-time environment variable in Cloudflare Pages:
 
 ```text
 NEXT_PUBLIC_SITE_URL=https://your-domain.example
@@ -94,7 +95,7 @@ Cloudflare Pages settings:
 - Build command: `npm run build`
 - Output directory: `out`
 - Node version: `22.13.0`
-- Environment variables: none required; optionally set `NEXT_PUBLIC_SITE_URL` after the final domain is known
+- Environment variables: none required; set `NEXT_PUBLIC_SITE_URL` only when intentionally overriding the production canonical for a preview
 
 The site is static and does not require Workers, D1, R2, server functions, or secrets.
 

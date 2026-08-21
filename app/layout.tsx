@@ -3,6 +3,8 @@ import "./globals.css";
 import "./detail.css";
 import "./iso-theme.css";
 import "./freelance.css";
+import "./portfolio-refresh.css";
+import "./sakura.css";
 import { defaultMetadata, siteConfig } from "./site";
 
 export const metadata: Metadata = {
@@ -19,6 +21,16 @@ export const metadata: Metadata = {
     siteName: siteConfig.name,
     type: "website",
     images: [siteConfig.ogImage],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: defaultMetadata.title,
+    description: defaultMetadata.description,
+    images: [siteConfig.ogImage.url],
+  },
+  robots: {
+    index: true,
+    follow: true,
   },
   icons: {
     icon: "/favicon.svg",

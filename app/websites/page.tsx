@@ -16,6 +16,12 @@ export const metadata: Metadata = {
     type: "website",
     images: [siteConfig.ogImage],
   },
+  twitter: {
+    card: "summary_large_image",
+    title: "Website Design Concepts & Demos | K3",
+    description: "Responsive website concepts and demos for cafes, restaurants, professional services, local shops, portfolios and small-business landing pages by a freelance website developer in Yangon.",
+    images: [siteConfig.ogImage.url],
+  },
 };
 
 export default function WebsitesPage() {

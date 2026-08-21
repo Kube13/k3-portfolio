@@ -16,6 +16,12 @@ export const metadata: Metadata = {
     type: "website",
     images: [siteConfig.ogImage],
   },
+  twitter: {
+    card: "summary_large_image",
+    title: "Freelance Website Development & Automation Services | K3",
+    description: "Freelance website development for small businesses and professionals, including responsive websites, landing pages, deployment, SEO setup, analytics and lightweight automation.",
+    images: [siteConfig.ogImage.url],
+  },
 };
 
 export default function ServicesPage() {

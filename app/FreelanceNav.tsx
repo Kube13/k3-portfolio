@@ -7,7 +7,7 @@ import { freelanceCopy } from "./freelance-copy";
 export default function FreelanceNav({ language, chooseLanguage }: { language: Language; chooseLanguage: (language: Language) => void }) {
   const t = freelanceCopy[language];
   return <nav className="nav subpage-nav shell" aria-label={language === "my" ? "အဓိက လမ်းညွှန်" : "Primary navigation"}>
-    <Link className="brand" href="/" aria-label="K3 home"><span>K3</span><i /></Link>
+    <Link className="brand" href="/" aria-label="K3Labs home"><span>K3LABS</span><i /></Link>
     <div className="navlinks"><Link href="/">{t.nav.home}</Link><Link href="/services">{t.nav.services}</Link><Link href="/websites">{t.nav.websites}</Link><Link href="/#work">{t.nav.work}</Link><a href="mailto:kgkhant456@gmail.com">{t.nav.contact}</a></div>
     <div className="nav-actions">
       <div className="language-switch" role="group" aria-label={t.common.languageLabel}>
