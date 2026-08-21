@@ -40,11 +40,23 @@ export function SakuraBranch({ className = "" }: DecorativeProps) {
   </svg>;
 }
 
-function HeroFlowerGlyph({ x, y, scale = 1, rotation = 0 }: { x: number; y: number; scale?: number; rotation?: number }) {
-  return <g className="hero-garden-flower" transform={`translate(${x} ${y}) rotate(${rotation}) scale(${scale})`}>
+function HeroFlowerGlyph({
+  x,
+  y,
+  scale = 1,
+  rotation = 0,
+  variant = "major",
+}: {
+  x: number;
+  y: number;
+  scale?: number;
+  rotation?: number;
+  variant?: "major" | "bud";
+}) {
+  return <g className={`hero-garden-flower hero-garden-flower-${variant}`} transform={`translate(${x} ${y}) rotate(${rotation}) scale(${scale})`}>
     {[0, 72, 144, 216, 288].map(petalRotation => <polygon
       key={petalRotation}
-      points="0,-7 -5,-14 0,-23 5,-14"
+      points="0,-7 -7,-17 0,-25 7,-17"
       transform={`rotate(${petalRotation})`}
       className="hero-sakura-petal"
     />)}
@@ -67,47 +79,38 @@ export function GeometricDivider({ className = "" }: DecorativeProps) {
 export function HeroGarden() {
   return <div className="hero-garden" aria-label="Abstract geometric sakura garden with a thin K3 signature, mountains and wind lines" role="img">
     <svg className="hero-garden-art" viewBox="0 0 640 600" aria-hidden="true" focusable="false">
-      <circle className="hero-garden-disc" cx="338" cy="292" r="225" />
+      <circle className="hero-garden-disc" cx="338" cy="292" r="227" />
 
       <g className="hero-garden-wind">
-        <path d="M58 208h126c22 0 24 20 4 20h-34" />
-        <path d="M88 252h88" />
-        <path d="M474 286h104c18 0 20 18 2 18h-28" />
+        <path d="M72 214h88c20 0 23 18 6 20h-31" />
+        <path d="M92 258h76" />
+        <path d="M476 276h88c16 0 19 16 4 17h-29" />
       </g>
 
       <g className="hero-garden-branch">
-        <path className="hero-garden-branch-main" d="M96 345C154 338 195 299 257 282C339 260 389 211 454 177C498 154 532 138 568 128" />
-        <path d="M176 311C161 280 142 255 113 238" />
-        <path d="M257 282C240 248 227 222 218 202" />
-        <path d="M386 213C373 180 370 148 373 119" />
-        <path d="M487 160C501 138 513 117 518 96" />
-      </g>
-
-      <g className="hero-garden-nodes">
-        <circle cx="176" cy="311" r="3" />
-        <circle cx="257" cy="282" r="3" />
-        <circle cx="386" cy="213" r="3" />
-        <circle cx="487" cy="160" r="3" />
+        <path className="hero-garden-branch-main" d="M84 384C132 379 160 360 197 332C237 301 257 263 302 242C340 224 376 237 409 214C452 184 463 145 505 130C526 122 542 109 560 94" />
+        <path d="M197 332C181 303 170 276 150 257C143 250 137 246 130 241" />
+        <path d="M302 242C287 216 279 187 288 155" />
+        <path d="M409 214C431 191 440 157 460 126" />
       </g>
 
       <g className="hero-garden-flowers">
-        <HeroFlowerGlyph x={113} y={238} scale={0.72} rotation={-8} />
-        <HeroFlowerGlyph x={218} y={202} scale={0.9} rotation={7} />
-        <HeroFlowerGlyph x={373} y={119} scale={0.82} rotation={-4} />
-        <HeroFlowerGlyph x={518} y={96} scale={0.68} rotation={11} />
+        <HeroFlowerGlyph x={130} y={241} scale={0.84} rotation={-12} />
+        <HeroFlowerGlyph x={288} y={155} scale={0.88} rotation={8} />
+        <HeroFlowerGlyph x={460} y={126} scale={0.84} rotation={-5} />
+        <HeroFlowerGlyph x={560} y={94} scale={0.5} rotation={14} variant="bud" />
       </g>
 
       <g className="hero-garden-leaves">
-        <path d="M291 260l11-15l5 17Z" />
-        <path d="M421 194l14-8l-3 16Z" />
-        <path d="M535 140l12-12l2 16Z" />
-        <path d="M329 175l7-11l5 12Z" />
+        <path d="M226 305l11-14l5 17Z" />
+        <path d="M333 228l13-8l-2 15Z" />
+        <path d="M428 190l14-9l-3 16Z" />
+        <path d="M510 128l11-11l2 15Z" />
       </g>
 
       <g className="hero-garden-loose-petals">
-        <path d="M552 217l5-9l5 9l-5 9Z" />
-        <path d="M466 260l4-8l5 7l-4 8Z" />
-        <path d="M150 181l4-8l5 7l-4 8Z" />
+        <path d="M535 224l5-9l5 9l-5 9Z" />
+        <path d="M174 188l4-8l5 7l-4 8Z" />
       </g>
 
       <g className="hero-garden-mountains">
@@ -116,11 +119,9 @@ export function HeroGarden() {
         <path d="M42 556h502" />
       </g>
 
-      <g className="hero-garden-signature" transform="translate(406 435)">
+      <g className="hero-garden-signature" transform="translate(472 455) scale(.68)">
         <path d="M8 8v74M8 46L42 8M8 46l36 36" />
         <path d="M60 14c26-5 43 5 43 20c0 11-8 18-21 21c16 3 25 11 25 24c0 17-18 27-47 23" />
-        <path className="hero-garden-signature-guide" d="M0 96h116" />
-        <circle cx="116" cy="96" r="2.5" />
       </g>
     </svg>
   </div>;

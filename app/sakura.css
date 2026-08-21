@@ -99,20 +99,17 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--k3-violet);outline-
 .hero-copy .actions{margin-top:32px}
 .hero-garden{min-height:600px;display:grid;place-items:center;position:relative;isolation:isolate;overflow:hidden}
 .hero-garden-art{width:min(100%,640px);height:auto;overflow:visible}
-.hero-garden-disc{fill:rgba(183,156,255,.1)}
-.hero-garden-wind path{fill:none;stroke:rgba(75,38,125,.16);stroke-width:var(--line-hairline);stroke-linecap:round;vector-effect:non-scaling-stroke}
-.hero-garden-branch path{fill:none;stroke:var(--k3-accent);stroke-width:1.25px;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
+.hero-garden-disc{fill:rgba(183,156,255,.07)}
+.hero-garden-wind path{fill:none;stroke:rgba(75,38,125,.13);stroke-width:var(--line-hairline);stroke-linecap:round;vector-effect:non-scaling-stroke}
+.hero-garden-branch path{fill:none;stroke:var(--k3-accent);stroke-width:1.3px;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
 .hero-garden-branch path:not(.hero-garden-branch-main){stroke:rgba(75,38,125,.72);stroke-width:var(--line-hairline)}
-.hero-garden-nodes circle{fill:var(--k3-base);stroke:var(--k3-accent);stroke-width:var(--line-hairline);opacity:.68;vector-effect:non-scaling-stroke}
-.hero-sakura-petal{fill:rgba(183,156,255,.12);stroke:#6d43a8;stroke-width:var(--line-hairline);vector-effect:non-scaling-stroke}
+.hero-sakura-petal{fill:rgba(183,156,255,.1);stroke:#6d43a8;stroke-width:var(--line-hairline);vector-effect:non-scaling-stroke}
 .hero-sakura-core{fill:var(--k3-base);stroke:var(--k3-accent);stroke-width:var(--line-hairline);vector-effect:non-scaling-stroke}
-.hero-garden-leaves path{fill:rgba(183,156,255,.17);stroke:rgba(75,38,125,.58);stroke-width:var(--line-hairline);stroke-linejoin:round;vector-effect:non-scaling-stroke}
-.hero-garden-loose-petals{opacity:.36}
+.hero-garden-leaves path{fill:rgba(183,156,255,.14);stroke:rgba(75,38,125,.52);stroke-width:var(--line-hairline);stroke-linejoin:round;vector-effect:non-scaling-stroke}
+.hero-garden-loose-petals{opacity:.3}
 .hero-garden-loose-petals path{fill:rgba(183,156,255,.2);stroke:rgba(75,38,125,.48);stroke-width:var(--line-hairline);vector-effect:non-scaling-stroke}
-.hero-garden-mountains path{fill:none;stroke:rgba(75,38,125,.1);stroke-width:var(--line-hairline);stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
-.hero-garden-signature path{fill:none;stroke:var(--k3-accent);stroke-width:1.5px;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
-.hero-garden-signature .hero-garden-signature-guide{stroke-width:var(--line-hairline);opacity:.32}
-.hero-garden-signature circle{fill:var(--k3-accent)}
+.hero-garden-mountains path{fill:none;stroke:rgba(75,38,125,.08);stroke-width:var(--line-hairline);stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
+.hero-garden-signature path{fill:none;stroke:var(--k3-accent);stroke-width:1.3px;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
 
 /* Selected work and technical previews */
 .feature-card{overflow:hidden;border:1px solid var(--k3-line);border-radius:24px;background:var(--k3-base);box-shadow:var(--k3-shadow)}
