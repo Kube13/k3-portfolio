@@ -6,6 +6,7 @@ import WebsitePreview, { type WebsitePreviewSlug } from "./WebsitePreview";
 import { portfolioCopy } from "./portfolio-copy";
 import { usePortfolioLanguage } from "./usePortfolioLanguage";
 import { HeroGarden, SakuraBranch, SectionOrnament } from "./decorative/SakuraGeometry";
+import SiteNav from "./SiteNav";
 
 const websiteSlugs: WebsitePreviewSlug[] = ["cafe", "restaurant", "law-firm"];
 
@@ -53,21 +54,26 @@ export default function Home() {
   const t = portfolioCopy[language];
   const selectedProjects = t.work.projects.slice(0, 2);
   const websiteExamples = t.demos.items.slice(0, 3);
+  const navigationLinks = [
+    { href: "#work", label: t.nav.work },
+    { href: "#capabilities", label: t.capabilities.label },
+    { href: "/websites", label: t.nav.websites },
+    { href: "#about", label: t.nav.about },
+    { href: "#contact", label: t.nav.contact },
+  ];
 
   return <main className={language === "my" ? "lang-my" : "lang-en"}>
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
 
-    <nav className="nav shell" aria-label={language === "my" ? "အဓိက လမ်းညွှန်" : "Primary navigation"}>
-      <Link className="brand" href="#top" aria-label="K3Labs home"><span>K3LABS</span><i /></Link>
-      <div className="navlinks"><Link href="#work">{t.nav.work}</Link><Link href="#capabilities">{t.capabilities.label}</Link><Link href="/websites">{t.nav.websites}</Link><Link href="#about">{t.nav.about}</Link><Link href="#contact">{t.nav.contact}</Link></div>
-      <div className="nav-actions">
-        <div className="language-switch" role="group" aria-label={language === "my" ? "ဘာသာစကား ရွေးချယ်ရန်" : "Choose language"}>
-          <button type="button" className={language === "en" ? "is-active" : ""} onClick={() => chooseLanguage("en")} aria-pressed={language === "en"}>EN</button>
-          <button type="button" className={language === "my" ? "is-active" : ""} onClick={() => chooseLanguage("my")} aria-pressed={language === "my"}>မြန်မာ</button>
-        </div>
-        <a className="status" href="mailto:kgkhant456@gmail.com"><span /> {t.nav.available}</a>
-      </div>
-    </nav>
+    <SiteNav
+      language={language}
+      chooseLanguage={chooseLanguage}
+      links={navigationLinks}
+      languageLabel={language === "my" ? "ဘာသာစကား ရွေးချယ်ရန်" : "Choose language"}
+      navigationLabel={language === "my" ? "အဓိက လမ်းညွှန်" : "Primary navigation"}
+      brandHref="#top"
+      availabilityLabel={t.nav.available}
+    />
 
     <header className="hero hero-focused shell" id="top">
       <div className="eyebrow"><span>{t.hero.eyebrow}</span><span>{t.hero.version}</span></div>
@@ -80,11 +86,7 @@ export default function Home() {
         </div>
         <HeroGarden />
       </div>
-      <div className="hero-focus" aria-label={language === "my" ? "အဓိက လုပ်ဆောင်မှုများ" : "Primary focus areas"}>
-        {t.hero.focus.map((item, index) => <div key={item}><span>0{index + 1}</span><strong>{item}</strong></div>)}
-      </div>
     </header>
-    <SectionOrnament className="hero-ornament" />
 
     <section className="section shell selected-work" id="work">
       <SakuraBranch className="section-branch work-branch" />
@@ -122,25 +124,24 @@ export default function Home() {
     <section className="section capabilities" id="capabilities"><div className="shell"><div className="section-head"><div><span className="index">{t.capabilities.label}</span><h2>{t.capabilities.title}</h2></div><p>{t.capabilities.intro}</p></div><div className="cap-grid">{t.capabilities.items.map((item, index) => <article key={item.title}><span>0{index + 1}</span><h3>{item.title}</h3><p>{item.body}</p></article>)}</div></div></section>
 
     <section className="section shell website-work" id="websites">
-      <SakuraBranch className="section-branch website-branch" />
       <div className="section-head"><div><span className="index">{t.demos.label}</span><h2>{t.demos.title}</h2></div><div className="section-side"><p>{t.demos.intro}</p><Link className="section-route-link" href="/websites">{t.demos.allExamples} <span>→</span></Link></div></div>
-      <div className="homepage-demo-grid">{websiteExamples.map((demo, index) => <Link className="homepage-demo-card" href={`/demos/${websiteSlugs[index]}`} key={demo.slug}>
+      <div className="homepage-demo-grid homepage-demo-teaser">{websiteExamples.map((demo, index) => <Link className="homepage-demo-card" href={`/demos/${websiteSlugs[index]}`} key={demo.slug}>
         <WebsitePreview slug={websiteSlugs[index]} />
-        <div><span>{t.demos.demoLabel} · {demo.type}</span><h3>{demo.name}</h3><p>{demo.line}</p><div className="demo-tags">{t.demos.tags.map(tag => <span key={tag}>{tag}</span>)}</div><strong>{t.demos.viewConcept} ↗</strong></div>
+        <div><span>{t.demos.demoLabel} · {demo.type}</span><h3>{demo.name}</h3></div>
       </Link>)}</div>
-      <div className="website-work-footer"><div><span>{t.freelance.label}</span><h3>{t.freelance.title}</h3><p>{t.freelance.body}</p></div><div><Link className="button primary" href="/websites">{t.freelance.examplesCta} <span>→</span></Link><Link className="button ghost" href="/services">{t.freelance.servicesCta} <span>↗</span></Link></div></div>
+      <div className="website-teaser-actions"><Link className="button primary" href="/websites">{t.freelance.examplesCta} <span>→</span></Link><Link className="button ghost" href="/services">{t.freelance.servicesCta} <span>↗</span></Link></div>
     </section>
 
     <section className="section shell about-section about-brief" id="about">
       <div><span className="index">{t.about.label}</span><h2>{t.about.title}</h2></div>
-      <div className="about-copy">{t.about.paragraphs.slice(0, 2).map(paragraph => <p key={paragraph}>{paragraph}</p>)}<a className="inline-cv-link" href="/k3-cv.html" download>{t.hero.cvCta} ↓</a></div>
+      <div className="about-copy">{t.about.paragraphs.slice(0, 2).map(paragraph => <p key={paragraph}>{paragraph}</p>)}</div>
     </section>
 
     <section className="contact dual-contact" id="contact"><div className="shell">
-      <article><span className="index">{t.contact.candidateLabel}</span><h2>{t.contact.candidateTitle}</h2><p>{t.contact.body}</p><div className="contact-actions"><Link className="button light" href="#work">{t.contact.viewWork} <span>↗</span></Link><a className="contact-link" href="/k3-cv.html" download>{t.contact.cv} <span>↓</span></a><a className="contact-link" href="https://www.linkedin.com/in/kaung-khant-kyaw-658a4a203/" target="_blank" rel="noreferrer">LinkedIn <span>↗</span></a></div></article>
+      <article><span className="index">{t.contact.candidateLabel}</span><h2>{t.contact.candidateTitle}</h2><p>{t.contact.body}</p><div className="contact-actions"><a className="button light" href="/k3-cv.html" download>{t.contact.cv} <span>↓</span></a><a className="contact-link" href="https://www.linkedin.com/in/kaung-khant-kyaw-658a4a203/" target="_blank" rel="noreferrer">LinkedIn <span>↗</span></a></div></article>
       <article><span className="index">{t.contact.clientLabel}</span><h2>{t.contact.clientTitle}</h2><p>{t.contact.clientBody}</p><div className="contact-actions"><a className="button light" href="mailto:kgkhant456@gmail.com?subject=Website%20or%20automation%20project">{t.contact.discussProject} <span>↗</span></a><Link className="contact-link" href="/services">{t.contact.viewServices} <span>→</span></Link></div></article>
     </div></section>
 
-    <footer className="footer shell"><SakuraBranch className="footer-branch" /><Link className="brand" href="#top"><span>K3LABS</span><i /></Link><p>{t.contact.footerRole}</p><div><a href="https://www.linkedin.com/in/kaung-khant-kyaw-658a4a203/" target="_blank" rel="noreferrer">LinkedIn</a><a href="https://github.com/Kube13" target="_blank" rel="noreferrer">GitHub</a><a href="mailto:kgkhant456@gmail.com">Email</a><a href="/k3-cv.html" download>CV</a></div><small>© 2026 K3Labs · Yangon, Myanmar.</small></footer>
+    <footer className="footer shell"><SakuraBranch className="footer-branch" /><Link className="brand" href="#top"><span>K3LABS</span><i /></Link><p>{t.contact.footerRole}</p><div><a href="https://www.linkedin.com/in/kaung-khant-kyaw-658a4a203/" target="_blank" rel="noreferrer">LinkedIn</a><a href="https://github.com/Kube13" target="_blank" rel="noreferrer">GitHub</a><a href="mailto:kgkhant456@gmail.com">Email</a></div><small>© 2026 K3Labs · Yangon, Myanmar.</small></footer>
   </main>;
 }

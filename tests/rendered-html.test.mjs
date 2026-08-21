@@ -16,6 +16,8 @@ const requiredRoutes = [
   "demos/shop/index.html",
 ];
 
+const readRoute = route => readFileSync(join(outDir.pathname, route), "utf8");
+
 test("exports every public portfolio route", () => {
   for (const route of requiredRoutes) {
     assert.equal(existsSync(join(outDir.pathname, route)), true, route);
@@ -38,13 +40,46 @@ test("exports SEO metadata and static discovery files", () => {
 });
 
 test("exports descriptive case-study metadata and dated Wisp evidence", () => {
-  const wisp = readFileSync(join(outDir.pathname, "case-studies/wisp/index.html"), "utf8");
-  const lab = readFileSync(join(outDir.pathname, "case-studies/personal-intelligence-lab/index.html"), "utf8");
+  const wisp = readRoute("case-studies/wisp/index.html");
+  const lab = readRoute("case-studies/personal-intelligence-lab/index.html");
 
   assert.match(wisp, /Wisp Case Study \| Product Analytics, AI &amp; Automation \| K3/);
   assert.match(wisp, /FUNNEL SNAPSHOT · AUGUST 2026/);
   assert.match(lab, /Personal Intelligence Lab \| Data Analytics Case Study \| K3/);
   assert.match(lab, /SYSTEM IN DEVELOPMENT/);
+});
+
+test("exports the shared accessible navigation on portfolio entry routes", () => {
+  for (const route of ["index.html", "services/index.html", "websites/index.html"]) {
+    const html = readRoute(route);
+    const menuId = html.match(/aria-controls="([^"]+)"/)?.[1];
+
+    assert.match(html, /class="site-nav-toggle"/);
+    assert.match(html, /aria-expanded="false"/);
+    assert.ok(menuId, `${route}: menu toggle controls an in-flow panel`);
+    assert.match(html, new RegExp(`id="${menuId}"[^>]*hidden`));
+    assert.match(html, /aria-pressed="true"/);
+    assert.match(html, /aria-pressed="false"/);
+    assert.match(html, />မြန်မာ</);
+  }
+});
+
+test("preserves the focused homepage hierarchy and verified Wisp metrics", () => {
+  const homepage = readRoute("index.html");
+  const footer = homepage.match(/<footer[\s\S]*?<\/footer>/)?.[0] ?? "";
+
+  assert.match(homepage, /id="work"/);
+  assert.match(homepage, /id="capabilities"/);
+  assert.match(homepage, /id="websites"/);
+  assert.match(homepage, /id="about"/);
+  assert.match(homepage, /id="contact"/);
+  assert.match(homepage, /<strong>101<\/strong>/);
+  assert.match(homepage, /<strong>70<\/strong>/);
+  assert.match(homepage, /<strong>69\.3%<\/strong>/);
+  assert.equal((homepage.match(/class="homepage-demo-card"/g) ?? []).length, 3);
+  assert.doesNotMatch(homepage, /class="hero-focus(?:\s|")/);
+  assert.doesNotMatch(homepage, /website-work-footer|inline-cv-link/);
+  assert.doesNotMatch(footer, /k3-cv\.html/);
 });
 
 test("does not export placeholder production links", () => {
@@ -80,7 +115,7 @@ test("internal links and hash targets resolve in the static export", () => {
 });
 
 test("exports the geometric sakura theme and accessible decorative system", () => {
-  const homepage = readFileSync(join(outDir.pathname, "index.html"), "utf8");
+  const homepage = readRoute("index.html");
   const cssDir = join(outDir.pathname, "_next/static/css");
   const css = readdirSync(cssDir).filter(file => file.endsWith(".css")).map(file => readFileSync(join(cssDir, file), "utf8")).join("\n");
   const ogImage = readFileSync(join(outDir.pathname, "og-image.svg"), "utf8");
@@ -92,4 +127,16 @@ test("exports the geometric sakura theme and accessible decorative system", () =
   assert.match(css, /prefers-reduced-motion:reduce/);
   assert.match(ogImage, /#F8F5FF/);
   assert.match(ogImage, /geometric K3 monogram/);
+});
+
+test("exports responsive navigation and overflow safeguards without root masking", () => {
+  const cssDir = join(outDir.pathname, "_next/static/css");
+  const css = readdirSync(cssDir).filter(file => file.endsWith(".css")).map(file => readFileSync(join(cssDir, file), "utf8")).join("\n");
+
+  assert.match(css, /\.site-nav-menu\[hidden\]\{display:none\}/);
+  assert.match(css, /\.site-nav-toggle\{[^}]*width:44px[^}]*height:44px/);
+  assert.match(css, /prefers-reduced-motion:reduce/);
+  assert.doesNotMatch(css, /html\{[^}]*overflow-x:hidden/);
+  assert.doesNotMatch(css, /body\{[^}]*overflow-x:hidden/);
+  assert.doesNotMatch(css, /\.navlinks\{[^}]*overflow-x:auto/);
 });
