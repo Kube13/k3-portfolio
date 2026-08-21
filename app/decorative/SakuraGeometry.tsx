@@ -100,6 +100,12 @@ export function SectionOrnament({ className = "" }: DecorativeProps) {
   </div>;
 }
 
+export function GeometricDivider({ className = "" }: DecorativeProps) {
+  return <div className={`geometric-divider ${className}`} aria-hidden="true">
+    <span /><i /><span />
+  </div>;
+}
+
 export function HeroGarden() {
   return <div className="hero-garden" aria-label="Abstract geometric garden built from a K3 monogram, sakura branch, mountains and wind lines" role="img">
     <GeometricGrid className="hero-garden-grid" />

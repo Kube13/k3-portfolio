@@ -76,10 +76,37 @@ test("preserves the focused homepage hierarchy and verified Wisp metrics", () =>
   assert.match(homepage, /<strong>101<\/strong>/);
   assert.match(homepage, /<strong>70<\/strong>/);
   assert.match(homepage, /<strong>69\.3%<\/strong>/);
+  assert.match(homepage, /Data Analyst &amp; Automation Engineer · Product Builder/);
+  assert.match(homepage, /I turn complex/);
+  assert.match(homepage, /systems that/);
+  assert.match(homepage, /make sense\./);
+  assert.match(homepage, /Schema review/);
+  assert.match(homepage, /INPUT/);
+  assert.match(homepage, /EVALUATE/);
+  assert.match(homepage, /CLASSIFY/);
+  assert.match(homepage, /EXPLAIN/);
+  assert.match(homepage, /class="capability-thread" aria-hidden="true"/);
   assert.equal((homepage.match(/class="homepage-demo-card"/g) ?? []).length, 3);
   assert.doesNotMatch(homepage, /class="hero-focus(?:\s|")/);
   assert.doesNotMatch(homepage, /website-work-footer|inline-cv-link/);
   assert.doesNotMatch(footer, /k3-cv\.html/);
+});
+
+test("keeps case-study evidence and sparse geometric transitions", () => {
+  const wisp = readRoute("case-studies/wisp/index.html");
+  const lab = readRoute("case-studies/personal-intelligence-lab/index.html");
+
+  assert.match(wisp, /<strong>101<\/strong>/);
+  assert.match(wisp, /<strong>70<\/strong>/);
+  assert.match(wisp, /<strong>69\.3%<\/strong>/);
+  assert.match(wisp, /<strong>8<\/strong><span>PURCHASE REQUESTS<\/span>/);
+  assert.match(wisp, /HISTORICAL, NOT REAL-TIME/);
+  assert.match(wisp, /geometric-divider case-transition/);
+  assert.match(wisp, /geometric-divider case-transition case-transition-final/);
+  assert.match(lab, /geometric-divider case-transition/);
+  assert.match(lab, /geometric-divider case-transition case-transition-final/);
+  assert.match(wisp, /geometric-divider case-transition[^>]*aria-hidden="true"/);
+  assert.match(lab, /case-section shell case-section-orbit/);
 });
 
 test("does not export placeholder production links", () => {
@@ -124,6 +151,12 @@ test("exports the geometric sakura theme and accessible decorative system", () =
   assert.match(homepage, /sakura-branch/);
   assert.match(homepage, /aria-hidden="true"/);
   assert.match(css, /#f8f5ff/i);
+  assert.match(css, /--line-hairline:1px/);
+  assert.match(css, /--line-soft:1\.25px/);
+  assert.match(css, /--line-emphasis:1\.5px/);
+  assert.match(css, /--decorative-faint:/);
+  assert.match(css, /--decorative-soft:/);
+  assert.match(css, /--decorative-visible:/);
   assert.match(css, /prefers-reduced-motion:reduce/);
   assert.match(ogImage, /#F8F5FF/);
   assert.match(ogImage, /geometric K3 monogram/);

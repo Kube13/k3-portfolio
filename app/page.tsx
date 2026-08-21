@@ -121,7 +121,7 @@ export default function Home() {
     </section>
     <SectionOrnament />
 
-    <section className="section capabilities" id="capabilities"><div className="shell"><div className="section-head"><div><span className="index">{t.capabilities.label}</span><h2>{t.capabilities.title}</h2></div><p>{t.capabilities.intro}</p></div><div className="cap-grid">{t.capabilities.items.map((item, index) => <article key={item.title}><span>0{index + 1}</span><h3>{item.title}</h3><p>{item.body}</p></article>)}</div></div></section>
+    <section className="section capabilities" id="capabilities"><div className="shell"><div className="section-head"><div><span className="index">{t.capabilities.label}</span><h2>{t.capabilities.title}</h2></div><p>{t.capabilities.intro}</p></div><div className="capability-thread" aria-hidden="true"><span /><i /><i /></div><div className="cap-grid">{t.capabilities.items.map((item, index) => <article key={item.title}><span>0{index + 1}</span><h3>{item.title}</h3><p>{item.body}</p></article>)}</div></div></section>
 
     <section className="section shell website-work" id="websites">
       <div className="section-head"><div><span className="index">{t.demos.label}</span><h2>{t.demos.title}</h2></div><div className="section-side"><p>{t.demos.intro}</p><Link className="section-route-link" href="/websites">{t.demos.allExamples} <span>→</span></Link></div></div>

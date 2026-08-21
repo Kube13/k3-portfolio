@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import WispMotionPreview from "../../WispMotionPreview";
 import { siteConfig } from "../../site";
-import { SakuraBranch, SectionOrnament } from "../../decorative/SakuraGeometry";
+import { GeometricDivider, SakuraBranch, SectionOrnament } from "../../decorative/SakuraGeometry";
 
 const title = "Wisp Case Study | Product Analytics, AI & Automation | K3";
 const description = "How I designed and built Wisp Guide, a psychology-focused product combining behavioral logic, product analytics, automation, localization and applied AI.";
@@ -76,6 +76,7 @@ export default function WispCaseStudy() {
     <section className="case-section shell" aria-label="Wisp overview and product story"><div className="case-story">
       {story.map(item => <article key={item.number}><span>{item.number}</span><h2>{item.title}</h2><p>{item.body}</p></article>)}
     </div></section>
+    <GeometricDivider className="case-transition" />
 
     <section className="case-diagram shell" aria-labelledby="architecture-title">
       <span>05 · SYSTEM ARCHITECTURE</span>
@@ -105,9 +106,10 @@ export default function WispCaseStudy() {
       </div>
     </section>
 
-    <section className="case-section shell" aria-label="Operations, ownership, localization and delivery"><div className="case-story">
+    <section className="case-section shell case-section-orbit" aria-label="Operations, ownership, localization and delivery"><div className="case-story">
       {operations.map(item => <article key={item.number}><span>{item.number}</span><h2>{item.title}</h2><p>{item.body}</p></article>)}
     </div></section>
+    <GeometricDivider className="case-transition" />
 
     <section className="case-result"><div className="shell case-result-grid">
       <div><span className="case-evidence-label">11 · RESULTS</span><h2>A working product with evidence for the next iteration.</h2><p>Wisp moved beyond a concept into a bilingual, authenticated product with a measurable assessment funnel and an operational path around paid guidance.</p></div>
@@ -118,6 +120,7 @@ export default function WispCaseStudy() {
       <article><span className="case-section-label">12 · WHAT I LEARNED</span><h2>The product is the whole chain.</h2><p className="case-section-copy">The strongest product work is not a screen. It is the connection between user need, decision logic, careful wording, operations, measurement, and sustainable delivery.</p></article>
       <article><span className="case-section-label">EXPLORE NEXT</span><h2>See the analytics workflow.</h2><p className="case-section-copy">Personal Intelligence Lab documents how raw datasets move through profiling, cleaning, analysis, KPI framing, and decision-ready reporting.</p><div className="case-links"><Link className="card-link" href="/case-studies/personal-intelligence-lab">Explore my data analytics work <span>→</span></Link></div></article>
     </div></section>
+    <GeometricDivider className="case-transition case-transition-final" />
 
     <footer className="case-end"><div className="shell"><span>NEXT STEP</span><h2>Want to discuss the work?</h2><div className="case-end-links"><a href="mailto:kgkhant456@gmail.com?subject=Wisp%20case%20study">Email K3 ↗</a><Link href="/#work">View other projects →</Link></div></div></footer>
   </main>;

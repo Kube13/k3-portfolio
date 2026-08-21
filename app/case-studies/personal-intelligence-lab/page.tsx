@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { siteConfig } from "../../site";
-import { SakuraBranch, SectionOrnament } from "../../decorative/SakuraGeometry";
+import { GeometricDivider, SakuraBranch, SectionOrnament } from "../../decorative/SakuraGeometry";
 
 const title = "Personal Intelligence Lab | Data Analytics Case Study | K3";
 const description = "A data analytics case study covering data quality profiling, cleaning, transformation, exploratory analysis and decision-ready reporting.";
@@ -89,9 +89,10 @@ export default function PersonalIntelligenceLabCaseStudy() {
       </div>
     </div></section>
 
-    <section className="case-section shell" aria-label="Analytics workflow">
+    <section className="case-section shell case-section-orbit" aria-label="Analytics workflow">
       <div className="case-story">{caseStudy.map(item => <article key={item.number}><span>{item.number}</span><h2>{item.title}</h2><p>{item.body}</p></article>)}</div>
     </section>
+    <GeometricDivider className="case-transition" />
 
     <section className="case-diagram shell" aria-labelledby="lab-flow-title">
       <span>ANALYSIS FLOW</span>
@@ -108,6 +109,7 @@ export default function PersonalIntelligenceLabCaseStudy() {
       <div><span className="case-evidence-label">CURRENT RESULT</span><h2>An honest foundation for reproducible analysis.</h2><p>The current case study establishes the workflow, quality gates, and reporting standard. It does not claim a finished dashboard or quantified business outcome before those artifacts exist.</p></div>
       <ul><li><span>01</span> Explicit data-quality checks before analysis</li><li><span>02</span> Reviewable cleaning and transformation decisions</li><li><span>03</span> KPI definitions connected to business questions</li><li><span>04</span> Clear separation between evidence and inference</li></ul>
     </div></section>
+    <GeometricDivider className="case-transition case-transition-final" />
 
     <footer className="case-end"><div className="shell"><span>EXPLORE NEXT</span><h2>See product ownership in practice.</h2><div className="case-end-links"><Link href="/case-studies/wisp">View Wisp case study →</Link><Link href="/#work">View other projects →</Link></div></div></footer>
   </main>;

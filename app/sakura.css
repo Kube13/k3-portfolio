@@ -9,6 +9,12 @@
   --k3-line:rgba(75,38,125,.18);
   --k3-shadow:0 22px 60px rgba(75,38,125,.08);
   --k3-serif:Georgia,"Times New Roman",serif;
+  --line-hairline:1px;
+  --line-soft:1.25px;
+  --line-emphasis:1.5px;
+  --decorative-faint:rgba(75,38,125,.08);
+  --decorative-soft:rgba(75,38,125,.16);
+  --decorative-visible:rgba(75,38,125,.24);
   --ink:var(--k3-text);
   --muted:var(--k3-text-muted);
   --line:var(--k3-line);
@@ -49,24 +55,28 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--k3-violet);outline-
 
 /* Reusable geometric sakura system */
 .sakura-flower{width:46px;height:46px;overflow:visible}
-.sakura-petal-shape{fill:rgba(183,156,255,.1);stroke:var(--k3-violet);stroke-width:1;vector-effect:non-scaling-stroke}
-.sakura-flower-core{fill:var(--k3-bg);stroke:var(--k3-violet);stroke-width:1;vector-effect:non-scaling-stroke}
+.sakura-petal-shape{fill:rgba(183,156,255,.12);stroke:var(--k3-violet);stroke-width:var(--line-hairline);vector-effect:non-scaling-stroke}
+.sakura-flower-core{fill:var(--k3-bg);stroke:var(--k3-violet);stroke-width:var(--line-hairline);vector-effect:non-scaling-stroke}
 .sakura-branch{max-width:100%;overflow:hidden}
-.sakura-branch-lines path{fill:none;stroke:var(--k3-violet);stroke-width:1;stroke-linecap:round;vector-effect:non-scaling-stroke}
-.sakura-branch-nodes circle{fill:var(--k3-bg);stroke:var(--k3-violet);stroke-width:1}
-.sakura-branch .sakura-petal-shape{fill:rgba(183,156,255,.12)}
-.wind-lines path,.wind-lines circle,.mountain-lines path,.circle-motif-line,.circle-motif-ticks,.geometric-grid path{fill:none;stroke:var(--k3-violet);stroke-width:1;vector-effect:non-scaling-stroke}
+.sakura-branch-lines path{fill:none;stroke:var(--k3-violet);stroke-width:var(--line-hairline);stroke-linecap:round;vector-effect:non-scaling-stroke}
+.sakura-branch-nodes circle{fill:var(--k3-bg);stroke:var(--k3-violet);stroke-width:var(--line-hairline)}
+.sakura-branch .sakura-petal-shape{fill:rgba(183,156,255,.14)}
+.wind-lines path,.wind-lines circle,.mountain-lines path,.circle-motif-line,.circle-motif-ticks,.geometric-grid path{fill:none;stroke:var(--k3-violet);stroke-width:var(--line-hairline);vector-effect:non-scaling-stroke}
 .wind-lines circle,.circle-motif-node,.geometric-grid circle{fill:var(--k3-violet)}
 .circle-motif-fill{fill:rgba(183,156,255,.13)}
 .circle-motif-line-one{stroke-dasharray:650 210;opacity:.55}
 .circle-motif-line-two{stroke-dasharray:270 560;opacity:.35}
 .circle-motif-ticks{opacity:.3}.circle-motif-node{opacity:.65}
-.geometric-grid{opacity:.1}.mountain-lines{opacity:.15}.wind-lines{opacity:.26}
+.geometric-grid{opacity:.12}.mountain-lines{opacity:.18}.wind-lines{opacity:.29}
 .section-ornament{width:min(1180px,calc(100% - 48px));height:48px;margin:auto;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:18px}
 .section-ornament>span{height:1px;background:linear-gradient(90deg,transparent,var(--k3-line))}
 .section-ornament>span:last-child{background:linear-gradient(90deg,var(--k3-line),transparent)}
-.section-ornament .sakura-flower{width:24px;height:24px;opacity:.52}
-.section-branch{position:absolute;width:340px;pointer-events:none;opacity:.12;z-index:0}
+.section-ornament .sakura-flower{width:24px;height:24px;opacity:.58}
+.geometric-divider{width:min(1180px,calc(100% - 48px));height:36px;margin-inline:auto;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:15px;pointer-events:none}
+.geometric-divider>span{height:var(--line-hairline);background:linear-gradient(90deg,transparent,var(--decorative-soft))}
+.geometric-divider>span:last-child{background:linear-gradient(90deg,var(--decorative-soft),transparent)}
+.geometric-divider>i{width:8px;height:8px;border:var(--line-hairline) solid var(--decorative-visible);background:var(--k3-bg);transform:rotate(45deg)}
+.section-branch{position:absolute;width:340px;pointer-events:none;opacity:.15;z-index:0}
 .selected-work,.website-work{position:relative}
 .selected-work>*:not(.section-branch),.website-work>*:not(.section-branch){position:relative;z-index:1}
 .work-branch{right:0;top:28px}
@@ -87,17 +97,17 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--k3-violet);outline-
 .hero-garden-circle{position:absolute;right:3%;top:1%;width:min(100%,560px);height:auto}
 .hero-garden-mountains{position:absolute;right:0;bottom:42px;width:94%;height:auto}
 .hero-garden-wind{position:absolute;left:4%;top:31%;width:70%;height:auto}
-.hero-garden-mark{position:absolute;left:50%;top:49%;width:39%;height:auto;transform:translate(-42%,-49%);filter:drop-shadow(0 24px 36px rgba(75,38,125,.12))}
-.k3-mark-fill{fill:rgba(75,38,125,.87);stroke:var(--k3-plum);stroke-width:1}
-.k3-mark-three{fill:none;stroke:var(--k3-violet);stroke-width:12;stroke-linecap:round}
-.k3-mark-guide{fill:none;stroke:var(--k3-violet);stroke-width:1;opacity:.35}
+.hero-garden-mark{position:absolute;left:50%;top:49%;width:35%;height:auto;transform:translate(-42%,-49%);filter:drop-shadow(0 20px 32px rgba(75,38,125,.1))}
+.k3-mark-fill{fill:rgba(75,38,125,.79);stroke:var(--k3-plum);stroke-width:var(--line-soft)}
+.k3-mark-three{fill:none;stroke:var(--k3-violet);stroke-width:10.5;stroke-linecap:round}
+.k3-mark-guide{fill:none;stroke:var(--k3-violet);stroke-width:var(--line-hairline);opacity:.4}
 .k3-monogram circle{fill:var(--k3-violet)}
-.hero-garden-branch{position:absolute;right:-4%;top:0;width:76%;height:auto;opacity:.64}
+.hero-garden-branch{position:absolute;right:-4%;top:0;width:76%;height:auto;opacity:.7}
 .hero-garden-branch .sakura-branch-lines path{stroke-dasharray:620;stroke-dashoffset:620;animation:branch-draw 1.8s .25s cubic-bezier(.22,1,.36,1) forwards}
 .hero-garden-branch .sakura-branch-flowers{opacity:0;animation:flower-appear .8s 1.3s ease forwards}
 .falling-petals{position:absolute;inset:0;pointer-events:none}
 .falling-petals span{position:absolute;top:-12%;width:13px;height:20px;opacity:.34;animation:petal-drift 18s linear infinite}
-.falling-petals svg{width:100%;height:100%;fill:rgba(183,156,255,.32);stroke:var(--k3-violet);stroke-width:.8}
+.falling-petals svg{width:100%;height:100%;fill:rgba(183,156,255,.32);stroke:var(--k3-violet);stroke-width:var(--line-hairline)}
 .falling-petals span:nth-child(1){left:12%;animation-duration:17s;animation-delay:-8s}
 .falling-petals span:nth-child(2){left:31%;animation-duration:22s;animation-delay:-16s}
 .falling-petals span:nth-child(3){left:48%;animation-duration:15s;animation-delay:-3s}
@@ -122,20 +132,20 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--k3-violet);outline-
 .feature-visual{background:linear-gradient(135deg,rgba(183,156,255,.18),rgba(75,38,125,.06)),var(--k3-surface)}
 .feature-links .text-link,.card-link{border-color:var(--k3-line);border-radius:999px;background:rgba(255,255,255,.7);color:var(--k3-violet)}
 .feature-links .text-link:hover,.card-link:hover{background:var(--k3-violet);border-color:var(--k3-violet);color:#fff}
-.wisp-motion{border-color:var(--k3-line);border-radius:16px;background:rgba(255,255,255,.86);box-shadow:0 18px 45px rgba(75,38,125,.08)}
-.wisp-motion:before{background:repeating-linear-gradient(90deg,transparent 0 79px,rgba(75,38,125,.035) 80px),repeating-linear-gradient(0deg,transparent 0 79px,rgba(75,38,125,.028) 80px)}
-.motion-head{border-color:var(--k3-line);color:rgba(75,38,125,.52)}
-.motion-state{color:var(--k3-violet)}
-.motion-arrow{border-color:var(--k3-line);border-radius:50%;background:rgba(248,245,255,.92);color:var(--k3-violet)}
+.wisp-motion{border-color:var(--decorative-visible);border-radius:16px;background:rgba(255,255,255,.9);box-shadow:0 18px 45px rgba(75,38,125,.1)}
+.wisp-motion:before{background:repeating-linear-gradient(90deg,transparent 0 79px,rgba(75,38,125,.05) 80px),repeating-linear-gradient(0deg,transparent 0 79px,rgba(75,38,125,.042) 80px)}
+.motion-head{border-color:var(--decorative-visible);color:rgba(75,38,125,.64)}
+.motion-state{color:var(--k3-violet);font-weight:700}
+.motion-arrow{border-width:var(--line-emphasis);border-color:var(--decorative-visible);border-radius:50%;background:rgba(248,245,255,.97);color:var(--k3-violet);box-shadow:0 6px 16px rgba(75,38,125,.08)}
 .motion-arrow:hover{background:var(--k3-violet);border-color:var(--k3-violet);color:#fff}
-.explanation-panel{border-color:var(--k3-line);border-radius:16px;background:rgba(248,245,255,.96);box-shadow:12px 12px 0 rgba(183,156,255,.18)}
+.explanation-panel{border-color:var(--decorative-visible);border-radius:16px;background:rgba(252,250,255,.98);box-shadow:12px 12px 0 rgba(183,156,255,.24)}
 .explanation-eyebrow{color:var(--k3-violet)}
 .explanation-panel h4{color:var(--k3-plum)}
 .explanation-panel p{color:var(--k3-text-muted)}
-.explanation-tags span{border-color:var(--k3-line);border-radius:999px;background:rgba(238,232,250,.72);color:var(--k3-text-muted)}
-.motion-progress button>span{background:rgba(75,38,125,.12)}
+.explanation-tags span{border-color:var(--decorative-visible);border-radius:999px;background:rgba(238,232,250,.78);color:var(--k3-text-muted)}
+.motion-progress button>span{background:rgba(75,38,125,.18)}
 .motion-progress button>span:after{background:var(--k3-violet)}
-.motion-controls small{color:rgba(75,38,125,.5)}
+.motion-controls small{color:rgba(75,38,125,.62)}
 .selected-project{overflow:hidden;border-color:var(--k3-line);border-radius:20px;background:rgba(255,255,255,.72);box-shadow:0 16px 44px rgba(75,38,125,.06);transition:transform .3s cubic-bezier(.22,1,.36,1),border-color .3s}
 .selected-project:hover{transform:translateY(-4px);border-color:rgba(75,38,125,.42)}
 .selected-project-visual{border-color:var(--k3-line);background:linear-gradient(135deg,rgba(183,156,255,.16),rgba(75,38,125,.05))}
@@ -154,6 +164,10 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--k3-violet);outline-
 .capabilities{background:linear-gradient(180deg,rgba(238,232,250,.78),rgba(248,245,255,.9));color:var(--k3-text)}
 .capabilities .index{color:var(--k3-violet)}
 .capabilities .section-head>p{color:var(--k3-text-muted)}
+.capability-thread{height:24px;margin:-18px 0 12px;position:relative}
+.capability-thread>span{position:absolute;left:4%;right:4%;top:50%;height:var(--line-hairline);background:linear-gradient(90deg,transparent,var(--decorative-soft) 15%,var(--decorative-soft) 85%,transparent)}
+.capability-thread>i{position:absolute;top:calc(50% - 4px);width:8px;height:8px;border:var(--line-hairline) solid var(--decorative-visible);background:var(--k3-surface);transform:rotate(45deg)}
+.capability-thread>i:nth-of-type(1){left:33%}.capability-thread>i:nth-of-type(2){right:33%}
 .capabilities .cap-grid{gap:16px;border:0}
 .capabilities .cap-grid article,.capabilities .cap-grid article:nth-child(3){min-height:0;padding:30px;border:1px solid var(--k3-line);border-radius:18px;background:rgba(255,255,255,.62)}
 .capabilities .cap-grid article+article{border-left:1px solid var(--k3-line)}
@@ -187,7 +201,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--k3-violet);outline-
 .footer p,.footer small{color:rgba(248,245,255,.58)}
 .footer>div{position:relative;z-index:2}
 .footer a{position:relative;z-index:2}
-.footer-branch{position:absolute;right:0;bottom:-30px;width:370px;opacity:.13;z-index:-1}
+.footer-branch{position:absolute;right:0;bottom:-30px;width:370px;opacity:.17;z-index:-1}
 .footer-branch .sakura-branch-lines path,.footer-branch .sakura-petal-shape,.footer-branch .sakura-flower-core,.footer-branch .sakura-branch-nodes circle{stroke:var(--k3-lavender)}
 .footer-branch .sakura-flower-core,.footer-branch .sakura-branch-nodes circle{fill:var(--k3-plum)}
 
@@ -195,7 +209,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--k3-violet);outline-
 .freelance-page{background:radial-gradient(circle at 85% 4%,rgba(183,156,255,.16),transparent 24%),var(--k3-bg);color:var(--k3-text)}
 .subpage-hero{position:relative;overflow:hidden;border-color:var(--k3-line)}
 .subpage-hero>*:not(.subpage-sakura),.case-hero>*:not(.case-hero-sakura){position:relative;z-index:1}
-.subpage-sakura,.case-hero-sakura{position:absolute;right:0;top:12px;width:430px;opacity:.14;pointer-events:none}
+.subpage-sakura,.case-hero-sakura{position:absolute;right:0;top:12px;width:430px;opacity:.17;pointer-events:none}
 .case-hero{overflow:clip}
 .case-hero-sakura{right:0;top:42px;width:500px}
 .subpage-hero h1{color:var(--k3-plum)}
@@ -253,11 +267,12 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--k3-violet);outline-
 .architecture-grid article{border-color:var(--k3-line);border-radius:14px;background:rgba(255,255,255,.74)}
 .architecture-grid article span,.architecture-grid article small{color:var(--k3-text-muted)}
 .architecture-grid article strong{color:var(--k3-plum)}
-.architecture-grid>i{color:var(--k3-violet)}
+.architecture-grid>i{color:var(--k3-violet);font-weight:700;opacity:.7}
 .case-split>article{border-color:var(--k3-line);border-radius:20px;background:rgba(255,255,255,.72);box-shadow:0 14px 40px rgba(75,38,125,.05)}
 .funnel-evidence{border-color:var(--k3-line);border-radius:20px;background:rgba(238,232,250,.62)}
 .funnel-evidence strong{color:var(--k3-violet)}
 .funnel-evidence span{color:var(--k3-text-muted)}
+.funnel-evidence>i{color:var(--k3-violet);opacity:.58}
 .case-result{background:var(--k3-surface);color:var(--k3-plum)}
 .case-result p{color:var(--k3-text-muted)}
 .case-result ul,.case-result li{border-color:var(--k3-line)}
@@ -279,6 +294,11 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--k3-violet);outline-
 .lab-table{border-color:var(--k3-line)}
 .lab-table i{border-color:rgba(75,38,125,.1)}
 .evidence-boundary{border-color:var(--k3-violet);background:rgba(238,232,250,.64);color:var(--k3-text-muted)}
+.case-transition{margin-block:-10px 22px}
+.case-transition-final{margin-bottom:0;padding-block:12px;height:60px}
+.case-section-orbit{position:relative;isolation:isolate;overflow:clip}
+.case-section-orbit:before{content:"";position:absolute;right:0;top:26%;width:360px;height:360px;border:var(--line-hairline) solid var(--decorative-faint);border-radius:50%;pointer-events:none;z-index:0}
+.case-section-orbit>*{position:relative;z-index:1}
 
 /* Progressive, dependency-free section entrances */
 @supports (animation-timeline:view()){
@@ -300,6 +320,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--k3-violet);outline-
   .hero-focused .hero-statement{max-width:760px}
   .feature-card{grid-template-columns:1fr}
   .section-branch{opacity:.07}
+  .capability-thread{display:none}
   .capabilities .cap-grid article,.capabilities .cap-grid article:nth-child(3){border:1px solid var(--k3-line);padding:28px}
 }
 
@@ -313,7 +334,8 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--k3-violet);outline-
   .hero-garden-branch{width:70%}
   .falling-petals span:nth-child(n+5){display:none}
   .work-branch{display:none}
-  .subpage-sakura,.case-hero-sakura{width:280px;right:0;opacity:.08}
+  .subpage-sakura,.case-hero-sakura{width:280px;right:0;opacity:.09}
+  .case-section-orbit:before{display:none}
   .service-card-grid article,.service-card-grid article:nth-child(n+4),.service-card-grid article:nth-child(5){border:1px solid var(--k3-line)}
   .service-process li{border:1px solid var(--k3-line)!important}
 }
@@ -325,7 +347,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--k3-violet);outline-
   .hero-garden{min-height:300px}
   .hero-garden-grid,.hero-garden-mountains,.hero-garden-wind,.falling-petals{display:none}
   .hero-garden-circle{top:0}
-  .hero-garden-mark{width:36%}
+  .hero-garden-mark{width:33%}
   .hero-garden-branch{right:0;width:72%}
   .feature-card,.selected-project,.homepage-demo-card,.dual-contact article,.website-card,.case-split>article,.architecture-grid,.funnel-evidence,.lab-workbench{border-radius:16px}
   .dual-contact>.shell{gap:12px}
