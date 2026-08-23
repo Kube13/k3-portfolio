@@ -152,20 +152,21 @@ test("exports the geometric sakura theme and accessible decorative system", () =
   const ogImage = readFileSync(join(outDir.pathname, "og-image.svg"), "utf8");
 
   assert.match(homepage, /hero-garden/);
-  assert.match(homepage, /Addressable pixel-grid sakura blossom with a stable branch/);
+  assert.match(homepage, /Asymmetric pixel-art sakura branch with varied blossoms/);
   assert.match(homepage, /viewBox="0 0 640 600"/);
   assert.match(homepage, /class="hero-garden-branch-main"/);
-  assert.match(homepage, /class="hero-garden-signature"/);
-  assert.match(homepage, /M84 384C132 379 160 360 197 332C237 301 257 263 302 242/);
+  assert.match(homepage, /class="hero-garden-signature hero-garden-signature-main"/);
+  assert.match(homepage, /M432 456C396 400 371 348 352 312C334 277 360 229 400 184/);
   assert.match(homepage, /M8 8v74M8 46L42 8M8 46l36 36/);
-  assert.match(homepage, /translate\(472 455\) scale\(\.68\)/);
+  assert.match(homepage, /translate\(492 470\) scale\(\.62\)/);
   assert.match(heroArtwork, /class="pixel-blossom"/);
   assert.match(heroArtwork, /shape-rendering="crispEdges"/);
-  for (const group of ["flower-1", "flower-2", "flower-3", "flower-4", "flower-5", "bud-1", "bud-2", "loose-pixels"]) {
+  for (const group of ["flower-1", "flower-2", "flower-3", "flower-4", "flower-5", "flower-6", "flower-7", "flower-8", "bud-1", "bud-2", "bud-3", "bud-4", "bud-5", "bud-6"]) {
     assert.match(heroArtwork, new RegExp(`data-pixel-group="${group}"`));
   }
-  assert.equal((heroArtwork.match(/class="pixel-blossom-streak /g) ?? []).length, 4);
-  assert.equal((heroArtwork.match(/hero-garden-signature-ghost/g) ?? []).length, 2);
+  assert.doesNotMatch(heroArtwork, /loose-pixels/);
+  assert.equal((heroArtwork.match(/class="pixel-blossom-streak /g) ?? []).length, 12);
+  assert.equal((heroArtwork.match(/hero-garden-signature-ghost/g) ?? []).length, 3);
   assert.doesNotMatch(homepage, /hero-sakura-petal|hero-sakura-core|hero-garden-grid|hero-garden-nodes|hero-garden-signature-guide|k3-mark-fill|falling-petals/);
   assert.match(homepage, /sakura-branch/);
   assert.match(homepage, /aria-hidden="true"/);
@@ -194,7 +195,7 @@ test("exports the geometric sakura theme and accessible decorative system", () =
   assert.match(ogImage, /geometric K3 monogram/);
 });
 
-test("exports a controlled addressable-pixel glitch loop", () => {
+test("exports recognizable pixel blossoms and four specialized glitch identities", () => {
   const homepage = readRoute("index.html");
   const heroArtwork = homepage.match(/<svg class="hero-garden-art"[\s\S]*?<\/svg>/)?.[0] ?? "";
   const cssDir = join(outDir.pathname, "_next/static/css");
@@ -203,35 +204,65 @@ test("exports a controlled addressable-pixel glitch loop", () => {
   const flowerCells = visibleCells.filter(className => className.includes("pixel-blossom-flower-cell"));
   const branchCells = visibleCells.filter(className => className.includes("pixel-blossom-branch-cell"));
 
-  assert.ok(visibleCells.length >= 100 && visibleCells.length <= 400, `${visibleCells.length} visible pixel cells`);
+  assert.ok(visibleCells.length >= 300 && visibleCells.length <= 500, `${visibleCells.length} visible pixel cells`);
   assert.ok(flowerCells.length > branchCells.length, "blossoms contain more pixels than the branch");
   assert.ok(branchCells.every(className => !className.includes("pixel-glitch-")), "branch cells remain stable");
-  for (const variant of ["a", "b", "c", "d"]) {
+  const majorGroups = ["flower-1", "flower-2", "flower-3", "flower-4", "flower-5", "flower-6", "flower-7", "flower-8"];
+  const smallerGroups = ["bud-1", "bud-2", "bud-3", "bud-4", "bud-5", "bud-6"];
+  const groupCellCount = group => (heroArtwork.match(new RegExp(`data-pixel-group="${group}"`, "g")) ?? []).length;
+
+  assert.equal(majorGroups.length, 8, "six to nine major blossoms are present");
+  assert.equal(smallerGroups.length, 6, "four to seven smaller blossoms and buds are present");
+  for (const group of majorGroups) {
+    assert.ok(groupCellCount(group) >= 12 && groupCellCount(group) <= 35, `${group}: recognizable major or medium blossom anatomy`);
+    assert.match(heroArtwork, new RegExp(`class="[^"]*pixel-color-center[^"]*" data-pixel-group="${group}"`), `${group}: dark center pixel`);
+    assert.match(heroArtwork, new RegExp(`class="[^"]*pixel-color-light-lavender[^"]*" data-pixel-group="${group}"`), `${group}: light outer petals`);
+  }
+  for (const group of smallerGroups) {
+    assert.ok(groupCellCount(group) >= 3 && groupCellCount(group) <= 12, `${group}: restrained smaller blossom or bud`);
+  }
+
+  for (const variant of ["upper-tear", "lower-fragment", "petal-echo", "data-loss"]) {
     const selected = flowerCells.filter(className => className.includes(`pixel-glitch-${variant}`));
-    assert.ok(selected.length / flowerCells.length >= 0.05, `${variant}: at least 5% of flower pixels move`);
+    assert.ok(selected.length / flowerCells.length >= 0.08, `${variant}: at least 8% of flower pixels fracture`);
     assert.ok(selected.length / flowerCells.length <= 0.15, `${variant}: no more than 15% of flower pixels move`);
-    const detached = selected.filter(className => className.includes("pixel-detach"));
-    assert.ok(detached.length >= 3 && detached.length <= 10, `${variant}: detached cells stay sparse`);
+    const hardFractures = selected.filter(className => className.includes("pixel-fracture-hard"));
+    assert.ok(hardFractures.length >= 4 && hardFractures.length <= 14, `${variant}: hard fractures stay bounded`);
+    assert.equal((heroArtwork.match(new RegExp(`pixel-streak-${variant}`, "g")) ?? []).length, 3, `${variant}: three streaks originate from blossoms`);
   }
 
   assert.match(homepage, /data-glitch-stage="logo"/);
+  assert.match(homepage, /data-glitch-phase="stable"/);
   assert.match(homepage, /data-glitch-active="false"/);
-  assert.match(homepage, /data-blossom-variant="a"/);
+  assert.match(homepage, /data-blossom-variant="upper-tear"/);
+  assert.match(homepage, /data-blossom-debug="false"/);
   assert.match(homepage, /data-glitch-motion="full"/);
   assert.match(homepage, /data-glitch-loop="16000"/);
   assert.match(homepage, /data-glitch-slot="4000"/);
   assert.match(homepage, /class="button primary hero-primary-cta"/);
-  assert.match(homepage, /class="hero-cta-label"/);
+  assert.match(homepage, /class="hero-cta-label" data-text=/);
   assert.match(homepage, /class="hero-cta-arrow"/);
-  assert.match(homepage, /class="hero-glitch-word" data-text=/);
-  assert.match(css, /@keyframes pixel-blossom-shift/);
-  assert.match(css, /@keyframes k3-signature-main/);
-  assert.match(css, /@keyframes cta-label-glitch/);
-  assert.match(css, /@keyframes hero-word-glitch/);
-  assert.match(css, /animation:pixel-blossom-shift .3s/);
-  assert.match(css, /animation:k3-signature-main .22s/);
-  assert.match(css, /animation:cta-label-glitch .26s/);
-  assert.match(css, /animation:hero-word-glitch .24s/);
+  assert.match(homepage, /class="hero-glitch-word hero-glitch-target" data-text="Automation"/);
+  assert.match(homepage, /class="hero-glitch-word hero-glitch-target" data-text="Product"/);
+  assert.match(css, /@keyframes blossom-v2-fracture/);
+  assert.match(css, /@keyframes blossom-v2-tear/);
+  assert.match(css, /@keyframes blossom-v2-ghost/);
+  assert.match(css, /@keyframes blossom-v2-streak/);
+  assert.match(css, /@keyframes blossom-v2-aftershock/);
+  assert.match(css, /@keyframes k3-signal-main/);
+  assert.match(css, /@keyframes k3-signal-slice/);
+  assert.match(css, /@keyframes k3-signal-aftershock/);
+  assert.match(css, /@keyframes cta-transmission-border/);
+  assert.match(css, /@keyframes cta-transmission-scan/);
+  assert.match(css, /@keyframes cta-transmission-arrow/);
+  assert.match(css, /@keyframes hero-type-corruption/);
+  assert.match(css, /@keyframes hero-type-blocks/);
+  assert.match(css, /@keyframes hero-type-aftershock/);
+  assert.match(css, /animation:blossom-v2-fracture .45s/);
+  assert.match(css, /animation:k3-signal-main .24s/);
+  assert.match(css, /animation:cta-transmission-border .32s/);
+  assert.match(css, /animation:hero-type-corruption .28s/);
+  assert.doesNotMatch(css, /pixel-blossom-shift|k3-signature-main|cta-label-glitch|hero-word-glitch/);
   assert.match(css, /prefers-reduced-motion:reduce[^}]*[\s\S]*animation:none!important/);
 });
 

@@ -7,7 +7,7 @@ import { portfolioCopy } from "./portfolio-copy";
 import { usePortfolioLanguage } from "./usePortfolioLanguage";
 import { HeroGarden, SakuraBranch, SectionOrnament } from "./decorative/SakuraGeometry";
 import SiteNav from "./SiteNav";
-import { HERO_GLITCH_LOOP_MS, HERO_GLITCH_SLOT_MS, useHeroGlitch } from "./useHeroGlitch";
+import { DEBUG_BLOSSOM, HERO_GLITCH_LOOP_MS, HERO_GLITCH_SLOT_MS, useHeroGlitch } from "./useHeroGlitch";
 
 const websiteSlugs: WebsitePreviewSlug[] = ["cafe", "restaurant", "law-firm"];
 
@@ -50,10 +50,13 @@ function ClassificationPreview() {
   </div>;
 }
 
-function GlitchWords({ children }: { children: string }) {
-  return <em className="hero-glitch-words">{children.split(/(\s+)/).map((part, index) => /\s+/.test(part)
-    ? part
-    : <span className="hero-glitch-word" data-text={part} key={`${part}-${index}`}>{part}</span>)}</em>;
+function GlitchRole({ children }: { children: string }) {
+  return <>{children.split(/(\s+)/).map((part, index) => {
+    const isTarget = /^(Automation|Product|Builder)$/.test(part);
+    if (!isTarget) return part;
+
+    return <span className="hero-glitch-word hero-glitch-target" data-text={part} key={`${part}-${index}`}>{part}</span>;
+  })}</>;
 }
 
 export default function Home() {
@@ -73,8 +76,10 @@ export default function Home() {
   return <main
     className={language === "my" ? "lang-my" : "lang-en"}
     data-glitch-stage={glitch.stage}
-    data-glitch-active={glitch.bursting ? "true" : "false"}
+    data-glitch-phase={glitch.phase}
+    data-glitch-active={glitch.phase === "stable" ? "false" : "true"}
     data-blossom-variant={glitch.blossomVariant}
+    data-blossom-debug={DEBUG_BLOSSOM ? "true" : "false"}
     data-glitch-motion={glitch.reducedMotion ? "reduced" : "full"}
     data-glitch-loop={HERO_GLITCH_LOOP_MS}
     data-glitch-slot={HERO_GLITCH_SLOT_MS}
@@ -95,10 +100,10 @@ export default function Home() {
       <div className="eyebrow"><span>{t.hero.eyebrow}</span><span>{t.hero.version}</span></div>
       <div className="hero-grid">
         <div className="hero-copy">
-          <h1 className="hero-role">{t.hero.kicker}</h1>
-          <p className="hero-statement">{t.hero.titleLead}<GlitchWords>{t.hero.titleAccent}</GlitchWords></p>
+          <h1 className="hero-role"><GlitchRole>{t.hero.kicker}</GlitchRole></h1>
+          <p className="hero-statement">{t.hero.titleLead}<em>{t.hero.titleAccent}</em></p>
           <p className="hero-intro">{t.hero.body}</p>
-          <div className="actions"><Link className="button primary hero-primary-cta" href="#work"><span className="hero-cta-label">{t.hero.workCta}</span><span className="hero-cta-arrow">↘</span></Link><a className="button ghost" href="/k3-cv.html" download>{t.hero.cvCta} <span>↓</span></a></div>
+          <div className="actions"><Link className="button primary hero-primary-cta" href="#work"><span className="hero-cta-label" data-text={t.hero.workCta}>{t.hero.workCta}</span><span className="hero-cta-arrow">↘</span></Link><a className="button ghost" href="/k3-cv.html" download>{t.hero.cvCta} <span>↓</span></a></div>
         </div>
         <HeroGarden />
       </div>
