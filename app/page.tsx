@@ -7,6 +7,7 @@ import { portfolioCopy } from "./portfolio-copy";
 import { usePortfolioLanguage } from "./usePortfolioLanguage";
 import { HeroGarden, SakuraBranch, SectionOrnament } from "./decorative/SakuraGeometry";
 import SiteNav from "./SiteNav";
+import { HERO_GLITCH_LOOP_MS, HERO_GLITCH_SLOT_MS, useHeroGlitch } from "./useHeroGlitch";
 
 const websiteSlugs: WebsitePreviewSlug[] = ["cafe", "restaurant", "law-firm"];
 
@@ -49,8 +50,15 @@ function ClassificationPreview() {
   </div>;
 }
 
+function GlitchWords({ children }: { children: string }) {
+  return <em className="hero-glitch-words">{children.split(/(\s+)/).map((part, index) => /\s+/.test(part)
+    ? part
+    : <span className="hero-glitch-word" data-text={part} key={`${part}-${index}`}>{part}</span>)}</em>;
+}
+
 export default function Home() {
   const { language, chooseLanguage } = usePortfolioLanguage();
+  const glitch = useHeroGlitch();
   const t = portfolioCopy[language];
   const selectedProjects = t.work.projects.slice(0, 2);
   const websiteExamples = t.demos.items.slice(0, 3);
@@ -62,7 +70,15 @@ export default function Home() {
     { href: "#contact", label: t.nav.contact },
   ];
 
-  return <main className={language === "my" ? "lang-my" : "lang-en"}>
+  return <main
+    className={language === "my" ? "lang-my" : "lang-en"}
+    data-glitch-stage={glitch.stage}
+    data-glitch-active={glitch.bursting ? "true" : "false"}
+    data-blossom-variant={glitch.blossomVariant}
+    data-glitch-motion={glitch.reducedMotion ? "reduced" : "full"}
+    data-glitch-loop={HERO_GLITCH_LOOP_MS}
+    data-glitch-slot={HERO_GLITCH_SLOT_MS}
+  >
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
 
     <SiteNav
@@ -80,9 +96,9 @@ export default function Home() {
       <div className="hero-grid">
         <div className="hero-copy">
           <h1 className="hero-role">{t.hero.kicker}</h1>
-          <p className="hero-statement">{t.hero.titleLead}<em>{t.hero.titleAccent}</em></p>
+          <p className="hero-statement">{t.hero.titleLead}<GlitchWords>{t.hero.titleAccent}</GlitchWords></p>
           <p className="hero-intro">{t.hero.body}</p>
-          <div className="actions"><Link className="button primary" href="#work">{t.hero.workCta} <span>↘</span></Link><a className="button ghost" href="/k3-cv.html" download>{t.hero.cvCta} <span>↓</span></a></div>
+          <div className="actions"><Link className="button primary hero-primary-cta" href="#work"><span className="hero-cta-label">{t.hero.workCta}</span><span className="hero-cta-arrow">↘</span></Link><a className="button ghost" href="/k3-cv.html" download>{t.hero.cvCta} <span>↓</span></a></div>
         </div>
         <HeroGarden />
       </div>

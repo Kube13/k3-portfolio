@@ -68,6 +68,7 @@ test("exports the shared accessible navigation on portfolio entry routes", () =>
 
 test("preserves the focused homepage hierarchy and verified Wisp metrics", () => {
   const homepage = readRoute("index.html");
+  const homepageText = homepage.replace(/<[^>]+>/g, " ");
   const footer = homepage.match(/<footer[\s\S]*?<\/footer>/)?.[0] ?? "";
 
   assert.match(homepage, /id="work"/);
@@ -80,8 +81,8 @@ test("preserves the focused homepage hierarchy and verified Wisp metrics", () =>
   assert.match(homepage, /<strong>69\.3%<\/strong>/);
   assert.match(homepage, /Data Analyst &amp; Automation Engineer · Product Builder/);
   assert.match(homepage, /I turn complex/);
-  assert.match(homepage, /systems that/);
-  assert.match(homepage, /make sense\./);
+  assert.match(homepageText, /systems\s+that/);
+  assert.match(homepageText, /make\s+sense\./);
   assert.match(homepage, /Schema review/);
   assert.match(homepage, /INPUT/);
   assert.match(homepage, /EVALUATE/);
@@ -145,25 +146,27 @@ test("internal links and hash targets resolve in the static export", () => {
 
 test("exports the geometric sakura theme and accessible decorative system", () => {
   const homepage = readRoute("index.html");
+  const heroArtwork = homepage.match(/<svg class="hero-garden-art"[\s\S]*?<\/svg>/)?.[0] ?? "";
   const cssDir = join(outDir.pathname, "_next/static/css");
   const css = readdirSync(cssDir).filter(file => file.endsWith(".css")).map(file => readFileSync(join(cssDir, file), "utf8")).join("\n");
   const ogImage = readFileSync(join(outDir.pathname, "og-image.svg"), "utf8");
 
   assert.match(homepage, /hero-garden/);
-  assert.match(homepage, /Abstract geometric sakura garden with a thin K3 signature/);
+  assert.match(homepage, /Addressable pixel-grid sakura blossom with a stable branch/);
   assert.match(homepage, /viewBox="0 0 640 600"/);
   assert.match(homepage, /class="hero-garden-branch-main"/);
   assert.match(homepage, /class="hero-garden-signature"/);
   assert.match(homepage, /M84 384C132 379 160 360 197 332C237 301 257 263 302 242/);
   assert.match(homepage, /M8 8v74M8 46L42 8M8 46l36 36/);
   assert.match(homepage, /translate\(472 455\) scale\(\.68\)/);
-  assert.match(homepage, /hero-garden-flower hero-garden-flower-major/);
-  assert.match(homepage, /translate\(130 241\) rotate\(-12\) scale\(0\.84\)/);
-  assert.match(homepage, /translate\(288 155\) rotate\(8\) scale\(0\.88\)/);
-  assert.match(homepage, /translate\(460 126\) rotate\(-5\) scale\(0\.84\)/);
-  assert.match(homepage, /hero-garden-flower hero-garden-flower-bud/);
-  assert.match(homepage, /translate\(560 94\) rotate\(14\) scale\(0\.5\)/);
-  assert.doesNotMatch(homepage, /hero-garden-grid|hero-garden-nodes|hero-garden-signature-guide|k3-mark-fill|falling-petals/);
+  assert.match(heroArtwork, /class="pixel-blossom"/);
+  assert.match(heroArtwork, /shape-rendering="crispEdges"/);
+  for (const group of ["flower-1", "flower-2", "flower-3", "flower-4", "flower-5", "bud-1", "bud-2", "loose-pixels"]) {
+    assert.match(heroArtwork, new RegExp(`data-pixel-group="${group}"`));
+  }
+  assert.equal((heroArtwork.match(/class="pixel-blossom-streak /g) ?? []).length, 4);
+  assert.equal((heroArtwork.match(/hero-garden-signature-ghost/g) ?? []).length, 2);
+  assert.doesNotMatch(homepage, /hero-sakura-petal|hero-sakura-core|hero-garden-grid|hero-garden-nodes|hero-garden-signature-guide|k3-mark-fill|falling-petals/);
   assert.match(homepage, /sakura-branch/);
   assert.match(homepage, /aria-hidden="true"/);
   assert.match(css, /#f8f5ff/i);
@@ -181,12 +184,55 @@ test("exports the geometric sakura theme and accessible decorative system", () =
   assert.match(css, /--decorative-soft:/);
   assert.match(css, /--decorative-visible:/);
   assert.match(css, /\.hero-garden-disc\{[^}]*rgba\(183,156,255,.07\)/);
-  assert.match(css, /\.hero-garden-branch path\{[^}]*stroke-width:1\.3px/);
+  assert.match(css, /\.hero-garden-branch path\{[^}]*stroke:rgba\(75,38,125,.24\)/);
   assert.match(css, /\.hero-garden-mountains path\{[^}]*stroke:rgba\(75,38,125,.08\)/);
   assert.match(css, /\.hero-garden-signature path\{[^}]*stroke-width:1\.3px/);
+  assert.match(css, /\.pixel-color-soft-pink\{fill:#d6adc9\}/);
+  assert.match(css, /\.pixel-color-branch\{fill:#211335\}/);
   assert.match(css, /prefers-reduced-motion:reduce/);
   assert.match(ogImage, /#F8F5FF/);
   assert.match(ogImage, /geometric K3 monogram/);
+});
+
+test("exports a controlled addressable-pixel glitch loop", () => {
+  const homepage = readRoute("index.html");
+  const heroArtwork = homepage.match(/<svg class="hero-garden-art"[\s\S]*?<\/svg>/)?.[0] ?? "";
+  const cssDir = join(outDir.pathname, "_next/static/css");
+  const css = readdirSync(cssDir).filter(file => file.endsWith(".css")).map(file => readFileSync(join(cssDir, file), "utf8")).join("\n");
+  const visibleCells = [...heroArtwork.matchAll(/class="([^"]*pixel-blossom-cell[^"]*)"/g)].map(match => match[1]);
+  const flowerCells = visibleCells.filter(className => className.includes("pixel-blossom-flower-cell"));
+  const branchCells = visibleCells.filter(className => className.includes("pixel-blossom-branch-cell"));
+
+  assert.ok(visibleCells.length >= 100 && visibleCells.length <= 400, `${visibleCells.length} visible pixel cells`);
+  assert.ok(flowerCells.length > branchCells.length, "blossoms contain more pixels than the branch");
+  assert.ok(branchCells.every(className => !className.includes("pixel-glitch-")), "branch cells remain stable");
+  for (const variant of ["a", "b", "c", "d"]) {
+    const selected = flowerCells.filter(className => className.includes(`pixel-glitch-${variant}`));
+    assert.ok(selected.length / flowerCells.length >= 0.05, `${variant}: at least 5% of flower pixels move`);
+    assert.ok(selected.length / flowerCells.length <= 0.15, `${variant}: no more than 15% of flower pixels move`);
+    const detached = selected.filter(className => className.includes("pixel-detach"));
+    assert.ok(detached.length >= 3 && detached.length <= 10, `${variant}: detached cells stay sparse`);
+  }
+
+  assert.match(homepage, /data-glitch-stage="logo"/);
+  assert.match(homepage, /data-glitch-active="false"/);
+  assert.match(homepage, /data-blossom-variant="a"/);
+  assert.match(homepage, /data-glitch-motion="full"/);
+  assert.match(homepage, /data-glitch-loop="16000"/);
+  assert.match(homepage, /data-glitch-slot="4000"/);
+  assert.match(homepage, /class="button primary hero-primary-cta"/);
+  assert.match(homepage, /class="hero-cta-label"/);
+  assert.match(homepage, /class="hero-cta-arrow"/);
+  assert.match(homepage, /class="hero-glitch-word" data-text=/);
+  assert.match(css, /@keyframes pixel-blossom-shift/);
+  assert.match(css, /@keyframes k3-signature-main/);
+  assert.match(css, /@keyframes cta-label-glitch/);
+  assert.match(css, /@keyframes hero-word-glitch/);
+  assert.match(css, /animation:pixel-blossom-shift .3s/);
+  assert.match(css, /animation:k3-signature-main .22s/);
+  assert.match(css, /animation:cta-label-glitch .26s/);
+  assert.match(css, /animation:hero-word-glitch .24s/);
+  assert.match(css, /prefers-reduced-motion:reduce[^}]*[\s\S]*animation:none!important/);
 });
 
 test("exports responsive navigation and overflow safeguards without root masking", () => {
