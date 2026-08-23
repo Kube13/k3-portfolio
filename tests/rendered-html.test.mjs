@@ -201,6 +201,14 @@ test("exports recognizable Concept 3 blossoms and five controlled glitch variant
   const visibleCells = [...heroArtwork.matchAll(/class="([^"]*pixel-blossom-cell[^"]*)"/g)].map(match => match[1]);
   const flowerCells = visibleCells.filter(className => className.includes("pixel-blossom-flower-cell"));
   const branchCells = visibleCells.filter(className => className.includes("pixel-blossom-branch-cell"));
+  const stablePixels = [...heroArtwork.matchAll(/<rect class="[^"]*pixel-blossom-cell[^"]*" data-pixel-group="([^"]+)" data-pixel-kind="([^"]+)" x="([^"]+)" y="([^"]+)" width="([^"]+)" height="([^"]+)"/g)].map(match => ({
+    group: match[1],
+    kind: match[2],
+    x: Number(match[3]),
+    y: Number(match[4]),
+    width: Number(match[5]),
+    height: Number(match[6]),
+  }));
 
   assert.ok(visibleCells.length >= 220 && visibleCells.length <= 420, `${visibleCells.length} visible pixel cells`);
   assert.ok(flowerCells.length >= 120 && flowerCells.length <= 170, `${flowerCells.length} blossom pixels preserve the sparse composition`);
@@ -212,13 +220,22 @@ test("exports recognizable Concept 3 blossoms and five controlled glitch variant
   assert.equal(majorGroups.length, 4, "Concept 3 keeps four dominant blossoms");
   assert.equal(smallerGroups.length, 6, "Concept 3 keeps six restrained buds");
   for (const group of majorGroups) {
-    assert.ok(groupCellCount(group) >= 18 && groupCellCount(group) <= 35, `${group}: recognizable major or medium blossom anatomy`);
+    assert.ok(groupCellCount(group) >= 18 && groupCellCount(group) <= 40, `${group}: recognizable major or medium blossom anatomy`);
     assert.match(heroArtwork, new RegExp(`class="[^"]*pixel-color-center[^"]*" data-pixel-group="${group}"`), `${group}: dark center pixel`);
     assert.match(heroArtwork, new RegExp(`class="[^"]*pixel-color-light-lavender[^"]*" data-pixel-group="${group}"`), `${group}: light outer petals`);
   }
   for (const group of smallerGroups) {
     assert.ok(groupCellCount(group) >= 3 && groupCellCount(group) <= 12, `${group}: restrained smaller blossom or bud`);
   }
+
+  const minX = Math.min(...stablePixels.map(pixel => pixel.x));
+  const maxX = Math.max(...stablePixels.map(pixel => pixel.x + pixel.width));
+  const minY = Math.min(...stablePixels.map(pixel => pixel.y));
+  const maxY = Math.max(...stablePixels.map(pixel => pixel.y + pixel.height));
+  const silhouetteRatio = (maxX - minX) / (maxY - minY);
+  assert.ok(silhouetteRatio >= 1.4 && silhouetteRatio <= 1.7, `${silhouetteRatio.toFixed(2)}: low, wide Concept 3 silhouette`);
+  assert.doesNotMatch(heroArtwork, /branch-right-upright/, "the antenna-like right stem is removed");
+  assert.equal(stablePixels.filter(pixel => pixel.kind === "branch" && pixel.x > 520 && pixel.y < 220).length, 0, "no high right-side antenna cells remain");
 
   for (const variant of ["center-flower-tear", "left-flower-fracture", "upper-buds-echo", "right-flower-slice", "multi-petal-reconstruction"]) {
     const selected = flowerCells.filter(className => className.includes(`pixel-glitch-${variant}`));

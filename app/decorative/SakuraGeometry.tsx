@@ -68,29 +68,33 @@ type FlowerDefinition = {
   orientation: PixelOrientation;
 };
 
-const HERO_BRANCH_STEP = 7;
+const HERO_BRANCH_STEP = 8;
+
+const focalFlowerPattern: PixelOffset[] = [
+  { x: -1, y: -4, color: "light-lavender" }, { x: 0, y: -4, color: "light-lavender" }, { x: 1, y: -4, color: "light-lavender" }, { x: -1, y: -3, color: "lavender" }, { x: 0, y: -3, color: "light-lavender" }, { x: 1, y: -3, color: "lavender" }, { x: 0, y: -2, color: "violet" },
+  { x: 3, y: -3, color: "light-lavender" }, { x: 4, y: -3, color: "light-lavender" }, { x: 3, y: -2, color: "lavender" }, { x: 4, y: -2, color: "light-lavender" }, { x: 2, y: -1, color: "violet" }, { x: 3, y: -1, color: "lavender" },
+  { x: 4, y: 0, color: "light-lavender" }, { x: 4, y: 1, color: "light-lavender" }, { x: 4, y: 2, color: "light-lavender" }, { x: 3, y: 1, color: "lavender" }, { x: 3, y: 2, color: "lavender" }, { x: 2, y: 1, color: "violet" },
+  { x: 1, y: 3, color: "light-lavender" }, { x: 0, y: 3, color: "lavender" }, { x: -1, y: 3, color: "light-lavender" }, { x: 0, y: 4, color: "light-lavender" }, { x: 1, y: 4, color: "light-lavender" }, { x: 0, y: 2, color: "violet" },
+  { x: -4, y: -1, color: "light-lavender" }, { x: -4, y: 0, color: "light-lavender" }, { x: -4, y: 1, color: "light-lavender" }, { x: -3, y: 0, color: "lavender" }, { x: -3, y: 1, color: "lavender" }, { x: -2, y: 0, color: "violet" },
+  { x: -1, y: 0, color: "purple" }, { x: 0, y: 0, color: "center" }, { x: 1, y: 0, color: "purple" }, { x: 0, y: -1, color: "purple" }, { x: 0, y: 1, color: "soft-pink" },
+];
 
 const majorFlowerPattern: PixelOffset[] = [
-  { x: 0, y: -5, color: "light-lavender" }, { x: -1, y: -4, color: "light-lavender" }, { x: 1, y: -4, color: "light-lavender" },
-  { x: -1, y: -3, color: "lavender" }, { x: 0, y: -3, color: "violet" }, { x: 1, y: -3, color: "lavender" },
-  { x: 3, y: -3, color: "light-lavender" }, { x: 4, y: -2, color: "light-lavender" }, { x: 3, y: -2, color: "lavender" },
-  { x: 3, y: -1, color: "violet" }, { x: 2, y: -1, color: "lavender" },
-  { x: 4, y: 1, color: "light-lavender" }, { x: 3, y: 1, color: "lavender" }, { x: 3, y: 2, color: "violet" },
-  { x: 2, y: 2, color: "lavender" }, { x: 2, y: 3, color: "light-lavender" }, { x: 1, y: 3, color: "light-lavender" },
-  { x: -1, y: 3, color: "light-lavender" }, { x: -2, y: 3, color: "light-lavender" }, { x: -2, y: 2, color: "lavender" },
-  { x: -3, y: 2, color: "violet" }, { x: -3, y: 1, color: "lavender" }, { x: -4, y: 1, color: "light-lavender" },
-  { x: -4, y: -2, color: "light-lavender" }, { x: -3, y: -3, color: "light-lavender" }, { x: -3, y: -2, color: "lavender" },
-  { x: -3, y: -1, color: "violet" }, { x: -2, y: -1, color: "lavender" },
-  { x: -1, y: 0, color: "purple" }, { x: 0, y: 0, color: "center" }, { x: 1, y: 0, color: "purple" }, { x: 0, y: 1, color: "soft-pink" },
+  { x: -1, y: -4, color: "light-lavender" }, { x: 0, y: -4, color: "light-lavender" }, { x: 1, y: -4, color: "light-lavender" }, { x: -1, y: -3, color: "lavender" }, { x: 0, y: -3, color: "light-lavender" }, { x: 1, y: -3, color: "lavender" }, { x: 0, y: -2, color: "violet" },
+  { x: 3, y: -3, color: "light-lavender" }, { x: 4, y: -3, color: "light-lavender" }, { x: 3, y: -2, color: "lavender" }, { x: 4, y: -2, color: "light-lavender" }, { x: 2, y: -1, color: "violet" }, { x: 3, y: -1, color: "lavender" },
+  { x: 4, y: 0, color: "light-lavender" }, { x: 4, y: 1, color: "light-lavender" }, { x: 4, y: 2, color: "light-lavender" }, { x: 3, y: 1, color: "lavender" }, { x: 3, y: 2, color: "lavender" }, { x: 2, y: 1, color: "violet" },
+  { x: 1, y: 3, color: "light-lavender" }, { x: 0, y: 3, color: "lavender" }, { x: -1, y: 3, color: "light-lavender" }, { x: 0, y: 4, color: "light-lavender" }, { x: 1, y: 4, color: "light-lavender" }, { x: 0, y: 2, color: "violet" },
+  { x: -4, y: -1, color: "light-lavender" }, { x: -4, y: 0, color: "light-lavender" }, { x: -4, y: 1, color: "light-lavender" }, { x: -3, y: 0, color: "lavender" }, { x: -3, y: 1, color: "lavender" }, { x: -2, y: 0, color: "violet" },
+  { x: -1, y: 0, color: "purple" }, { x: 0, y: 0, color: "center" }, { x: 1, y: 0, color: "purple" }, { x: 0, y: -1, color: "purple" }, { x: 0, y: 1, color: "soft-pink" },
 ];
 
 const mediumFlowerPattern: PixelOffset[] = [
-  { x: 0, y: -3, color: "light-lavender" }, { x: -1, y: -2, color: "light-lavender" }, { x: 0, y: -2, color: "lavender" }, { x: 1, y: -2, color: "light-lavender" },
-  { x: 2, y: -2, color: "light-lavender" }, { x: 2, y: -1, color: "lavender" }, { x: 3, y: -1, color: "light-lavender" },
-  { x: 3, y: 1, color: "light-lavender" }, { x: 2, y: 1, color: "lavender" }, { x: 2, y: 2, color: "light-lavender" },
-  { x: -2, y: 2, color: "light-lavender" }, { x: -2, y: 1, color: "lavender" }, { x: -3, y: 1, color: "light-lavender" },
-  { x: -3, y: -1, color: "light-lavender" }, { x: -2, y: -1, color: "lavender" }, { x: -2, y: -2, color: "light-lavender" },
-  { x: -1, y: 0, color: "purple" }, { x: 0, y: 0, color: "center" }, { x: 1, y: 0, color: "purple" },
+  { x: 0, y: -3, color: "light-lavender" }, { x: -1, y: -2, color: "lavender" }, { x: 0, y: -2, color: "light-lavender" }, { x: 1, y: -2, color: "violet" },
+  { x: 2, y: -2, color: "light-lavender" }, { x: 2, y: -1, color: "lavender" }, { x: 3, y: -1, color: "light-lavender" }, { x: 2, y: 0, color: "violet" },
+  { x: 3, y: 1, color: "light-lavender" }, { x: 2, y: 1, color: "lavender" }, { x: 2, y: 2, color: "light-lavender" }, { x: 1, y: 1, color: "violet" },
+  { x: 1, y: 2, color: "light-lavender" }, { x: 0, y: 2, color: "lavender" }, { x: -1, y: 2, color: "light-lavender" }, { x: 0, y: 1, color: "violet" },
+  { x: -3, y: 0, color: "light-lavender" }, { x: -2, y: -1, color: "lavender" }, { x: -2, y: 0, color: "light-lavender" }, { x: -2, y: 1, color: "violet" },
+  { x: -1, y: 0, color: "purple" }, { x: 0, y: 0, color: "center" }, { x: 1, y: 0, color: "purple" }, { x: 0, y: -1, color: "soft-pink" },
 ];
 
 const budPattern: PixelOffset[] = [
@@ -99,29 +103,29 @@ const budPattern: PixelOffset[] = [
 ];
 
 const flowerDefinitions: FlowerDefinition[] = [
-  { x: 164, y: 250, group: "flower-left", kind: "primary", pattern: majorFlowerPattern, cellSize: 7.5, orientation: 270 },
-  { x: 232, y: 176, group: "flower-upper-left", kind: "primary", pattern: mediumFlowerPattern, cellSize: 6.5, orientation: 90 },
-  { x: 420, y: 236, group: "flower-center", kind: "primary", pattern: majorFlowerPattern, cellSize: 9, orientation: 0 },
-  { x: 505, y: 286, group: "flower-right", kind: "primary", pattern: majorFlowerPattern, cellSize: 7.5, orientation: 90 },
-  { x: 286, y: 145, group: "bud-top", kind: "bud", pattern: budPattern, cellSize: 6, orientation: 0 },
-  { x: 272, y: 174, group: "bud-upper-left", kind: "bud", pattern: budPattern, cellSize: 5.5, orientation: 90 },
-  { x: 210, y: 320, group: "bud-left-low", kind: "bud", pattern: budPattern, cellSize: 5.5, orientation: 180 },
-  { x: 330, y: 350, group: "bud-center-low", kind: "bud", pattern: budPattern, cellSize: 5.5, orientation: 270 },
-  { x: 550, y: 174, group: "bud-right-top", kind: "bud", pattern: budPattern, cellSize: 6, orientation: 0 },
-  { x: 584, y: 228, group: "bud-right-mid", kind: "bud", pattern: budPattern, cellSize: 5.5, orientation: 90 },
+  { x: 150, y: 282, group: "flower-left", kind: "primary", pattern: majorFlowerPattern, cellSize: 9.5, orientation: 270 },
+  { x: 250, y: 188, group: "flower-upper-left", kind: "primary", pattern: mediumFlowerPattern, cellSize: 8.5, orientation: 90 },
+  { x: 392, y: 258, group: "flower-center", kind: "primary", pattern: focalFlowerPattern, cellSize: 11, orientation: 0 },
+  { x: 485, y: 306, group: "flower-right", kind: "primary", pattern: majorFlowerPattern, cellSize: 9, orientation: 90 },
+  { x: 286, y: 158, group: "bud-top", kind: "bud", pattern: budPattern, cellSize: 6.5, orientation: 0 },
+  { x: 276, y: 185, group: "bud-upper-left", kind: "bud", pattern: budPattern, cellSize: 6, orientation: 90 },
+  { x: 195, y: 334, group: "bud-left-low", kind: "bud", pattern: budPattern, cellSize: 6, orientation: 180 },
+  { x: 337, y: 354, group: "bud-center-low", kind: "bud", pattern: budPattern, cellSize: 6, orientation: 270 },
+  { x: 536, y: 272, group: "bud-right-top", kind: "bud", pattern: budPattern, cellSize: 6.5, orientation: 0 },
+  { x: 565, y: 279, group: "bud-right-mid", kind: "bud", pattern: budPattern, cellSize: 6, orientation: 90 },
 ];
 
 const branchRoutes = [
-  { group: "branch-main", tapered: true, points: [[558, 440], [552, 412], [540, 384], [525, 356], [505, 335], [482, 318], [455, 304], [425, 292], [390, 299], [355, 315], [320, 307], [285, 288], [250, 274], [220, 268], [185, 260], [164, 250]] },
-  { group: "branch-center", points: [[390, 299], [402, 272], [420, 236]] },
-  { group: "branch-upper-left", points: [[355, 315], [328, 290], [302, 260], [278, 232], [255, 205], [232, 176]] },
-  { group: "branch-top-bud", points: [[278, 232], [278, 202], [283, 172], [286, 145]] },
-  { group: "branch-upper-left-bud", points: [[255, 205], [265, 190], [272, 174]] },
-  { group: "branch-left-low", points: [[220, 268], [216, 292], [210, 320]] },
-  { group: "branch-center-low", points: [[355, 315], [344, 335], [330, 350]] },
-  { group: "branch-right-flower", points: [[482, 318], [494, 301], [505, 286]] },
-  { group: "branch-right-upright", points: [[525, 356], [538, 320], [546, 280], [548, 228], [550, 174]] },
-  { group: "branch-right-mid", points: [[546, 280], [563, 252], [584, 228]] },
+  { group: "branch-main", tapered: true, points: [[572, 422], [568, 402], [557, 382], [543, 364], [526, 348], [506, 333], [485, 318], [462, 305], [438, 292], [414, 282], [390, 282], [365, 291], [340, 307], [315, 319], [291, 307], [268, 294], [244, 281], [220, 273], [191, 275], [167, 279], [150, 282]] },
+  { group: "branch-center", points: [[390, 282], [390, 270], [392, 258]] },
+  { group: "branch-upper-left", points: [[315, 319], [294, 292], [276, 264], [263, 236], [250, 210], [250, 188]] },
+  { group: "branch-top-bud", points: [[263, 236], [271, 210], [280, 184], [286, 158]] },
+  { group: "branch-upper-left-bud", points: [[263, 236], [270, 210], [276, 185]] },
+  { group: "branch-left-low", points: [[220, 273], [211, 303], [195, 334]] },
+  { group: "branch-center-low", points: [[340, 307], [337, 332], [337, 354]] },
+  { group: "branch-right-flower", points: [[485, 318], [485, 306]] },
+  { group: "branch-right-top", points: [[506, 333], [518, 315], [528, 294], [536, 272]] },
+  { group: "branch-right-mid", points: [[530, 282], [548, 279], [565, 279]] },
 ] as const;
 
 function createBranchPixels() {
@@ -151,8 +155,8 @@ function createBranchPixels() {
         });
 
         addCell(x, y, "branch");
-        if ("tapered" in route && route.tapered && progress < .58) addCell(x - HERO_BRANCH_STEP, y + HERO_BRANCH_STEP, "branch-muted");
-        if ("tapered" in route && route.tapered && progress < .18) addCell(x - HERO_BRANCH_STEP * 2, y + HERO_BRANCH_STEP * 2, "branch-muted");
+        if ("tapered" in route && route.tapered && progress < .42) addCell(x - HERO_BRANCH_STEP, y + HERO_BRANCH_STEP, "branch-muted");
+        if ("tapered" in route && route.tapered && progress < .17) addCell(x - HERO_BRANCH_STEP * 2, y + HERO_BRANCH_STEP * 2, "branch-muted");
       }
     }
   }
@@ -233,7 +237,7 @@ const blossomStreaks = [
   { x: 478, y: 274, width: 60, height: 5, color: "light-lavender", variant: "right-flower-slice", origin: "flower-right" },
   { x: 488, y: 294, width: 66, height: 5, color: "lavender", variant: "right-flower-slice", origin: "flower-right" },
   { x: 404, y: 244, width: 52, height: 4, color: "violet", variant: "right-flower-slice", origin: "flower-center" },
-  { x: 570, y: 226, width: 40, height: 4, color: "soft-pink", variant: "right-flower-slice", origin: "bud-right-mid" },
+  { x: 550, y: 278, width: 40, height: 4, color: "soft-pink", variant: "right-flower-slice", origin: "bud-right-mid" },
   { x: 142, y: 248, width: 50, height: 4, color: "violet", variant: "multi-petal-reconstruction", origin: "flower-left" },
   { x: 392, y: 224, width: 68, height: 5, color: "light-lavender", variant: "multi-petal-reconstruction", origin: "flower-center" },
   { x: 486, y: 286, width: 58, height: 5, color: "lavender", variant: "multi-petal-reconstruction", origin: "flower-right" },

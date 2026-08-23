@@ -1,63 +1,69 @@
-# Concept 3 Hero Blossom — Design QA
+# Surgical Concept 3 Blossom Correction — Design QA
 
 **Source visual truth**
 
 - Path: `/mnt/c/Users/Helios Neo 16/Downloads/k3_portfolio_blossom_concept_3.png`
 - Source pixels: 768 × 512 at 1× density.
-- Intended use: branch silhouette, four-blossom hierarchy, bud placement, negative space, stepped pixel density, asymmetry, and right-heavy visual weight. The reference label and dark background are explicitly excluded by the implementation brief.
+- Intended use: the low, sweeping branch silhouette; recognizable blossom mass; four-level flower hierarchy; restrained buds; open negative space; and heavier lower-right trunk. The reference label and dark presentation background are excluded by the correction brief.
 
 **Rendered implementation evidence**
 
-- Full desktop screenshot: `/tmp/k3-concept3-1440.png`
-- Focused hero-art screenshot: `/tmp/k3-concept3-art.png`
-- Combined source/implementation comparison: `/tmp/k3-concept3-comparison.png`
-- Mobile screenshot: `/tmp/k3-concept3-375.png`
-- Tablet screenshot: `/tmp/k3-concept3-768.png`
-- Desktop viewport: 1440 × 1100 CSS px at device scale factor 1; screenshot pixels: 1440 × 1100.
-- Focused implementation region: 592 × 555 CSS px at device scale factor 1; screenshot pixels: 592 × 555.
-- Mobile viewport: 375 × 1000 CSS px at device scale factor 1; screenshot pixels: 375 × 1000.
-- Tablet viewport: 768 × 1000 CSS px at device scale factor 1; screenshot pixels: 768 × 1000.
-- State: English homepage, stable blossom, `prefers-reduced-motion: reduce` for the static comparison.
-- Density normalization: the source was proportionally resized and centered on a 592 × 555 comparison canvas; the implementation was captured at 1:1 CSS-to-device pixels. Background and label differences were ignored because the brief explicitly excludes them.
+- Static desktop screenshot: `/tmp/k3-surgical-static-1440.png`
+- Focused hero-art screenshot: `/tmp/k3-surgical-static-art.png`
+- Final combined source/implementation comparison: `/tmp/k3-surgical-comparison-final.png`
+- Focused source crop: `/tmp/k3-surgical-reference-focus.png`
+- Focused implementation crop: `/tmp/k3-surgical-implementation-focus-final.png`
+- Responsive captures: `/tmp/k3-surgical-final-375.png`, `/tmp/k3-surgical-final-768.png`, `/tmp/k3-surgical-final-1024.png`, and `/tmp/k3-surgical-final-1440.png`
+- Responsive comparison sheet: `/tmp/k3-surgical-responsive-montage.png`
+- Desktop viewport: 1440 × 1000 CSS px at device scale factor 1; screenshot pixels: 1440 × 1000.
+- Focused hero-art region: 592 × 600 CSS px at device scale factor 1; screenshot pixels: 592 × 600.
+- Responsive hero captures: 345 × 1106, 738 × 1173, 976 × 897, and 1180 × 903 px at device scale factor 1.
+- State: English homepage. The source comparison locked the blossom in its stable debug state; the final browser pass restored normal glitch operation and separately verified reduced motion.
+- Density normalization: the source and implementation blossom regions were cropped to their visible artwork bounds and proportionally resized to a common 570 × 320 comparison slot. Background, circle, mountains, wind lines, and K3 signature were not used to judge the source blossom silhouette.
 
 **Findings**
 
 - No actionable P0, P1, or P2 mismatches remain.
-- Fonts and typography: hero type, weights, line height, wrapping, and copy are unchanged from the existing portfolio as required. Text remains readable and separate from the artwork at all tested widths.
-- Spacing and layout rhythm: the branch keeps the reference's low left-to-right sweep, open negative space, and heavier lower-right trunk. It scales proportionally without rearranging flowers or overlapping essential hero content.
-- Colors and visual tokens: the five lavender/violet flower tones and dark plum branch stay within the existing K3 palette. The reference's dark presentation background was intentionally not copied.
-- Image quality and asset fidelity: the implementation uses crisp, individually addressable pixel rectangles as explicitly required by the brief. Four unequal primary blossoms and six attached buds are visible; no raster reference image, smooth petal vector, cube cluster, or particle substitute is used.
-- Copy and content: hero copy, CTA copy, navigation, and all other page content remain unchanged.
-- Accessibility and behavior: reduced motion shows the stable coordinate map. At 375, 768, 1024, and 1440 px, document and body widths exactly equal the viewport. The mobile menu opens with Space, closes with Escape, and returns focus to its trigger. No browser console errors were recorded.
-- Animation restoration: all 355 addressable cells returned to their exact initial bounds, computed transform, and opacity after the strongest blossom burst; zero cell differences remained.
+- Fonts and typography: hero copy, family, weight, scale, line height, tracking, wrapping, and antialiasing are unchanged, as required by the surgical scope.
+- Spacing and layout rhythm: hero spacing and illustration slot are unchanged. The corrected artwork measures 1.61:1, sits slightly below the illustration center, retains open negative space, and fits without copy, CTA, K3, or viewport collisions.
+- Colors and visual tokens: the pale lavender, lavender, violet, deep purple, and plum values remain the existing K3 tokens. The reference's dark presentation background was intentionally not copied.
+- Image quality and asset fidelity: the deliberate addressable-pixel coordinate map now has 162 flower/bud cells and 152 branch cells. Four primary groups (36 / 24 / 36 / 36 cells) form recognizable lobed blossoms; six five-cell buds stay secondary. Crisp edges, dark centers, connected twigs, and a heavier stepped lower-right trunk match the reference character without using the reference PNG at runtime.
+- Copy and content: navigation, labels, headline, body, CTA copy, and all non-blossom page content remain unchanged.
+- Accessibility and behavior: the decorative hero role/label remains intact. At 375, 768, 1024, and 1440 px, document and body widths equal the viewport, no nested scroll containers are present, and the 44 × 44 mobile menu opens, closes with Escape, and returns focus. The bilingual switch round-trip passes.
+- Motion: reduced motion keeps the stable flower. With normal motion, 31 flower cells visibly changed during the sampled blossom burst, zero branch cells moved, and all 314 cells returned with a maximum 0 px bounds delta. No browser console errors were recorded.
 
 **Full-view comparison evidence**
 
-- The combined comparison shows the same defining composition: sparse connected branch, four distinct lavender blossoms, small buds, large empty areas, and a dark stepped trunk weighted toward the lower right.
-- Existing supporting garden geometry—the pale circle, mountains, wind lines, and thin K3 signature—remains intentionally visible because the task only replaces the blossom artwork.
+- The final desktop capture preserves the supplied current hero's composition and supporting geometry while replacing only the malformed blossom coordinate map.
+- The artwork reads wider than tall, with the focal flower near center, a medium left flower, a medium right flower, a smaller upper-left blossom, restrained buds, and strong lower-right trunk weight.
+- The former high right-side antenna is gone: the final map contains zero branch cells with `x > 520` and `y < 220`.
 
 **Focused-region comparison evidence**
 
-- A focused region was required because blossom anatomy and stepped branch cells are too small to judge reliably in the full homepage capture.
-- The focused capture confirms recognizable petal lobes with dark centers, varied flower sizes, connected twigs, sparse buds, crisp edges, and no anti-aliased or cube-like substitution.
+- A focused comparison was required because individual petals and branch steps are too small to judge reliably in the full-page view.
+- `/tmp/k3-surgical-comparison-final.png` places the source crop and implementation crop in one comparison input. It confirms the same low, airy, asymmetrical flowering-branch character, denser five-lobed main blossoms, short supporting twigs, and preserved negative space.
+- The implementation intentionally retains the existing light K3 palette and clean crisp rectangles rather than copying the source's glow, dark background, or label.
 
 **Comparison history**
 
-1. Static full-view and focused comparison: no P0/P1/P2 mismatch found. The Concept 3 silhouette, hierarchy, and negative space were preserved.
-2. Responsive normalization: an initial command-line mobile capture used Chrome's minimum window width and produced an invalid crop. It was discarded rather than treated as a design finding. An exact 375 px DevTools viewport then confirmed a 375 px document/body width, correct menu breakpoint, and proportional artwork.
-3. Animation restoration: the first repeated harness run collided with an existing page timer and was discarded as invalid evidence. Fresh-load isolation produced exact restoration with 0 of 355 cells differing and no console errors.
+1. `/tmp/k3-surgical-comparison-1.png` — P1: the first deliberate map achieved the correct 1.58:1 sweep and removed the old antenna group, but the primary flowers still had insufficient visible mass and the right supporting twig remained too upright. Fix: compacted petal coordinates, enlarged the three main blossoms, and shortened the right twig to a small diagonal support.
+2. `/tmp/k3-surgical-comparison-2.png` — P2: the focal flower became dominant, but compacting the pixels made the blossoms read too much like crosses rather than Concept 3 petals. Fix: rebuilt the focal and major patterns as five distinct lobes around dark centers and enlarged the smaller upper-left primary blossom.
+3. `/tmp/k3-surgical-comparison-3.png` — P2: the lobe structure was correct, but the outer petal masses were still lighter than the source at normal page scale. Fix: added one pale outer cell to each lobe on the three larger flowers while keeping the bud and branch density unchanged.
+4. `/tmp/k3-surgical-comparison-final.png` — pass: no actionable P0/P1/P2 difference remains within the explicit constraints to preserve the existing light palette, hero layout, background geometry, and K3 mark.
 
 **Implementation Checklist**
 
-- [x] Replace the old blossom coordinate map instead of patching it.
-- [x] Preserve four dominant flowers, sparse buds, asymmetry, and negative space.
-- [x] Keep the branch connected and heavier toward the lower right.
-- [x] Provide five controlled, localized blossom glitch variants.
-- [x] Keep K3, CTA, and hero-word glitch identities distinct.
-- [x] Preserve the 16-second, four-slot master sequence.
-- [x] Restore every animated cell exactly after each burst.
-- [x] Preserve reduced motion and responsive usability.
-- [x] Verify production export, rendered HTML, keyboard behavior, overflow, and console output.
+- [x] Preserve the previous implementation in git at commit `8d9f50e` before editing.
+- [x] Lock animation while correcting the static blossom.
+- [x] Replace the malformed coordinates with a deliberate fixed map.
+- [x] Keep four recognizable primary blossoms and six secondary buds.
+- [x] Remove the high antenna-like right branch.
+- [x] Keep every major flower visually connected.
+- [x] Weight the main trunk toward the lower right.
+- [x] Preserve the K3 signature, circle, wind lines, mountains, hero type, copy, buttons, spacing, and routes.
+- [x] Restore the existing five-variant glitch architecture without cumulative drift.
+- [x] Verify 375, 768, 1024, and 1440 px layouts, reduced motion, menu keyboard behavior, language switching, overflow, and console output.
+- [x] Pass production export, rendered-HTML tests, and lint.
 
 **Follow-up Polish**
 
