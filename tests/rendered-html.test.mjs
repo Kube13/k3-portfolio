@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
 import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import test from "node:test";
@@ -152,20 +153,19 @@ test("exports the geometric sakura theme and accessible decorative system", () =
   const ogImage = readFileSync(join(outDir.pathname, "og-image.svg"), "utf8");
 
   assert.match(homepage, /hero-garden/);
-  assert.match(homepage, /Sparse Concept 3 pixel-art sakura branch with four varied blossoms/);
+  assert.match(homepage, /Exact Concept 3 pixel-art sakura branch with four blossoms/);
   assert.match(homepage, /viewBox="0 0 640 600"/);
   assert.match(homepage, /class="hero-garden-signature hero-garden-signature-main"/);
   assert.match(homepage, /M8 8v74M8 46L42 8M8 46l36 36/);
   assert.match(homepage, /translate\(492 470\) scale\(\.62\)/);
-  assert.match(heroArtwork, /class="pixel-blossom"/);
-  assert.match(heroArtwork, /shape-rendering="crispEdges"/);
-  for (const group of ["flower-left", "flower-upper-left", "flower-center", "flower-right", "bud-top", "bud-upper-left", "bud-left-low", "bud-center-low", "bud-right-top", "bud-right-mid"]) {
-    assert.match(heroArtwork, new RegExp(`data-pixel-group="${group}"`));
-  }
-  assert.doesNotMatch(heroArtwork, /loose-pixels/);
-  assert.equal((heroArtwork.match(/class="pixel-blossom-streak /g) ?? []).length, 20);
+  assert.match(heroArtwork, /class="concept3-blossom"/);
+  assert.match(heroArtwork, /data-blossom-source="\/k3_concept3_blossom_transparent\.png"/);
+  assert.match(heroArtwork, /transform="translate\(53 156\) scale\(\.98\)"/);
+  assert.equal((heroArtwork.match(/href="\/k3_concept3_blossom_transparent\.png"/g) ?? []).length, 7);
+  assert.equal((heroArtwork.match(/class="concept3-blossom-image concept3-blossom-base"/g) ?? []).length, 1);
+  assert.equal((heroArtwork.match(/class="concept3-blossom-image concept3-blossom-glitch/g) ?? []).length, 6);
   assert.equal((heroArtwork.match(/hero-garden-signature-ghost/g) ?? []).length, 3);
-  assert.doesNotMatch(homepage, /hero-sakura-petal|hero-sakura-core|hero-garden-grid|hero-garden-nodes|hero-garden-branch|hero-garden-signature-guide|k3-mark-fill|falling-petals|k3_portfolio_blossom_concept_3\.png/);
+  assert.doesNotMatch(homepage, /hero-sakura-petal|hero-sakura-core|hero-garden-grid|hero-garden-nodes|hero-garden-branch|hero-garden-signature-guide|k3-mark-fill|falling-petals|pixel-blossom|data-pixel-group/);
   assert.match(homepage, /sakura-branch/);
   assert.match(homepage, /aria-hidden="true"/);
   assert.match(css, /#f8f5ff/i);
@@ -185,66 +185,37 @@ test("exports the geometric sakura theme and accessible decorative system", () =
   assert.match(css, /\.hero-garden-disc\{[^}]*rgba\(183,156,255,.07\)/);
   assert.match(css, /\.hero-garden-mountains path\{[^}]*stroke:rgba\(75,38,125,.08\)/);
   assert.match(css, /\.hero-garden-signature path\{[^}]*stroke-width:1\.3px/);
-  assert.match(css, /\.pixel-color-soft-pink\{fill:#d6adc9\}/);
-  assert.match(css, /\.pixel-color-branch\{fill:#211335\}/);
-  assert.match(css, /\.pixel-color-branch-muted\{fill:#413153\}/);
+  assert.match(css, /\.concept3-blossom-image\{[^}]*image-rendering:pixelated/);
+  assert.match(css, /\.concept3-blossom-base\{opacity:1\}/);
+  assert.match(css, /\.concept3-blossom-glitch\{opacity:0\}/);
   assert.match(css, /prefers-reduced-motion:reduce/);
   assert.match(ogImage, /#F8F5FF/);
   assert.match(ogImage, /geometric K3 monogram/);
 });
 
-test("exports recognizable Concept 3 blossoms and five controlled glitch variants", () => {
+test("exports the exact Concept 3 PNG with temporary controlled glitch layers", () => {
   const homepage = readRoute("index.html");
   const heroArtwork = homepage.match(/<svg class="hero-garden-art"[\s\S]*?<\/svg>/)?.[0] ?? "";
   const cssDir = join(outDir.pathname, "_next/static/css");
   const css = readdirSync(cssDir).filter(file => file.endsWith(".css")).map(file => readFileSync(join(cssDir, file), "utf8")).join("\n");
-  const visibleCells = [...heroArtwork.matchAll(/class="([^"]*pixel-blossom-cell[^"]*)"/g)].map(match => match[1]);
-  const flowerCells = visibleCells.filter(className => className.includes("pixel-blossom-flower-cell"));
-  const branchCells = visibleCells.filter(className => className.includes("pixel-blossom-branch-cell"));
-  const stablePixels = [...heroArtwork.matchAll(/<rect class="[^"]*pixel-blossom-cell[^"]*" data-pixel-group="([^"]+)" data-pixel-kind="([^"]+)" x="([^"]+)" y="([^"]+)" width="([^"]+)" height="([^"]+)"/g)].map(match => ({
-    group: match[1],
-    kind: match[2],
-    x: Number(match[3]),
-    y: Number(match[4]),
-    width: Number(match[5]),
-    height: Number(match[6]),
-  }));
+  const asset = readFileSync(join(outDir.pathname, "k3_concept3_blossom_transparent.png"));
+  const assetHash = createHash("sha256").update(asset).digest("hex");
+  const assetImages = [...heroArtwork.matchAll(/<image[^>]+href="\/k3_concept3_blossom_transparent\.png"[^>]*>/g)].map(match => match[0]);
 
-  assert.ok(visibleCells.length >= 220 && visibleCells.length <= 420, `${visibleCells.length} visible pixel cells`);
-  assert.ok(flowerCells.length >= 120 && flowerCells.length <= 170, `${flowerCells.length} blossom pixels preserve the sparse composition`);
-  assert.ok(branchCells.every(className => !className.includes("pixel-glitch-")), "branch cells remain stable");
-  const majorGroups = ["flower-left", "flower-upper-left", "flower-center", "flower-right"];
-  const smallerGroups = ["bud-top", "bud-upper-left", "bud-left-low", "bud-center-low", "bud-right-top", "bud-right-mid"];
-  const groupCellCount = group => (heroArtwork.match(new RegExp(`data-pixel-group="${group}"`, "g")) ?? []).length;
-
-  assert.equal(majorGroups.length, 4, "Concept 3 keeps four dominant blossoms");
-  assert.equal(smallerGroups.length, 6, "Concept 3 keeps six restrained buds");
-  for (const group of majorGroups) {
-    assert.ok(groupCellCount(group) >= 18 && groupCellCount(group) <= 40, `${group}: recognizable major or medium blossom anatomy`);
-    assert.match(heroArtwork, new RegExp(`class="[^"]*pixel-color-center[^"]*" data-pixel-group="${group}"`), `${group}: dark center pixel`);
-    assert.match(heroArtwork, new RegExp(`class="[^"]*pixel-color-light-lavender[^"]*" data-pixel-group="${group}"`), `${group}: light outer petals`);
+  assert.equal(assetHash, "804f3f01bd537a5b3069544a059637c5c35d0c69c8d32529ec7f0a1c7673c43c", "the exported file is byte-identical to the supplied PNG");
+  assert.equal(asset.readUInt32BE(16), 534, "asset width remains 534px");
+  assert.equal(asset.readUInt32BE(20), 283, "asset height remains 283px");
+  assert.equal(asset[25], 6, "asset remains an RGBA PNG");
+  assert.equal(assetImages.length, 7, "one untouched base plus six temporary duplicate layers");
+  for (const image of assetImages) {
+    assert.match(image, /width="534"/);
+    assert.match(image, /height="283"/);
+    assert.match(image, /preserveAspectRatio="xMidYMid meet"/);
   }
-  for (const group of smallerGroups) {
-    assert.ok(groupCellCount(group) >= 3 && groupCellCount(group) <= 12, `${group}: restrained smaller blossom or bud`);
+  for (const layer of ["base", "lavender-ghost", "horizontal-tear-a", "horizontal-tear-b", "data-streak-a", "data-streak-b", "data-streak-c"]) {
+    assert.match(heroArtwork, new RegExp(`data-blossom-layer="${layer}"`));
   }
-
-  const minX = Math.min(...stablePixels.map(pixel => pixel.x));
-  const maxX = Math.max(...stablePixels.map(pixel => pixel.x + pixel.width));
-  const minY = Math.min(...stablePixels.map(pixel => pixel.y));
-  const maxY = Math.max(...stablePixels.map(pixel => pixel.y + pixel.height));
-  const silhouetteRatio = (maxX - minX) / (maxY - minY);
-  assert.ok(silhouetteRatio >= 1.4 && silhouetteRatio <= 1.7, `${silhouetteRatio.toFixed(2)}: low, wide Concept 3 silhouette`);
-  assert.doesNotMatch(heroArtwork, /branch-right-upright/, "the antenna-like right stem is removed");
-  assert.equal(stablePixels.filter(pixel => pixel.kind === "branch" && pixel.x > 520 && pixel.y < 220).length, 0, "no high right-side antenna cells remain");
-
-  for (const variant of ["center-flower-tear", "left-flower-fracture", "upper-buds-echo", "right-flower-slice", "multi-petal-reconstruction"]) {
-    const selected = flowerCells.filter(className => className.includes(`pixel-glitch-${variant}`));
-    assert.ok(selected.length / flowerCells.length >= 0.10, `${variant}: at least 10% of flower pixels fracture`);
-    assert.ok(selected.length / flowerCells.length <= 0.18, `${variant}: no more than 18% of flower pixels move`);
-    const detached = flowerCells.filter(className => className.includes(`pixel-detached-${variant}`));
-    assert.ok(detached.length >= 4 && detached.length <= 10, `${variant}: four to ten petal cells detach`);
-    assert.equal((heroArtwork.match(new RegExp(`pixel-streak-${variant}`, "g")) ?? []).length, 4, `${variant}: four localized streaks originate from the artwork`);
-  }
+  assert.doesNotMatch(heroArtwork, /pixel-blossom|data-pixel-group|data-pixel-kind/);
 
   assert.match(homepage, /data-glitch-stage="logo"/);
   assert.match(homepage, /data-glitch-phase="stable"/);
@@ -259,12 +230,11 @@ test("exports recognizable Concept 3 blossoms and five controlled glitch variant
   assert.match(homepage, /class="hero-cta-arrow"/);
   assert.match(homepage, /class="hero-glitch-word hero-glitch-target" data-text="Automation"/);
   assert.match(homepage, /class="hero-glitch-word hero-glitch-target" data-text="Product"/);
-  assert.match(css, /@keyframes concept3-blossom-fracture/);
-  assert.match(css, /@keyframes concept3-blossom-tear/);
-  assert.match(css, /@keyframes concept3-blossom-detached/);
-  assert.match(css, /@keyframes concept3-blossom-ghost/);
-  assert.match(css, /@keyframes concept3-blossom-streak/);
-  assert.match(css, /@keyframes concept3-blossom-aftershock/);
+  assert.match(css, /@keyframes concept3-asset-tear-a/);
+  assert.match(css, /@keyframes concept3-asset-tear-b/);
+  assert.match(css, /@keyframes concept3-asset-ghost/);
+  assert.match(css, /@keyframes concept3-asset-streak/);
+  assert.match(css, /@keyframes concept3-asset-aftershock/);
   assert.match(css, /@keyframes k3-signal-main/);
   assert.match(css, /@keyframes k3-signal-slice/);
   assert.match(css, /@keyframes k3-signal-aftershock/);
@@ -274,12 +244,14 @@ test("exports recognizable Concept 3 blossoms and five controlled glitch variant
   assert.match(css, /@keyframes hero-type-corruption/);
   assert.match(css, /@keyframes hero-type-blocks/);
   assert.match(css, /@keyframes hero-type-aftershock/);
-  assert.match(css, /animation:concept3-blossom-fracture .46s/);
+  assert.match(css, /animation:concept3-asset-tear-a .45s/);
+  assert.match(css, /animation:concept3-asset-ghost .45s/);
   assert.match(css, /animation:k3-signal-main .24s/);
   assert.match(css, /animation:cta-transmission-border .32s/);
   assert.match(css, /animation:hero-type-corruption .28s/);
-  assert.doesNotMatch(css, /blossom-v2|pixel-blossom-shift|k3-signature-main|cta-label-glitch|hero-word-glitch/);
+  assert.doesNotMatch(css, /concept3-blossom-fracture|concept3-blossom-detached|pixel-blossom|blossom-v2|k3-signature-main|cta-label-glitch|hero-word-glitch/);
   assert.match(css, /prefers-reduced-motion:reduce[^}]*[\s\S]*animation:none!important/);
+  assert.match(css, /prefers-reduced-motion:reduce[^}]*[\s\S]*\.concept3-blossom-glitch[^}]*opacity:0!important/);
 });
 
 test("exports responsive navigation and overflow safeguards without root masking", () => {
