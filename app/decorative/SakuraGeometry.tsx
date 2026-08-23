@@ -40,11 +40,11 @@ export function SakuraBranch({ className = "" }: DecorativeProps) {
   </svg>;
 }
 
-type PixelColor = "light-lavender" | "lavender" | "violet" | "purple" | "soft-pink" | "center" | "branch";
-type PixelGlitchVariant = "upper-tear" | "lower-fragment" | "petal-echo" | "data-loss";
+type PixelColor = "light-lavender" | "lavender" | "violet" | "purple" | "soft-pink" | "center" | "branch" | "branch-muted";
+type PixelGlitchVariant = "center-flower-tear" | "left-flower-fracture" | "upper-buds-echo" | "right-flower-slice" | "multi-petal-reconstruction";
 type PixelOffset = { x: number; y: number; color: PixelColor };
 type PixelOrientation = 0 | 90 | 180 | 270;
-type BlossomKind = "large" | "medium" | "small" | "bud";
+type BlossomKind = "primary" | "bud" | "branch";
 type BlossomPixel = {
   x: number;
   y: number;
@@ -52,9 +52,10 @@ type BlossomPixel = {
   height: number;
   color: PixelColor;
   group: string;
-  glitchVariant?: PixelGlitchVariant;
+  kind: BlossomKind;
+  glitchVariants: PixelGlitchVariant[];
   tearVariants: PixelGlitchVariant[];
-  hardFracture?: boolean;
+  detachedVariants: PixelGlitchVariant[];
 };
 
 type FlowerDefinition = {
@@ -67,7 +68,7 @@ type FlowerDefinition = {
   orientation: PixelOrientation;
 };
 
-const HERO_BRANCH_STEP = 6;
+const HERO_BRANCH_STEP = 7;
 
 const majorFlowerPattern: PixelOffset[] = [
   { x: 0, y: -5, color: "light-lavender" }, { x: -1, y: -4, color: "light-lavender" }, { x: 1, y: -4, color: "light-lavender" },
@@ -92,65 +93,66 @@ const mediumFlowerPattern: PixelOffset[] = [
   { x: -1, y: 0, color: "purple" }, { x: 0, y: 0, color: "center" }, { x: 1, y: 0, color: "purple" },
 ];
 
-const sideFlowerPattern: PixelOffset[] = [
-  { x: -2, y: -2, color: "light-lavender" }, { x: -1, y: -3, color: "light-lavender" }, { x: 0, y: -2, color: "lavender" },
-  { x: 1, y: -3, color: "light-lavender" }, { x: 2, y: -2, color: "light-lavender" },
-  { x: -3, y: -1, color: "light-lavender" }, { x: -2, y: -1, color: "lavender" }, { x: -1, y: -1, color: "violet" },
-  { x: 0, y: -1, color: "soft-pink" }, { x: 1, y: -1, color: "violet" }, { x: 2, y: -1, color: "lavender" }, { x: 3, y: -1, color: "light-lavender" },
-  { x: 0, y: 0, color: "center" }, { x: 1, y: 0, color: "purple" }, { x: 1, y: 1, color: "lavender" },
-];
-
-const smallFlowerPattern: PixelOffset[] = [
-  { x: 0, y: -2, color: "light-lavender" }, { x: -1, y: -1, color: "light-lavender" }, { x: 0, y: -1, color: "lavender" }, { x: 1, y: -1, color: "light-lavender" },
-  { x: -2, y: 0, color: "light-lavender" }, { x: -1, y: 0, color: "violet" }, { x: 0, y: 0, color: "center" }, { x: 1, y: 0, color: "violet" },
-  { x: 2, y: 0, color: "light-lavender" }, { x: 0, y: 1, color: "soft-pink" },
-];
-
 const budPattern: PixelOffset[] = [
   { x: 0, y: -1, color: "light-lavender" }, { x: -1, y: 0, color: "lavender" }, { x: 0, y: 0, color: "center" },
   { x: 1, y: 0, color: "light-lavender" }, { x: 0, y: 1, color: "violet" },
 ];
 
 const flowerDefinitions: FlowerDefinition[] = [
-  { x: 520, y: 108, group: "flower-1", kind: "large", pattern: majorFlowerPattern, cellSize: 8, orientation: 0 },
-  { x: 464, y: 76, group: "flower-2", kind: "medium", pattern: mediumFlowerPattern, cellSize: 8, orientation: 90 },
-  { x: 318, y: 110, group: "flower-3", kind: "large", pattern: majorFlowerPattern, cellSize: 8, orientation: 270 },
-  { x: 272, y: 184, group: "flower-4", kind: "medium", pattern: sideFlowerPattern, cellSize: 8, orientation: 180 },
-  { x: 192, y: 248, group: "flower-5", kind: "large", pattern: majorFlowerPattern, cellSize: 8, orientation: 270 },
-  { x: 270, y: 440, group: "flower-6", kind: "medium", pattern: mediumFlowerPattern, cellSize: 8, orientation: 180 },
-  { x: 536, y: 156, group: "flower-7", kind: "medium", pattern: sideFlowerPattern, cellSize: 8, orientation: 90 },
-  { x: 352, y: 312, group: "flower-8", kind: "medium", pattern: mediumFlowerPattern, cellSize: 7, orientation: 0 },
-  { x: 232, y: 264, group: "bud-1", kind: "small", pattern: smallFlowerPattern, cellSize: 6, orientation: 90 },
-  { x: 304, y: 424, group: "bud-2", kind: "bud", pattern: budPattern, cellSize: 6, orientation: 180 },
-  { x: 376, y: 216, group: "bud-3", kind: "small", pattern: smallFlowerPattern, cellSize: 6, orientation: 270 },
-  { x: 448, y: 112, group: "bud-4", kind: "bud", pattern: budPattern, cellSize: 6, orientation: 90 },
-  { x: 304, y: 248, group: "bud-5", kind: "small", pattern: smallFlowerPattern, cellSize: 6, orientation: 180 },
-  { x: 336, y: 408, group: "bud-6", kind: "bud", pattern: budPattern, cellSize: 5, orientation: 270 },
+  { x: 164, y: 250, group: "flower-left", kind: "primary", pattern: majorFlowerPattern, cellSize: 7.5, orientation: 270 },
+  { x: 232, y: 176, group: "flower-upper-left", kind: "primary", pattern: mediumFlowerPattern, cellSize: 6.5, orientation: 90 },
+  { x: 420, y: 236, group: "flower-center", kind: "primary", pattern: majorFlowerPattern, cellSize: 9, orientation: 0 },
+  { x: 505, y: 286, group: "flower-right", kind: "primary", pattern: majorFlowerPattern, cellSize: 7.5, orientation: 90 },
+  { x: 286, y: 145, group: "bud-top", kind: "bud", pattern: budPattern, cellSize: 6, orientation: 0 },
+  { x: 272, y: 174, group: "bud-upper-left", kind: "bud", pattern: budPattern, cellSize: 5.5, orientation: 90 },
+  { x: 210, y: 320, group: "bud-left-low", kind: "bud", pattern: budPattern, cellSize: 5.5, orientation: 180 },
+  { x: 330, y: 350, group: "bud-center-low", kind: "bud", pattern: budPattern, cellSize: 5.5, orientation: 270 },
+  { x: 550, y: 174, group: "bud-right-top", kind: "bud", pattern: budPattern, cellSize: 6, orientation: 0 },
+  { x: 584, y: 228, group: "bud-right-mid", kind: "bud", pattern: budPattern, cellSize: 5.5, orientation: 90 },
 ];
 
 const branchRoutes = [
-  [[432, 456], [416, 432], [400, 408], [384, 376], [368, 344], [352, 312], [344, 280], [352, 248], [376, 216], [400, 184], [432, 152], [464, 128], [496, 120], [520, 108]],
-  [[368, 344], [336, 328], [304, 312], [272, 288], [232, 264], [192, 248]],
-  [[400, 408], [368, 400], [336, 408], [304, 424], [270, 440]],
-  [[352, 312], [328, 280], [304, 248], [288, 216], [272, 184]],
-  [[400, 184], [376, 152], [350, 128], [318, 110]],
-  [[432, 152], [448, 112], [464, 76]],
-  [[464, 128], [496, 144], [536, 156]],
+  { group: "branch-main", tapered: true, points: [[558, 440], [552, 412], [540, 384], [525, 356], [505, 335], [482, 318], [455, 304], [425, 292], [390, 299], [355, 315], [320, 307], [285, 288], [250, 274], [220, 268], [185, 260], [164, 250]] },
+  { group: "branch-center", points: [[390, 299], [402, 272], [420, 236]] },
+  { group: "branch-upper-left", points: [[355, 315], [328, 290], [302, 260], [278, 232], [255, 205], [232, 176]] },
+  { group: "branch-top-bud", points: [[278, 232], [278, 202], [283, 172], [286, 145]] },
+  { group: "branch-upper-left-bud", points: [[255, 205], [265, 190], [272, 174]] },
+  { group: "branch-left-low", points: [[220, 268], [216, 292], [210, 320]] },
+  { group: "branch-center-low", points: [[355, 315], [344, 335], [330, 350]] },
+  { group: "branch-right-flower", points: [[482, 318], [494, 301], [505, 286]] },
+  { group: "branch-right-upright", points: [[525, 356], [538, 320], [546, 280], [548, 228], [550, 174]] },
+  { group: "branch-right-mid", points: [[546, 280], [563, 252], [584, 228]] },
 ] as const;
 
 function createBranchPixels() {
   const cells = new Map<string, BlossomPixel>();
 
   for (const route of branchRoutes) {
-    for (let index = 0; index < route.length - 1; index += 1) {
-      const [startX, startY] = route[index];
-      const [endX, endY] = route[index + 1];
+    for (let index = 0; index < route.points.length - 1; index += 1) {
+      const [startX, startY] = route.points[index];
+      const [endX, endY] = route.points[index + 1];
       const steps = Math.max(1, Math.ceil(Math.max(Math.abs(endX - startX), Math.abs(endY - startY)) / HERO_BRANCH_STEP));
 
       for (let step = 0; step <= steps; step += 1) {
         const x = Math.round((startX + (endX - startX) * (step / steps)) / HERO_BRANCH_STEP) * HERO_BRANCH_STEP;
         const y = Math.round((startY + (endY - startY) * (step / steps)) / HERO_BRANCH_STEP) * HERO_BRANCH_STEP;
-        cells.set(`${x}-${y}`, { x: x - 3, y: y - 2.25, width: 6.5, height: 4.5, color: "branch", group: "branch", tearVariants: [] });
+        const progress = (index + step / steps) / (route.points.length - 1);
+        const addCell = (cellX: number, cellY: number, color: PixelColor) => cells.set(`${cellX}-${cellY}`, {
+          x: cellX - 3.75,
+          y: cellY - 3.75,
+          width: 7.5,
+          height: 7.5,
+          color,
+          group: route.group,
+          kind: "branch",
+          glitchVariants: [],
+          tearVariants: [],
+          detachedVariants: [],
+        });
+
+        addCell(x, y, "branch");
+        if ("tapered" in route && route.tapered && progress < .58) addCell(x - HERO_BRANCH_STEP, y + HERO_BRANCH_STEP, "branch-muted");
+        if ("tapered" in route && route.tapered && progress < .18) addCell(x - HERO_BRANCH_STEP * 2, y + HERO_BRANCH_STEP * 2, "branch-muted");
       }
     }
   }
@@ -158,12 +160,21 @@ function createBranchPixels() {
   return [...cells.values()];
 }
 
-const glitchVariants: PixelGlitchVariant[] = ["upper-tear", "lower-fragment", "petal-echo", "data-loss"];
-const tearBands: Array<{ variant: PixelGlitchVariant; groups: string[]; row: number }> = [
-  { variant: "upper-tear", groups: ["flower-1", "flower-2", "flower-3"], row: -1 },
-  { variant: "lower-fragment", groups: ["flower-4", "flower-5", "flower-6"], row: 1 },
-  { variant: "petal-echo", groups: ["flower-2", "flower-7", "flower-8"], row: 0 },
-  { variant: "data-loss", groups: ["flower-1", "flower-5", "flower-8"], row: -2 },
+const glitchSelections: Array<{ variant: PixelGlitchVariant; groups: string[]; modulo: number; offset: number }> = [
+  { variant: "center-flower-tear", groups: ["flower-center", "flower-right"], modulo: 4, offset: 0 },
+  { variant: "left-flower-fracture", groups: ["flower-left", "flower-upper-left", "bud-left-low"], modulo: 3, offset: 1 },
+  { variant: "upper-buds-echo", groups: ["flower-upper-left", "flower-center", "bud-top", "bud-upper-left"], modulo: 4, offset: 2 },
+  { variant: "right-flower-slice", groups: ["flower-center", "flower-right", "bud-right-mid"], modulo: 4, offset: 3 },
+  { variant: "multi-petal-reconstruction", groups: ["flower-left", "flower-center", "flower-right"], modulo: 6, offset: 4 },
+];
+const tearBands: Array<{ variant: PixelGlitchVariant; group: string; rows: number[] }> = [
+  { variant: "center-flower-tear", group: "flower-center", rows: [-1, 0, 1] },
+  { variant: "left-flower-fracture", group: "flower-left", rows: [-1, 1] },
+  { variant: "upper-buds-echo", group: "flower-upper-left", rows: [-1, 0] },
+  { variant: "right-flower-slice", group: "flower-right", rows: [-1, 0, 1] },
+  { variant: "multi-petal-reconstruction", group: "flower-left", rows: [0] },
+  { variant: "multi-petal-reconstruction", group: "flower-center", rows: [-2] },
+  { variant: "multi-petal-reconstruction", group: "flower-right", rows: [1] },
 ];
 
 function rotatePixel(pixel: PixelOffset, orientation: PixelOrientation) {
@@ -178,12 +189,16 @@ function createFlowerPixels() {
 
   return flowerDefinitions.flatMap(definition => definition.pattern.map(pixel => {
     const rotated = rotatePixel(pixel, definition.orientation);
-    const variantSlot = globalIndex % 12;
-    const glitchVariant = variantSlot % 3 === 0 ? glitchVariants[variantSlot / 3] : undefined;
+    const glitchVariants = glitchSelections
+      .filter(selection => selection.groups.includes(definition.group) && globalIndex % selection.modulo === selection.offset % selection.modulo)
+      .map(selection => selection.variant);
     const tearVariants = tearBands
-      .filter(band => band.groups.includes(definition.group) && band.row === pixel.y)
+      .filter(band => band.group === definition.group && band.rows.includes(pixel.y))
       .map(band => band.variant);
-    const hardFracture = glitchVariant !== undefined && Math.floor(globalIndex / 12) % 2 === 0;
+    const detachedVariants = glitchVariants.filter(variant => {
+      const selection = glitchSelections.find(candidate => candidate.variant === variant);
+      return selection ? (Math.floor(globalIndex / selection.modulo) + selection.offset) % 3 === 0 : false;
+    });
     globalIndex += 1;
 
     return {
@@ -193,48 +208,58 @@ function createFlowerPixels() {
       height: definition.cellSize,
       color: pixel.color,
       group: definition.group,
-      glitchVariant,
+      kind: definition.kind,
+      glitchVariants,
       tearVariants,
-      hardFracture,
+      detachedVariants,
     } satisfies BlossomPixel;
   }));
 }
 
 const blossomPixels: BlossomPixel[] = [...createBranchPixels(), ...createFlowerPixels()];
 const blossomStreaks = [
-  { x: 496, y: 94, width: 62, color: "lavender", variant: "upper-tear", origin: "flower-1" },
-  { x: 448, y: 70, width: 48, color: "light-lavender", variant: "upper-tear", origin: "flower-2" },
-  { x: 302, y: 104, width: 54, color: "violet", variant: "upper-tear", origin: "flower-3" },
-  { x: 254, y: 188, width: 58, color: "lavender", variant: "lower-fragment", origin: "flower-4" },
-  { x: 170, y: 254, width: 66, color: "light-lavender", variant: "lower-fragment", origin: "flower-5" },
-  { x: 248, y: 446, width: 62, color: "violet", variant: "lower-fragment", origin: "flower-6" },
-  { x: 452, y: 78, width: 54, color: "soft-pink", variant: "petal-echo", origin: "flower-2" },
-  { x: 520, y: 158, width: 58, color: "lavender", variant: "petal-echo", origin: "flower-7" },
-  { x: 332, y: 314, width: 52, color: "light-lavender", variant: "petal-echo", origin: "flower-8" },
-  { x: 502, y: 116, width: 64, color: "violet", variant: "data-loss", origin: "flower-1" },
-  { x: 174, y: 236, width: 54, color: "soft-pink", variant: "data-loss", origin: "flower-5" },
-  { x: 334, y: 300, width: 58, color: "lavender", variant: "data-loss", origin: "flower-8" },
+  { x: 388, y: 216, width: 62, height: 5, color: "lavender", variant: "center-flower-tear", origin: "flower-center" },
+  { x: 397, y: 236, width: 70, height: 6, color: "light-lavender", variant: "center-flower-tear", origin: "flower-center" },
+  { x: 482, y: 278, width: 54, height: 4, color: "violet", variant: "center-flower-tear", origin: "flower-right" },
+  { x: 414, y: 254, width: 46, height: 5, color: "soft-pink", variant: "center-flower-tear", origin: "flower-center" },
+  { x: 132, y: 238, width: 58, height: 5, color: "lavender", variant: "left-flower-fracture", origin: "flower-left" },
+  { x: 148, y: 260, width: 66, height: 5, color: "light-lavender", variant: "left-flower-fracture", origin: "flower-left" },
+  { x: 214, y: 168, width: 42, height: 4, color: "violet", variant: "left-flower-fracture", origin: "flower-upper-left" },
+  { x: 196, y: 318, width: 36, height: 4, color: "soft-pink", variant: "left-flower-fracture", origin: "bud-left-low" },
+  { x: 216, y: 176, width: 44, height: 4, color: "lavender", variant: "upper-buds-echo", origin: "flower-upper-left" },
+  { x: 274, y: 143, width: 38, height: 4, color: "light-lavender", variant: "upper-buds-echo", origin: "bud-top" },
+  { x: 260, y: 172, width: 34, height: 4, color: "soft-pink", variant: "upper-buds-echo", origin: "bud-upper-left" },
+  { x: 398, y: 230, width: 54, height: 4, color: "violet", variant: "upper-buds-echo", origin: "flower-center" },
+  { x: 478, y: 274, width: 60, height: 5, color: "light-lavender", variant: "right-flower-slice", origin: "flower-right" },
+  { x: 488, y: 294, width: 66, height: 5, color: "lavender", variant: "right-flower-slice", origin: "flower-right" },
+  { x: 404, y: 244, width: 52, height: 4, color: "violet", variant: "right-flower-slice", origin: "flower-center" },
+  { x: 570, y: 226, width: 40, height: 4, color: "soft-pink", variant: "right-flower-slice", origin: "bud-right-mid" },
+  { x: 142, y: 248, width: 50, height: 4, color: "violet", variant: "multi-petal-reconstruction", origin: "flower-left" },
+  { x: 392, y: 224, width: 68, height: 5, color: "light-lavender", variant: "multi-petal-reconstruction", origin: "flower-center" },
+  { x: 486, y: 286, width: 58, height: 5, color: "lavender", variant: "multi-petal-reconstruction", origin: "flower-right" },
+  { x: 334, y: 310, width: 48, height: 4, color: "soft-pink", variant: "multi-petal-reconstruction", origin: "branch-main" },
 ] as const;
 
 function PixelBlossom() {
   return <g className="pixel-blossom" shapeRendering="crispEdges">
     <g className="pixel-blossom-cells">
       {blossomPixels.map((pixel, index) => {
-        const glitchClass = pixel.glitchVariant ? ` pixel-glitch-${pixel.glitchVariant}` : "";
-        const hardFractureClass = pixel.hardFracture ? " pixel-fracture-hard" : "";
+        const glitchClasses = pixel.glitchVariants.map(variant => ` pixel-glitch-${variant}`).join("");
         const tearClasses = pixel.tearVariants.map(variant => ` pixel-tear-${variant}`).join("");
-        const flowerClass = pixel.group === "branch" ? " pixel-blossom-branch-cell" : " pixel-blossom-flower-cell";
+        const detachedClasses = pixel.detachedVariants.map(variant => ` pixel-detached-${variant}`).join("");
+        const flowerClass = pixel.kind === "branch" ? " pixel-blossom-branch-cell" : " pixel-blossom-flower-cell";
         return <g key={`${pixel.group}-${pixel.x}-${pixel.y}-${index}`}>
           <rect
-            className={`pixel-blossom-cell${flowerClass} pixel-color-${pixel.color}${glitchClass}${tearClasses}${hardFractureClass}`}
+            className={`pixel-blossom-cell${flowerClass} pixel-color-${pixel.color}${glitchClasses}${tearClasses}${detachedClasses}`}
             data-pixel-group={pixel.group}
+            data-pixel-kind={pixel.kind}
             x={pixel.x}
             y={pixel.y}
             width={pixel.width}
             height={pixel.height}
           />
-          {pixel.glitchVariant ? <rect
-            className={`pixel-blossom-ghost pixel-color-${pixel.color} pixel-glitch-${pixel.glitchVariant}`}
+          {pixel.glitchVariants.length > 0 ? <rect
+            className={`pixel-blossom-ghost pixel-color-${pixel.color}${glitchClasses}`}
             x={pixel.x}
             y={pixel.y}
             width={pixel.width}
@@ -251,7 +276,7 @@ function PixelBlossom() {
         x={streak.x}
         y={streak.y}
         width={streak.width}
-        height={index % 2 === 0 ? 4 : 6}
+        height={streak.height}
       />)}
     </g>
   </g>;
@@ -270,7 +295,7 @@ export function GeometricDivider({ className = "" }: DecorativeProps) {
 }
 
 export function HeroGarden() {
-  return <div className="hero-garden" aria-label="Asymmetric pixel-art sakura branch with varied blossoms, a thin K3 signature, mountains and wind lines" role="img">
+  return <div className="hero-garden" aria-label="Sparse Concept 3 pixel-art sakura branch with four varied blossoms, attached buds, a thin K3 signature, mountains and wind lines" role="img">
     <svg className="hero-garden-art" viewBox="0 0 640 600" aria-hidden="true" focusable="false">
       <circle className="hero-garden-disc" cx="338" cy="292" r="227" />
 
@@ -278,16 +303,6 @@ export function HeroGarden() {
         <path d="M72 214h88c20 0 23 18 6 20h-31" />
         <path d="M92 258h76" />
         <path d="M476 276h88c16 0 19 16 4 17h-29" />
-      </g>
-
-      <g className="hero-garden-branch">
-        <path className="hero-garden-branch-main" d="M432 456C396 400 371 348 352 312C334 277 360 229 400 184C435 145 476 124 520 108" />
-        <path d="M368 344C320 321 271 281 192 248" />
-        <path d="M400 408C354 397 320 423 270 440" />
-        <path d="M352 312C320 277 296 226 272 184" />
-        <path d="M400 184C376 151 349 126 318 110" />
-        <path d="M432 152C446 116 455 93 464 76" />
-        <path d="M464 128C490 137 513 149 536 156" />
       </g>
 
       <PixelBlossom />

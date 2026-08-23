@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 
 export type HeroGlitchStage = "logo" | "blossom" | "button" | "text";
 export type HeroGlitchPhase = "stable" | "primary" | "aftershock";
-export type BlossomGlitchVariant = "upper-tear" | "lower-fragment" | "petal-echo" | "data-loss";
+export type BlossomGlitchVariant = "center-flower-tear" | "left-flower-fracture" | "upper-buds-echo" | "right-flower-slice" | "multi-petal-reconstruction";
 
 export const HERO_GLITCH_SLOT_MS = 4000;
 export const HERO_GLITCH_LOOP_MS = 16000;
@@ -20,7 +20,7 @@ const burstDelays = [
 const burstDurations = [240, 450, 320, 280] as const;
 const aftershockGaps = [130, 150, 0, 120] as const;
 const aftershockDurations = [60, 70, 0, 60] as const;
-const blossomVariants: BlossomGlitchVariant[] = ["upper-tear", "lower-fragment", "petal-echo", "data-loss"];
+const blossomVariants: BlossomGlitchVariant[] = ["center-flower-tear", "left-flower-fracture", "upper-buds-echo", "right-flower-slice", "multi-petal-reconstruction"];
 
 type HeroGlitchState = {
   stage: HeroGlitchStage;
@@ -32,7 +32,7 @@ type HeroGlitchState = {
 const stableState: HeroGlitchState = {
   stage: "logo",
   phase: "stable",
-  blossomVariant: "upper-tear",
+  blossomVariant: "center-flower-tear",
   reducedMotion: false,
 };
 
@@ -59,6 +59,10 @@ export function useHeroGlitch() {
       timers.clear();
     };
 
+    if (DEBUG_BLOSSOM) {
+      return clearTimers;
+    }
+
     const runStage = () => {
       if (reducedMotionQuery.matches) {
         setState({ ...stableState, reducedMotion: true });
@@ -74,15 +78,13 @@ export function useHeroGlitch() {
       const burstDelay = burstDelays[currentIndex][occurrence % burstDelays[currentIndex].length];
 
       setState({ stage, phase: "stable", blossomVariant, reducedMotion: false });
-      if (!(DEBUG_BLOSSOM && stage === "blossom")) {
-        schedule(() => setState(current => ({ ...current, phase: "primary" })), burstDelay);
-        schedule(() => setState(current => ({ ...current, phase: "stable" })), burstDelay + burstDurations[currentIndex]);
+      schedule(() => setState(current => ({ ...current, phase: "primary" })), burstDelay);
+      schedule(() => setState(current => ({ ...current, phase: "stable" })), burstDelay + burstDurations[currentIndex]);
 
-        if (aftershockDurations[currentIndex] > 0) {
-          const aftershockStart = burstDelay + burstDurations[currentIndex] + aftershockGaps[currentIndex];
-          schedule(() => setState(current => ({ ...current, phase: "aftershock" })), aftershockStart);
-          schedule(() => setState(current => ({ ...current, phase: "stable" })), aftershockStart + aftershockDurations[currentIndex]);
-        }
+      if (aftershockDurations[currentIndex] > 0) {
+        const aftershockStart = burstDelay + burstDurations[currentIndex] + aftershockGaps[currentIndex];
+        schedule(() => setState(current => ({ ...current, phase: "aftershock" })), aftershockStart);
+        schedule(() => setState(current => ({ ...current, phase: "stable" })), aftershockStart + aftershockDurations[currentIndex]);
       }
       schedule(() => {
         stageIndex = (stageIndex + 1) % stages.length;

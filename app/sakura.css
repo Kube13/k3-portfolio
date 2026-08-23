@@ -101,11 +101,9 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--k3-violet);outline-
 .hero-garden-art{width:min(100%,640px);height:auto;overflow:visible}
 .hero-garden-disc{fill:rgba(183,156,255,.07)}
 .hero-garden-wind path{fill:none;stroke:rgba(75,38,125,.13);stroke-width:var(--line-hairline);stroke-linecap:round;vector-effect:non-scaling-stroke}
-.hero-garden-branch path{fill:none;stroke:rgba(75,38,125,.24);stroke-width:var(--line-hairline);stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
-.hero-garden-branch path:not(.hero-garden-branch-main){stroke:rgba(75,38,125,.17)}
 .pixel-blossom-cell,.pixel-blossom-ghost,.pixel-blossom-streak{transform-box:fill-box;transform-origin:center;vector-effect:non-scaling-stroke}
 .pixel-blossom-cell{opacity:1}
-.pixel-blossom-branch-cell{fill:rgba(33,19,53,.66)}
+.pixel-blossom-branch-cell{fill:rgba(33,19,53,.78)}
 .pixel-color-light-lavender{fill:#ded4ff}
 .pixel-color-lavender{fill:#b79cff}
 .pixel-color-violet{fill:#8f68d8}
@@ -113,6 +111,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--k3-violet);outline-
 .pixel-color-soft-pink{fill:#d6adc9}
 .pixel-color-center{fill:#4b267d}
 .pixel-color-branch{fill:#211335}
+.pixel-color-branch-muted{fill:#413153}
 .pixel-blossom-ghost,.pixel-blossom-streak{opacity:0;pointer-events:none}
 .pixel-blossom-streak{transform-origin:left center}
 .hero-garden-mountains path{fill:none;stroke:rgba(75,38,125,.08);stroke-width:var(--line-hairline);stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
@@ -125,43 +124,49 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--k3-violet);outline-
 .signature-slice-two path{stroke:#b65d78}
 .signature-slice-three path{stroke:#8f68d8}
 
-/* Specialized glitch V2: stable first, then four distinct signal vocabularies. */
-[data-glitch-stage="blossom"][data-glitch-phase="primary"][data-blossom-variant="upper-tear"] .pixel-glitch-upper-tear,
-[data-glitch-stage="blossom"][data-glitch-phase="primary"][data-blossom-variant="upper-tear"] .pixel-tear-upper-tear{--fracture-x:9px;--fracture-y:-2px;--rebuild-x:-2px;--ghost-x:12px;--tear-x:-8px}
-[data-glitch-stage="blossom"][data-glitch-phase="primary"][data-blossom-variant="lower-fragment"] .pixel-glitch-lower-fragment,
-[data-glitch-stage="blossom"][data-glitch-phase="primary"][data-blossom-variant="lower-fragment"] .pixel-tear-lower-fragment{--fracture-x:-8px;--fracture-y:2px;--rebuild-x:2px;--ghost-x:-11px;--tear-x:9px}
-[data-glitch-stage="blossom"][data-glitch-phase="primary"][data-blossom-variant="petal-echo"] .pixel-glitch-petal-echo,
-[data-glitch-stage="blossom"][data-glitch-phase="primary"][data-blossom-variant="petal-echo"] .pixel-tear-petal-echo{--fracture-x:7px;--fracture-y:1px;--rebuild-x:-2px;--ghost-x:14px;--tear-x:6px}
-[data-glitch-stage="blossom"][data-glitch-phase="primary"][data-blossom-variant="data-loss"] .pixel-glitch-data-loss,
-[data-glitch-stage="blossom"][data-glitch-phase="primary"][data-blossom-variant="data-loss"] .pixel-tear-data-loss{--fracture-x:-10px;--fracture-y:-1px;--rebuild-x:3px;--ghost-x:-13px;--tear-x:-7px}
+/* Concept 3: controlled digital deconstruction with exact coordinate restoration. */
+[data-blossom-variant="center-flower-tear"]{--fracture-x:14px;--fracture-y:-2px;--rebuild-x:-2px;--ghost-x:12px;--tear-x:-11px;--detached-x:14px;--detached-y:-3px}
+[data-blossom-variant="left-flower-fracture"]{--fracture-x:-12px;--fracture-y:3px;--rebuild-x:2px;--ghost-x:-10px;--tear-x:10px;--detached-x:-13px;--detached-y:3px}
+[data-blossom-variant="upper-buds-echo"]{--fracture-x:9px;--fracture-y:-3px;--rebuild-x:-2px;--ghost-x:14px;--tear-x:-8px;--detached-x:9px;--detached-y:-3px}
+[data-blossom-variant="right-flower-slice"]{--fracture-x:11px;--fracture-y:2px;--rebuild-x:-2px;--ghost-x:10px;--tear-x:12px;--detached-x:12px;--detached-y:3px}
+[data-blossom-variant="multi-petal-reconstruction"]{--fracture-x:-10px;--fracture-y:1px;--rebuild-x:3px;--ghost-x:-13px;--tear-x:-10px;--detached-x:-12px;--detached-y:-2px}
 
-[data-glitch-stage="blossom"][data-glitch-phase="primary"][data-blossom-variant="upper-tear"] .pixel-blossom-cell.pixel-glitch-upper-tear,
-[data-glitch-stage="blossom"][data-glitch-phase="primary"][data-blossom-variant="lower-fragment"] .pixel-blossom-cell.pixel-glitch-lower-fragment,
-[data-glitch-stage="blossom"][data-glitch-phase="primary"][data-blossom-variant="petal-echo"] .pixel-blossom-cell.pixel-glitch-petal-echo,
-[data-glitch-stage="blossom"][data-glitch-phase="primary"][data-blossom-variant="data-loss"] .pixel-blossom-cell.pixel-glitch-data-loss{animation:blossom-v2-fracture .45s steps(1,end) both;will-change:transform,opacity}
-[data-glitch-stage="blossom"][data-glitch-phase="primary"] .pixel-blossom-cell.pixel-fracture-hard{animation-name:blossom-v2-hard-fracture}
-[data-glitch-stage="blossom"][data-glitch-phase="primary"][data-blossom-variant="upper-tear"] .pixel-blossom-cell.pixel-tear-upper-tear,
-[data-glitch-stage="blossom"][data-glitch-phase="primary"][data-blossom-variant="lower-fragment"] .pixel-blossom-cell.pixel-tear-lower-fragment,
-[data-glitch-stage="blossom"][data-glitch-phase="primary"][data-blossom-variant="petal-echo"] .pixel-blossom-cell.pixel-tear-petal-echo,
-[data-glitch-stage="blossom"][data-glitch-phase="primary"][data-blossom-variant="data-loss"] .pixel-blossom-cell.pixel-tear-data-loss{animation:blossom-v2-tear .45s steps(1,end) both;will-change:transform,opacity}
-[data-glitch-stage="blossom"][data-glitch-phase="primary"][data-blossom-variant="upper-tear"] .pixel-blossom-ghost.pixel-glitch-upper-tear,
-[data-glitch-stage="blossom"][data-glitch-phase="primary"][data-blossom-variant="lower-fragment"] .pixel-blossom-ghost.pixel-glitch-lower-fragment,
-[data-glitch-stage="blossom"][data-glitch-phase="primary"][data-blossom-variant="petal-echo"] .pixel-blossom-ghost.pixel-glitch-petal-echo,
-[data-glitch-stage="blossom"][data-glitch-phase="primary"][data-blossom-variant="data-loss"] .pixel-blossom-ghost.pixel-glitch-data-loss{animation:blossom-v2-ghost .45s steps(1,end) both;will-change:transform,opacity}
-[data-glitch-stage="blossom"][data-glitch-phase="primary"][data-blossom-variant="upper-tear"] .pixel-streak-upper-tear,
-[data-glitch-stage="blossom"][data-glitch-phase="primary"][data-blossom-variant="lower-fragment"] .pixel-streak-lower-fragment,
-[data-glitch-stage="blossom"][data-glitch-phase="primary"][data-blossom-variant="petal-echo"] .pixel-streak-petal-echo,
-[data-glitch-stage="blossom"][data-glitch-phase="primary"][data-blossom-variant="data-loss"] .pixel-streak-data-loss{animation:blossom-v2-streak .45s steps(1,end) both;will-change:transform,opacity}
-@keyframes blossom-v2-fracture{0%,100%{transform:translate3d(0,0,0);opacity:1}15%{transform:translate3d(calc(var(--fracture-x) * .45),var(--fracture-y),0);opacity:.92}31%{transform:translate3d(var(--fracture-x),var(--fracture-y),0);opacity:.72}49%{transform:translate3d(calc(var(--fracture-x) * .7),0,0);opacity:.84}70%{transform:translate3d(var(--rebuild-x),0,0);opacity:1}84%{transform:translate3d(1px,0,0);opacity:.96}}
-@keyframes blossom-v2-hard-fracture{0%,100%{transform:translate3d(0,0,0);opacity:1}15%{transform:translate3d(calc(var(--fracture-x) * .55),var(--fracture-y),0);opacity:.76}31%{transform:translate3d(var(--fracture-x),var(--fracture-y),0);opacity:.48}49%{transform:translate3d(calc(var(--fracture-x) * .75),calc(var(--fracture-y) * -1),0);opacity:.68}70%{transform:translate3d(var(--rebuild-x),0,0);opacity:.94}84%{transform:translate3d(-1px,0,0);opacity:1}}
-@keyframes blossom-v2-tear{0%,18%,100%{transform:translate3d(0,0,0);opacity:1}31%{transform:translate3d(var(--tear-x),0,0);opacity:.92}49%{transform:translate3d(calc(var(--tear-x) * -.35),0,0);opacity:.76}70%{transform:translate3d(2px,0,0);opacity:1}84%{transform:translate3d(0,0,0)}}
-@keyframes blossom-v2-ghost{0%,20%,100%{transform:translate3d(0,0,0);opacity:0}31%{transform:translate3d(calc(var(--ghost-x) * .5),0,0);opacity:.3}49%{transform:translate3d(var(--ghost-x),0,0);opacity:.52}70%{transform:translate3d(calc(var(--ghost-x) * .2),0,0);opacity:.16}84%{opacity:0}}
-@keyframes blossom-v2-streak{0%,24%,100%{transform:translate3d(0,0,0) scaleX(.06);opacity:0}38%{transform:translate3d(5px,0,0) scaleX(1);opacity:.54}52%{transform:translate3d(-3px,0,0) scaleX(.64);opacity:.34}70%{transform:translate3d(1px,0,0) scaleX(.18);opacity:.12}84%{opacity:0}}
-[data-glitch-stage="blossom"][data-glitch-phase="aftershock"][data-blossom-variant="upper-tear"] .pixel-glitch-upper-tear,
-[data-glitch-stage="blossom"][data-glitch-phase="aftershock"][data-blossom-variant="lower-fragment"] .pixel-glitch-lower-fragment,
-[data-glitch-stage="blossom"][data-glitch-phase="aftershock"][data-blossom-variant="petal-echo"] .pixel-glitch-petal-echo,
-[data-glitch-stage="blossom"][data-glitch-phase="aftershock"][data-blossom-variant="data-loss"] .pixel-glitch-data-loss{animation:blossom-v2-aftershock .07s steps(1,end) both;will-change:transform}
-@keyframes blossom-v2-aftershock{0%,100%{transform:translate3d(0,0,0)}45%{transform:translate3d(2px,-1px,0)}72%{transform:translate3d(-1px,0,0)}}
+[data-glitch-stage="blossom"][data-glitch-phase="primary"][data-blossom-variant="center-flower-tear"] .pixel-blossom-cell.pixel-glitch-center-flower-tear,
+[data-glitch-stage="blossom"][data-glitch-phase="primary"][data-blossom-variant="left-flower-fracture"] .pixel-blossom-cell.pixel-glitch-left-flower-fracture,
+[data-glitch-stage="blossom"][data-glitch-phase="primary"][data-blossom-variant="upper-buds-echo"] .pixel-blossom-cell.pixel-glitch-upper-buds-echo,
+[data-glitch-stage="blossom"][data-glitch-phase="primary"][data-blossom-variant="right-flower-slice"] .pixel-blossom-cell.pixel-glitch-right-flower-slice,
+[data-glitch-stage="blossom"][data-glitch-phase="primary"][data-blossom-variant="multi-petal-reconstruction"] .pixel-blossom-cell.pixel-glitch-multi-petal-reconstruction{animation:concept3-blossom-fracture .46s steps(1,end) both;will-change:transform,opacity}
+[data-glitch-stage="blossom"][data-glitch-phase="primary"][data-blossom-variant="center-flower-tear"] .pixel-blossom-cell.pixel-tear-center-flower-tear,
+[data-glitch-stage="blossom"][data-glitch-phase="primary"][data-blossom-variant="left-flower-fracture"] .pixel-blossom-cell.pixel-tear-left-flower-fracture,
+[data-glitch-stage="blossom"][data-glitch-phase="primary"][data-blossom-variant="upper-buds-echo"] .pixel-blossom-cell.pixel-tear-upper-buds-echo,
+[data-glitch-stage="blossom"][data-glitch-phase="primary"][data-blossom-variant="right-flower-slice"] .pixel-blossom-cell.pixel-tear-right-flower-slice,
+[data-glitch-stage="blossom"][data-glitch-phase="primary"][data-blossom-variant="multi-petal-reconstruction"] .pixel-blossom-cell.pixel-tear-multi-petal-reconstruction{animation:concept3-blossom-tear .46s steps(1,end) both;will-change:transform,opacity}
+[data-glitch-stage="blossom"][data-glitch-phase="primary"][data-blossom-variant="center-flower-tear"] .pixel-blossom-cell.pixel-detached-center-flower-tear,
+[data-glitch-stage="blossom"][data-glitch-phase="primary"][data-blossom-variant="left-flower-fracture"] .pixel-blossom-cell.pixel-detached-left-flower-fracture,
+[data-glitch-stage="blossom"][data-glitch-phase="primary"][data-blossom-variant="upper-buds-echo"] .pixel-blossom-cell.pixel-detached-upper-buds-echo,
+[data-glitch-stage="blossom"][data-glitch-phase="primary"][data-blossom-variant="right-flower-slice"] .pixel-blossom-cell.pixel-detached-right-flower-slice,
+[data-glitch-stage="blossom"][data-glitch-phase="primary"][data-blossom-variant="multi-petal-reconstruction"] .pixel-blossom-cell.pixel-detached-multi-petal-reconstruction{animation:concept3-blossom-detached .46s steps(1,end) both;will-change:transform,opacity}
+[data-glitch-stage="blossom"][data-glitch-phase="primary"][data-blossom-variant="center-flower-tear"] .pixel-blossom-ghost.pixel-glitch-center-flower-tear,
+[data-glitch-stage="blossom"][data-glitch-phase="primary"][data-blossom-variant="left-flower-fracture"] .pixel-blossom-ghost.pixel-glitch-left-flower-fracture,
+[data-glitch-stage="blossom"][data-glitch-phase="primary"][data-blossom-variant="upper-buds-echo"] .pixel-blossom-ghost.pixel-glitch-upper-buds-echo,
+[data-glitch-stage="blossom"][data-glitch-phase="primary"][data-blossom-variant="right-flower-slice"] .pixel-blossom-ghost.pixel-glitch-right-flower-slice,
+[data-glitch-stage="blossom"][data-glitch-phase="primary"][data-blossom-variant="multi-petal-reconstruction"] .pixel-blossom-ghost.pixel-glitch-multi-petal-reconstruction{animation:concept3-blossom-ghost .46s steps(1,end) both;will-change:transform,opacity}
+[data-glitch-stage="blossom"][data-glitch-phase="primary"][data-blossom-variant="center-flower-tear"] .pixel-streak-center-flower-tear,
+[data-glitch-stage="blossom"][data-glitch-phase="primary"][data-blossom-variant="left-flower-fracture"] .pixel-streak-left-flower-fracture,
+[data-glitch-stage="blossom"][data-glitch-phase="primary"][data-blossom-variant="upper-buds-echo"] .pixel-streak-upper-buds-echo,
+[data-glitch-stage="blossom"][data-glitch-phase="primary"][data-blossom-variant="right-flower-slice"] .pixel-streak-right-flower-slice,
+[data-glitch-stage="blossom"][data-glitch-phase="primary"][data-blossom-variant="multi-petal-reconstruction"] .pixel-streak-multi-petal-reconstruction{animation:concept3-blossom-streak .46s steps(1,end) both;will-change:transform,opacity}
+@keyframes concept3-blossom-fracture{0%,100%{transform:translate3d(0,0,0);opacity:1}15%{transform:translate3d(calc(var(--fracture-x) * .45),var(--fracture-y),0);opacity:.9}31%{transform:translate3d(var(--fracture-x),var(--fracture-y),0);opacity:.68}49%{transform:translate3d(calc(var(--fracture-x) * .72),0,0);opacity:.82}65%{transform:translate3d(var(--rebuild-x),0,0);opacity:.96}78%{transform:translate3d(1px,0,0);opacity:1}88%{transform:translate3d(0,0,0);opacity:1}}
+@keyframes concept3-blossom-tear{0%,18%,100%{transform:translate3d(0,0,0);opacity:1}31%{transform:translate3d(var(--tear-x),0,0);opacity:.9}49%{transform:translate3d(calc(var(--tear-x) * -.35),0,0);opacity:.74}65%{transform:translate3d(2px,0,0);opacity:1}78%{transform:translate3d(-1px,0,0)}88%{transform:translate3d(0,0,0)}}
+@keyframes concept3-blossom-detached{0%,18%,100%{transform:translate3d(0,0,0);opacity:1}31%{transform:translate3d(var(--detached-x),var(--detached-y),0);opacity:.5}49%{transform:translate3d(calc(var(--detached-x) * .72),calc(var(--detached-y) * -1),0);opacity:.74}65%{transform:translate3d(var(--rebuild-x),0,0);opacity:.96}78%{transform:translate3d(1px,0,0);opacity:1}88%{transform:translate3d(0,0,0)}}
+@keyframes concept3-blossom-ghost{0%,20%,100%{transform:translate3d(0,0,0);opacity:0}31%{transform:translate3d(calc(var(--ghost-x) * .5),0,0);opacity:.3}49%{transform:translate3d(var(--ghost-x),0,0);opacity:.55}65%{transform:translate3d(calc(var(--ghost-x) * .2),0,0);opacity:.16}78%{opacity:0}}
+@keyframes concept3-blossom-streak{0%,24%,100%{transform:translate3d(0,0,0) scaleX(.05);opacity:0}38%{transform:translate3d(5px,0,0) scaleX(1);opacity:.58}52%{transform:translate3d(-3px,0,0) scaleX(.64);opacity:.34}65%{transform:translate3d(1px,0,0) scaleX(.18);opacity:.12}78%{opacity:0}}
+[data-glitch-stage="blossom"][data-glitch-phase="aftershock"][data-blossom-variant="center-flower-tear"] .pixel-glitch-center-flower-tear,
+[data-glitch-stage="blossom"][data-glitch-phase="aftershock"][data-blossom-variant="left-flower-fracture"] .pixel-glitch-left-flower-fracture,
+[data-glitch-stage="blossom"][data-glitch-phase="aftershock"][data-blossom-variant="upper-buds-echo"] .pixel-glitch-upper-buds-echo,
+[data-glitch-stage="blossom"][data-glitch-phase="aftershock"][data-blossom-variant="right-flower-slice"] .pixel-glitch-right-flower-slice,
+[data-glitch-stage="blossom"][data-glitch-phase="aftershock"][data-blossom-variant="multi-petal-reconstruction"] .pixel-glitch-multi-petal-reconstruction{animation:concept3-blossom-aftershock .07s steps(1,end) both;will-change:transform}
+@keyframes concept3-blossom-aftershock{0%,100%{transform:translate3d(0,0,0)}45%{transform:translate3d(2px,-1px,0)}72%{transform:translate3d(-1px,0,0)}}
 
 [data-glitch-stage="logo"][data-glitch-phase="primary"] .hero-garden-signature-main path{animation:k3-signal-main .24s steps(1,end) both;will-change:transform,opacity}
 [data-glitch-stage="logo"][data-glitch-phase="primary"] .hero-garden-signature-ghost{animation:k3-signal-channel .24s steps(1,end) both;will-change:opacity}
@@ -437,14 +442,11 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--k3-violet);outline-
   .hero-garden{min-height:300px}
   .hero-garden-art{width:100%}
   .hero-garden-mountains,.hero-garden-wind{display:none}
-  [data-glitch-stage="blossom"][data-glitch-phase="primary"][data-blossom-variant="upper-tear"] .pixel-glitch-upper-tear,
-  [data-glitch-stage="blossom"][data-glitch-phase="primary"][data-blossom-variant="upper-tear"] .pixel-tear-upper-tear{--fracture-x:6px;--ghost-x:7px;--tear-x:-5px}
-  [data-glitch-stage="blossom"][data-glitch-phase="primary"][data-blossom-variant="lower-fragment"] .pixel-glitch-lower-fragment,
-  [data-glitch-stage="blossom"][data-glitch-phase="primary"][data-blossom-variant="lower-fragment"] .pixel-tear-lower-fragment{--fracture-x:-6px;--ghost-x:-7px;--tear-x:5px}
-  [data-glitch-stage="blossom"][data-glitch-phase="primary"][data-blossom-variant="petal-echo"] .pixel-glitch-petal-echo,
-  [data-glitch-stage="blossom"][data-glitch-phase="primary"][data-blossom-variant="petal-echo"] .pixel-tear-petal-echo{--fracture-x:5px;--ghost-x:7px;--tear-x:4px}
-  [data-glitch-stage="blossom"][data-glitch-phase="primary"][data-blossom-variant="data-loss"] .pixel-glitch-data-loss,
-  [data-glitch-stage="blossom"][data-glitch-phase="primary"][data-blossom-variant="data-loss"] .pixel-tear-data-loss{--fracture-x:-6px;--ghost-x:-7px;--tear-x:-5px}
+  [data-blossom-variant="center-flower-tear"]{--fracture-x:8px;--fracture-y:-1px;--ghost-x:7px;--tear-x:-6px;--detached-x:8px;--detached-y:-2px}
+  [data-blossom-variant="left-flower-fracture"]{--fracture-x:-7px;--fracture-y:2px;--ghost-x:-6px;--tear-x:6px;--detached-x:-8px;--detached-y:2px}
+  [data-blossom-variant="upper-buds-echo"]{--fracture-x:6px;--fracture-y:-2px;--ghost-x:8px;--tear-x:-5px;--detached-x:6px;--detached-y:-2px}
+  [data-blossom-variant="right-flower-slice"]{--fracture-x:7px;--fracture-y:1px;--ghost-x:6px;--tear-x:7px;--detached-x:7px;--detached-y:2px}
+  [data-blossom-variant="multi-petal-reconstruction"]{--fracture-x:-6px;--fracture-y:1px;--ghost-x:-8px;--tear-x:-6px;--detached-x:-7px;--detached-y:-1px}
   .feature-card,.selected-project,.homepage-demo-card,.dual-contact article,.website-card,.case-split>article,.architecture-grid,.funnel-evidence,.lab-workbench{border-radius:16px}
   .dual-contact>.shell{gap:12px}
   .footer{padding-block:52px}
