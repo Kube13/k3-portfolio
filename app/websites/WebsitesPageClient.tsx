@@ -25,7 +25,7 @@ export default function WebsitesPageClient() {
         <h1>{w.title}</h1>
         <div><p>{w.intro}</p><div className="actions"><Link className="button primary" href="/services">{w.servicesCta} <span>↘</span></Link><a className="button ghost" href={emailHref}>{w.contactCta} <span>↗</span></a></div></div>
       </div>
-      <p className="demo-disclaimer"><strong>{t.common.demo}</strong>{w.disclaimer}</p>
+      <p className="demo-disclaimer"><strong className="demo-load-label" data-text={t.common.demo}>{t.common.demo}</strong>{w.disclaimer}</p>
     </header>
     <SectionOrnament />
 
@@ -34,7 +34,7 @@ export default function WebsitesPageClient() {
       <div className="website-card-grid">{activeExamples.map((item, index) => {
         const content = <>
           <WebsitePreview slug={item.slug} />
-          <div className="website-card-copy"><div><span>{t.common.demo}</span><b>{String(index + 1).padStart(2, "0")}</b></div><h3>{item.name}</h3><p>{item.body}</p><div className="website-capability-tags">{w.capabilities.map(capability => <span key={capability}>{capability}</span>)}</div><strong>{w.viewDemo} ↗</strong></div>
+          <div className="website-card-copy"><div><span>{t.common.demo}</span><b className="interaction-number" data-text={String(index + 1).padStart(2, "0")}>{String(index + 1).padStart(2, "0")}</b></div><h3>{item.name}</h3><p>{item.body}</p><div className="website-capability-tags">{w.capabilities.map(capability => <span key={capability}>{capability}</span>)}</div><strong>{w.viewDemo} ↗</strong></div>
         </>;
         return <Link className="website-card" href={`/demos/${item.slug}`} key={item.name}>{content}</Link>;
       })}</div>

@@ -8,6 +8,7 @@ import { usePortfolioLanguage } from "./usePortfolioLanguage";
 import { HeroGarden, SakuraBranch, SectionOrnament } from "./decorative/SakuraGeometry";
 import SiteNav from "./SiteNav";
 import { DEBUG_BLOSSOM, HERO_GLITCH_LOOP_MS, HERO_GLITCH_SLOT_MS, useHeroGlitch } from "./useHeroGlitch";
+import { GlitchGroup, GlitchText } from "./GlitchSystem";
 
 const websiteSlugs: WebsitePreviewSlug[] = ["cafe", "restaurant", "law-firm"];
 
@@ -41,18 +42,18 @@ function DataWorkflowPreview({ language }: { language: "en" | "my" }) {
 function ClassificationPreview() {
   return <div className="project-system-preview classification-preview" aria-hidden="true">
     <div className="system-preview-head"><span>CATEGORY CLASSIFICATION</span><span>REPEATABLE PIPELINE</span></div>
-    <div className="classification-flow">
-      <div><small>01</small><b>INPUT</b></div><i>→</i>
-      <div><small>02</small><b>EVALUATE</b></div><i>→</i>
-      <div><small>03</small><b>CLASSIFY</b></div><i>→</i>
-      <div><small>04</small><b>EXPLAIN</b></div>
-    </div>
+    <GlitchGroup className="classification-flow" duration={1100}>
+      <div data-glitch-node data-glitch-step="0"><small>01</small><b data-glitch-label data-text="INPUT">INPUT</b></div><i data-glitch-arrow data-glitch-step="0">→</i>
+      <div data-glitch-node data-glitch-step="1"><small>02</small><b data-glitch-label data-text="EVALUATE">EVALUATE</b></div><i data-glitch-arrow data-glitch-step="1">→</i>
+      <div data-glitch-node data-glitch-step="2"><small>03</small><b data-glitch-label data-text="CLASSIFY">CLASSIFY</b></div><i data-glitch-arrow data-glitch-step="2">→</i>
+      <div data-glitch-node data-glitch-step="3"><small>04</small><b data-glitch-label data-text="EXPLAIN">EXPLAIN</b></div>
+    </GlitchGroup>
   </div>;
 }
 
-function GlitchRole({ children }: { children: string }) {
+function GlitchAccent({ children }: { children: string }) {
   return <>{children.split(/(\s+)/).map((part, index) => {
-    const isTarget = /^(Automation|Product|Builder)$/.test(part);
+    const isTarget = /^systems$/i.test(part);
     if (!isTarget) return part;
 
     return <span className="hero-glitch-word hero-glitch-target" data-text={part} key={`${part}-${index}`}>{part}</span>;
@@ -100,8 +101,8 @@ export default function Home() {
       <div className="eyebrow"><span>{t.hero.eyebrow}</span><span>{t.hero.version}</span></div>
       <div className="hero-grid">
         <div className="hero-copy">
-          <h1 className="hero-role"><GlitchRole>{t.hero.kicker}</GlitchRole></h1>
-          <p className="hero-statement">{t.hero.titleLead}<em>{t.hero.titleAccent}</em></p>
+          <h1 className="hero-role">{t.hero.kicker}</h1>
+          <p className="hero-statement">{t.hero.titleLead}<em><GlitchAccent>{t.hero.titleAccent}</GlitchAccent></em></p>
           <p className="hero-intro">{t.hero.body}</p>
           <div className="actions"><Link className="button primary hero-primary-cta" href="#work"><span className="hero-cta-label" data-text={t.hero.workCta}>{t.hero.workCta}</span><span className="hero-cta-arrow">↘</span></Link><a className="button ghost" href="/k3-cv.html" download>{t.hero.cvCta} <span>↓</span></a></div>
         </div>
@@ -115,7 +116,7 @@ export default function Home() {
       <article className="feature-card">
         <div className="feature-copy">
           <div className="tags"><span>{t.work.flagship}</span><span>{t.work.live}</span></div>
-          <h3>Wisp</h3>
+          <h3><GlitchText type="signal" duration={220}>Wisp</GlitchText></h3>
           <p className="project-role">{t.work.wispRole}</p>
           <p className="lede">{t.work.wispLede}</p>
           <p>{t.work.wispBody}</p>

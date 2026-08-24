@@ -5,6 +5,7 @@ import FreelanceNav from "../FreelanceNav";
 import { freelanceCopy } from "../freelance-copy";
 import { usePortfolioLanguage } from "../usePortfolioLanguage";
 import { SakuraBranch, SectionOrnament } from "../decorative/SakuraGeometry";
+import { GlitchGroup, GlitchText } from "../GlitchSystem";
 
 const emailHref = "mailto:kgkhant456@gmail.com?subject=Website%20project%20enquiry";
 
@@ -20,7 +21,7 @@ export default function ServicesPageClient() {
       <SakuraBranch className="subpage-sakura" />
       <span className="index">{s.eyebrow}</span>
       <div className="subpage-hero-grid">
-        <h1>{s.title}</h1>
+        <h1>{language === "en" ? <><GlitchText type="data" trigger="load" duration={220} delay={320} corruptText="Prac_ical">Practical</GlitchText>{s.title.slice("Practical".length)}</> : s.title}</h1>
         <div><p>{s.intro}</p><div className="actions"><Link className="button primary" href="/websites">{s.examplesCta} <span>↘</span></Link><a className="button ghost" href={emailHref}>{s.contactCta} <span>↗</span></a></div></div>
       </div>
       <div className="independent-note"><i /><span>{t.common.availability}</span><strong>YANGON / REMOTE</strong></div>
@@ -29,18 +30,23 @@ export default function ServicesPageClient() {
 
     <section className="subpage-section shell" aria-labelledby="services-list-title">
       <div className="subpage-section-head"><div><span className="index">{s.sectionLabel}</span><h2 id="services-list-title">{s.sectionTitle}</h2></div><p>{s.sectionIntro}</p></div>
-      <div className="service-card-grid">{s.categories.map((item, index) => <article key={item.title}><span>{String(index + 1).padStart(2, "0")}</span><h3>{item.title}</h3><p>{item.body}</p></article>)}</div>
+      <div className="service-card-grid">{s.categories.map((item, index) => {
+        const number = String(index + 1).padStart(2, "0");
+        return <article key={item.title} tabIndex={0}><span className="interaction-number" data-text={number}>{number}</span><h3>{item.title}</h3><p>{item.body}</p></article>;
+      })}</div>
     </section>
 
     <section className="foundation-band"><div className="shell foundation-grid"><div><span className="index">{s.includedLabel}</span><h2>{s.includedTitle}</h2></div><ul>{s.included.map(item => <li key={item}><span aria-hidden="true">✓</span>{item}</li>)}</ul></div></section>
 
     <section className="subpage-section shell" aria-labelledby="service-process-title">
       <div className="subpage-section-head compact"><div><span className="index">{s.processLabel}</span><h2 id="service-process-title">{s.processTitle}</h2></div></div>
-      <ol className="service-process">{s.process.map((item, index) => <li key={item.step}><span>{String(index + 1).padStart(2, "0")}</span><h3>{item.step}</h3><p>{item.body}</p></li>)}</ol>
+      <GlitchGroup className="service-process-trigger" duration={1050}>
+        <ol className="service-process">{s.process.map((item, index) => <li key={item.step} data-glitch-node data-glitch-step={index}><span>{String(index + 1).padStart(2, "0")}</span><h3 data-glitch-label data-text={item.step}>{item.step}</h3><p>{item.body}</p></li>)}</ol>
+      </GlitchGroup>
       <p className="scope-note">{s.boundary}</p>
     </section>
 
-    <section className="subpage-cta"><div className="shell"><div><span className="index">{t.nav.contact}</span><h2>{s.finalTitle}</h2></div><div><p>{s.finalBody}</p><a className="button light" href={emailHref}>{t.common.email} <span>↗</span></a><Link className="cta-secondary" href="/websites">{s.examplesCta} <span>→</span></Link></div></div></section>
+    <section className="subpage-cta"><div className="shell"><div><span className="index">{t.nav.contact}</span><h2>{s.finalTitle}</h2></div><div><p>{s.finalBody}</p><a className="button light micro-transmission-cta" href={emailHref}>{t.common.email} <span>↗</span></a><Link className="cta-secondary" href="/websites">{s.examplesCta} <span>→</span></Link></div></div></section>
     <footer className="footer shell"><SakuraBranch className="footer-branch" /><Link className="brand" href="/"><span>K3LABS</span><i /></Link><p>Data Analyst · Automation Engineer · Product Builder</p><div><Link href="/services">{t.nav.services}</Link><Link href="/websites">{t.nav.websites}</Link><a href="mailto:kgkhant456@gmail.com">Email</a></div><small>© 2026 K3Labs · Yangon, Myanmar.</small></footer>
   </main>;
 }

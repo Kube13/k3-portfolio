@@ -5,6 +5,7 @@ import "./iso-theme.css";
 import "./freelance.css";
 import "./portfolio-refresh.css";
 import "./sakura.css";
+import "./glitch-system.css";
 import { defaultMetadata, siteConfig } from "./site";
 
 export const metadata: Metadata = {

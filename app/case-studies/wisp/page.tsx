@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import WispMotionPreview from "../../WispMotionPreview";
 import { siteConfig } from "../../site";
 import { GeometricDivider, SakuraBranch, SectionOrnament } from "../../decorative/SakuraGeometry";
+import { GlitchGroup, GlitchText } from "../../GlitchSystem";
 
 const title = "Wisp Case Study | Product Analytics, AI & Automation | K3";
 const description = "How I designed and built Wisp Guide, a psychology-focused product combining behavioral logic, product analytics, automation, localization and applied AI.";
@@ -54,9 +55,10 @@ export default function WispCaseStudy() {
     <header className="case-hero shell">
       <SakuraBranch className="case-hero-sakura" />
       <span>WISP GUIDE · FLAGSHIP CASE STUDY · 2026</span>
-      <h1>Wisp</h1>
+      <h1><GlitchText type="signal" trigger="load" duration={260} delay={260}>Wisp</GlitchText></h1>
       <p>Building a bilingual psychology product from behavioral logic to a measurable, deployable system.</p>
       <div><b>ROLE</b> Product owner · Product analytics · UX · Systems · Build</div>
+      <div className="case-telemetry"><GlitchText type="telemetry" trigger="load" duration={240} delay={620} corruptText="23 QUESTI0NS · 2 LANGUAGES">23 QUESTIONS · 2 LANGUAGES</GlitchText></div>
       <div className="case-snapshot">FUNNEL SNAPSHOT · AUGUST 2026 · HISTORICAL, NOT REAL-TIME</div>
     </header>
 
@@ -81,12 +83,12 @@ export default function WispCaseStudy() {
     <section className="case-diagram shell" aria-labelledby="architecture-title">
       <span>05 · SYSTEM ARCHITECTURE</span>
       <h2 id="architecture-title">A product chain with explicit responsibilities.</h2>
-      <div className="architecture-grid" role="img" aria-label="Architecture flow from bilingual React interface through FastAPI logic and SQLite data to Cloudflare and secured VPS delivery">
-        <article><span>INTERFACE</span><strong>React · EN / MY</strong><small>Assessment, results, account and payment journeys</small></article><i>→</i>
-        <article><span>APPLICATION</span><strong>Python · FastAPI</strong><small>Behavior logic, controlled personalization and API services</small></article><i>→</i>
-        <article><span>OWNERSHIP</span><strong>SQLite · Auth</strong><small>User access, results, analytics events and operations</small></article><i>→</i>
-        <article><span>DELIVERY</span><strong>Cloudflare · VPS</strong><small>Public delivery and secured release workflow</small></article>
-      </div>
+      <GlitchGroup className="architecture-grid" duration={1300} role="img" ariaLabel="Architecture flow from bilingual React interface through FastAPI logic and SQLite data to Cloudflare and secured VPS delivery">
+        <article data-glitch-node data-glitch-step="0"><span data-glitch-label data-text="INTERFACE">INTERFACE</span><strong>React · EN / MY</strong><small>Assessment, results, account and payment journeys</small></article><i data-glitch-arrow data-glitch-step="0">→</i>
+        <article data-glitch-node data-glitch-step="1"><span data-glitch-label data-text="APPLICATION">APPLICATION</span><strong>Python · FastAPI</strong><small>Behavior logic, controlled personalization and API services</small></article><i data-glitch-arrow data-glitch-step="1">→</i>
+        <article data-glitch-node data-glitch-step="2"><span data-glitch-label data-text="OWNERSHIP">OWNERSHIP</span><strong>SQLite · Auth</strong><small>User access, results, analytics events and operations</small></article><i data-glitch-arrow data-glitch-step="2">→</i>
+        <article data-glitch-node data-glitch-step="3"><span data-glitch-label data-text="DELIVERY">DELIVERY</span><strong>Cloudflare · VPS</strong><small>Public delivery and secured release workflow</small></article>
+      </GlitchGroup>
     </section>
 
     <section className="case-section shell" aria-label="Decision logic and AI personalization"><div className="case-split">
@@ -98,12 +100,12 @@ export default function WispCaseStudy() {
       <span>PRODUCT ANALYTICS · AUGUST 2026 SNAPSHOT</span>
       <h2 id="analytics-title">The funnel shows where users progressed.</h2>
       <p className="case-section-copy">These verified historical counts provide iteration evidence. They are presented as a dated snapshot and are not implied to be live metrics.</p>
-      <div className="funnel-evidence">
-        <article><strong>101</strong><span>STARTED</span></article><i>→</i>
-        <article><strong>70</strong><span>COMPLETED</span></article><i>→</i>
-        <article><strong>69.3%</strong><span>START-TO-COMPLETE</span></article><i>→</i>
-        <article><strong>8</strong><span>PURCHASE REQUESTS</span></article>
-      </div>
+      <GlitchGroup className="funnel-evidence metric-sequence" type="metric" duration={1450} role="img" ariaLabel="Wisp funnel: 101 starts, 70 completions, 69.3 percent completion rate, and 8 purchase requests">
+        <article data-glitch-node data-glitch-step="0"><strong data-glitch-label data-text="101">101</strong><span>STARTED</span></article><i data-glitch-arrow data-glitch-step="0">→</i>
+        <article data-glitch-node data-glitch-step="1"><strong data-glitch-label data-text="70">70</strong><span>COMPLETED</span></article><i data-glitch-arrow data-glitch-step="1">→</i>
+        <article data-glitch-node data-glitch-step="2"><strong data-glitch-label data-text="69.3%">69.3%</strong><span>START-TO-COMPLETE</span></article><i data-glitch-arrow data-glitch-step="2">→</i>
+        <article data-glitch-node data-glitch-step="3"><strong data-glitch-label data-text="8">8</strong><span>PURCHASE REQUESTS</span></article>
+      </GlitchGroup>
     </section>
 
     <section className="case-section shell case-section-orbit" aria-label="Operations, ownership, localization and delivery"><div className="case-story">

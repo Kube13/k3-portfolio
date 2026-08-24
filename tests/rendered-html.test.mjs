@@ -3,8 +3,9 @@ import { createHash } from "node:crypto";
 import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import test from "node:test";
+import { fileURLToPath } from "node:url";
 
-const outDir = new URL("../out/", import.meta.url);
+const outDir = fileURLToPath(new URL("../out/", import.meta.url));
 const requiredRoutes = [
   "index.html",
   "services/index.html",
@@ -17,16 +18,16 @@ const requiredRoutes = [
   "demos/shop/index.html",
 ];
 
-const readRoute = route => readFileSync(join(outDir.pathname, route), "utf8");
+const readRoute = route => readFileSync(join(outDir, route), "utf8");
 
 test("exports every public portfolio route", () => {
   for (const route of requiredRoutes) {
-    assert.equal(existsSync(join(outDir.pathname, route)), true, route);
+    assert.equal(existsSync(join(outDir, route)), true, route);
   }
 });
 
 test("exports SEO metadata and static discovery files", () => {
-  const homepage = readFileSync(join(outDir.pathname, "index.html"), "utf8");
+  const homepage = readFileSync(join(outDir, "index.html"), "utf8");
 
   assert.match(homepage, /Data Analyst &amp; Automation Engineer · Product Builder/);
   assert.match(homepage, /<meta property="og:title"/);
@@ -34,10 +35,10 @@ test("exports SEO metadata and static discovery files", () => {
   assert.match(homepage, /https:\/\/k3labs\.me/);
   assert.match(homepage, /application\/ld\+json/);
 
-  assert.equal(existsSync(join(outDir.pathname, "robots.txt")), true);
-  assert.equal(existsSync(join(outDir.pathname, "sitemap.xml")), true);
-  assert.equal(existsSync(join(outDir.pathname, "k3-cv.html")), true);
-  assert.equal(existsSync(join(outDir.pathname, "datacamp-python-data-associate.pdf")), true);
+  assert.equal(existsSync(join(outDir, "robots.txt")), true);
+  assert.equal(existsSync(join(outDir, "sitemap.xml")), true);
+  assert.equal(existsSync(join(outDir, "k3-cv.html")), true);
+  assert.equal(existsSync(join(outDir, "datacamp-python-data-associate.pdf")), true);
 });
 
 test("exports descriptive case-study metadata and dated Wisp evidence", () => {
@@ -113,14 +114,48 @@ test("keeps case-study evidence and sparse geometric transitions", () => {
   assert.match(lab, /case-section shell case-section-orbit/);
 });
 
+test("exports the scoped site-wide glitch system on every requested route", () => {
+  const homepage = readRoute("index.html");
+  const wisp = readRoute("case-studies/wisp/index.html");
+  const lab = readRoute("case-studies/personal-intelligence-lab/index.html");
+  const services = readRoute("services/index.html");
+  const websites = readRoute("websites/index.html");
+  const demos = ["cafe", "restaurant", "law-firm", "shop"].map(slug => readRoute(`demos/${slug}/index.html`));
+  const cssDir = join(outDir, "_next/static/css");
+  const css = readdirSync(cssDir).filter(file => file.endsWith(".css")).map(file => readFileSync(join(cssDir, file), "utf8")).join("\n");
+
+  assert.match(homepage, /system-glitch-group system-glitch-transmission classification-flow/);
+  assert.match(homepage, /system-glitch-text system-glitch-signal[^>]*data-text="Wisp"/);
+  assert.match(wisp, /23 QUESTIONS · 2 LANGUAGES/);
+  assert.match(wisp, /system-glitch-group system-glitch-transmission architecture-grid/);
+  assert.match(wisp, /system-glitch-group system-glitch-metric funnel-evidence metric-sequence/);
+  assert.match(lab, /data-corrupt="Inte▓ligence"/);
+  assert.match(lab, /data-corrupt="01—17"/);
+  assert.match(lab, /system-glitch-group system-glitch-data architecture-grid lab-pipeline/);
+  assert.match(services, /data-corrupt="Prac_ical"/);
+  assert.match(services, /class="interaction-number" data-text="01"/);
+  assert.match(services, /system-glitch-group system-glitch-transmission service-process-trigger/);
+  assert.match(services, /button light micro-transmission-cta/);
+  assert.match(websites, /class="demo-load-label" data-text="CONCEPT \/ DEMO"/);
+  assert.equal((websites.match(/class="interaction-number" data-text=/g) ?? []).length, 4);
+  for (const demo of demos) assert.match(demo, /class="concept-art"><b data-text="[NSAF]"/);
+
+  assert.match(css, /@keyframes system-signal-upper/);
+  assert.match(css, /@keyframes system-data-mask/);
+  assert.match(css, /@keyframes sequence-signal/);
+  assert.match(css, /@keyframes interaction-split/);
+  assert.match(css, /@keyframes demo-signature-load/);
+  assert.match(css, /prefers-reduced-motion:reduce[^}]*[\s\S]*\.system-glitch-text:before/);
+});
+
 test("does not export placeholder production links", () => {
-  const publicPages = requiredRoutes.map(route => readFileSync(join(outDir.pathname, route), "utf8")).join("\n");
+  const publicPages = requiredRoutes.map(route => readFileSync(join(outDir, route), "utf8")).join("\n");
   assert.doesNotMatch(publicPages, /chatgpt\.site|hello@yourdomain\.me|hello@yourbusiness\.com/);
 });
 
 test("internal links and hash targets resolve in the static export", () => {
   for (const route of requiredRoutes) {
-    const sourcePath = join(outDir.pathname, route);
+    const sourcePath = join(outDir, route);
     const html = readFileSync(sourcePath, "utf8");
     const hrefs = [...html.matchAll(/href="([^"]+)"/g)].map(match => match[1]);
 
@@ -131,9 +166,9 @@ test("internal links and hash targets resolve in the static export", () => {
 
       if (rawPath) {
         const cleanPath = rawPath.replace(/^\//, "").replace(/\/$/, "");
-        targetPath = cleanPath === "" ? join(outDir.pathname, "index.html") : cleanPath.includes(".")
-          ? join(outDir.pathname, cleanPath)
-          : join(outDir.pathname, cleanPath, "index.html");
+        targetPath = cleanPath === "" ? join(outDir, "index.html") : cleanPath.includes(".")
+          ? join(outDir, cleanPath)
+          : join(outDir, cleanPath, "index.html");
       }
 
       assert.equal(existsSync(targetPath), true, `${route}: ${href}`);
@@ -148,9 +183,9 @@ test("internal links and hash targets resolve in the static export", () => {
 test("exports the geometric sakura theme and accessible decorative system", () => {
   const homepage = readRoute("index.html");
   const heroArtwork = homepage.match(/<svg class="hero-garden-art"[\s\S]*?<\/svg>/)?.[0] ?? "";
-  const cssDir = join(outDir.pathname, "_next/static/css");
+  const cssDir = join(outDir, "_next/static/css");
   const css = readdirSync(cssDir).filter(file => file.endsWith(".css")).map(file => readFileSync(join(cssDir, file), "utf8")).join("\n");
-  const ogImage = readFileSync(join(outDir.pathname, "og-image.svg"), "utf8");
+  const ogImage = readFileSync(join(outDir, "og-image.svg"), "utf8");
 
   assert.match(homepage, /hero-garden/);
   assert.match(homepage, /Exact Concept 3 pixel-art sakura branch with four blossoms/);
@@ -196,9 +231,9 @@ test("exports the geometric sakura theme and accessible decorative system", () =
 test("exports the exact Concept 3 PNG with temporary controlled glitch layers", () => {
   const homepage = readRoute("index.html");
   const heroArtwork = homepage.match(/<svg class="hero-garden-art"[\s\S]*?<\/svg>/)?.[0] ?? "";
-  const cssDir = join(outDir.pathname, "_next/static/css");
+  const cssDir = join(outDir, "_next/static/css");
   const css = readdirSync(cssDir).filter(file => file.endsWith(".css")).map(file => readFileSync(join(cssDir, file), "utf8")).join("\n");
-  const asset = readFileSync(join(outDir.pathname, "k3_concept3_blossom_transparent.png"));
+  const asset = readFileSync(join(outDir, "k3_concept3_blossom_transparent.png"));
   const assetHash = createHash("sha256").update(asset).digest("hex");
   const assetImages = [...heroArtwork.matchAll(/<image[^>]+href="\/k3_concept3_blossom_transparent\.png"[^>]*>/g)].map(match => match[0]);
 
@@ -228,8 +263,8 @@ test("exports the exact Concept 3 PNG with temporary controlled glitch layers", 
   assert.match(homepage, /class="button primary hero-primary-cta"/);
   assert.match(homepage, /class="hero-cta-label" data-text=/);
   assert.match(homepage, /class="hero-cta-arrow"/);
-  assert.match(homepage, /class="hero-glitch-word hero-glitch-target" data-text="Automation"/);
-  assert.match(homepage, /class="hero-glitch-word hero-glitch-target" data-text="Product"/);
+  assert.match(homepage, /class="hero-glitch-word hero-glitch-target" data-text="systems"/);
+  assert.doesNotMatch(homepage, /class="hero-glitch-word hero-glitch-target" data-text="Automation"/);
   assert.match(css, /@keyframes concept3-asset-tear-a/);
   assert.match(css, /@keyframes concept3-asset-tear-b/);
   assert.match(css, /@keyframes concept3-asset-ghost/);
@@ -255,7 +290,7 @@ test("exports the exact Concept 3 PNG with temporary controlled glitch layers", 
 });
 
 test("exports responsive navigation and overflow safeguards without root masking", () => {
-  const cssDir = join(outDir.pathname, "_next/static/css");
+  const cssDir = join(outDir, "_next/static/css");
   const css = readdirSync(cssDir).filter(file => file.endsWith(".css")).map(file => readFileSync(join(cssDir, file), "utf8")).join("\n");
 
   assert.match(css, /\.site-nav-menu\[hidden\]\{display:none\}/);

@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { siteConfig } from "../../site";
 import { GeometricDivider, SakuraBranch, SectionOrnament } from "../../decorative/SakuraGeometry";
+import { GlitchGroup, GlitchText } from "../../GlitchSystem";
 
 const title = "Personal Intelligence Lab | Data Analytics Case Study | K3";
 const description = "A data analytics case study covering data quality profiling, cleaning, transformation, exploratory analysis and decision-ready reporting.";
@@ -65,7 +66,7 @@ export default function PersonalIntelligenceLabCaseStudy() {
     <header className="case-hero shell">
       <SakuraBranch className="case-hero-sakura" />
       <span>DATA ANALYTICS CASE STUDY · SYSTEM IN DEVELOPMENT</span>
-      <h1>Personal<br />Intelligence Lab</h1>
+      <h1>Personal<br /><GlitchText type="data" trigger="load" duration={280} delay={280} corruptText="Inte▓ligence">Intelligence</GlitchText> Lab</h1>
       <p>A guided analytical workspace for moving from an unfamiliar dataset to evidence that is ready to support a decision.</p>
       <div><b>ROLE</b> Data workflow design · Analysis · Product build</div>
       <div className="lab-status" aria-label="Project status">
@@ -77,9 +78,9 @@ export default function PersonalIntelligenceLabCaseStudy() {
     <SectionOrnament />
 
     <section className="case-visual"><div className="shell">
-      <div className="case-visual-head"><div><span className="case-section-label">ANALYTICAL WORKBENCH</span><h2>Quality before conclusions.</h2></div><p>This code-derived workflow view describes the current product direction. It intentionally contains no fabricated dataset values, dashboard results, or performance claims.</p></div>
+      <div className="case-visual-head"><div><span className="case-section-label">ANALYTICAL WORKBENCH</span><h2><GlitchText type="data" duration={260} corruptText="Qua▓ity">Quality</GlitchText> before conclusions.</h2></div><p>This code-derived workflow view describes the current product direction. It intentionally contains no fabricated dataset values, dashboard results, or performance claims.</p></div>
       <div className="lab-workbench" role="img" aria-label="Personal Intelligence Lab workflow showing dataset profiling, quality review, cleaning, analysis, KPIs and reporting">
-        <aside><span>ANALYSIS WORKFLOW · 01—10</span><ol>{workflow.map((step, index) => <li key={step}><b>{String(index + 1).padStart(2, "0")}</b>{step}</li>)}</ol></aside>
+        <aside><span>ANALYSIS WORKFLOW · <GlitchText type="telemetry" duration={320} corruptText="01—17">01—10</GlitchText></span><ol>{workflow.map((step, index) => <li key={step}><b>{String(index + 1).padStart(2, "0")}</b>{step}</li>)}</ol></aside>
         <div className="lab-workbench-main">
           <div className="lab-workbench-head"><span>DATA QUALITY PROFILE</span><span>REVIEW STATE · NO SAMPLE VALUES</span></div>
           <div className="lab-profile-grid"><div><span>SCHEMA</span><strong>Types & grain</strong></div><div><span>COMPLETENESS</span><strong>Missing-value review</strong></div><div><span>UNIQUENESS</span><strong>Duplicate review</strong></div></div>
@@ -97,12 +98,12 @@ export default function PersonalIntelligenceLabCaseStudy() {
     <section className="case-diagram shell" aria-labelledby="lab-flow-title">
       <span>ANALYSIS FLOW</span>
       <h2 id="lab-flow-title">From source context to a decision-ready report.</h2>
-      <div className="architecture-grid" role="img" aria-label="Analytics flow from raw data through profiling and preparation to analysis and reporting">
-        <article><span>INGEST</span><strong>Raw data</strong><small>Source, schema, grain, assumptions</small></article><i>→</i>
-        <article><span>VALIDATE</span><strong>Quality profile</strong><small>Types, missingness, duplicates, suspicious values</small></article><i>→</i>
-        <article><span>ANALYZE</span><strong>EDA & KPIs</strong><small>Patterns, segments, definitions, context</small></article><i>→</i>
-        <article><span>COMMUNICATE</span><strong>Decision-ready report</strong><small>Answer, evidence, caveats, next action</small></article>
-      </div>
+      <GlitchGroup className="architecture-grid lab-pipeline" type="data" duration={1550} role="img" ariaLabel="Analytics flow from raw data through profiling and preparation to analysis and reporting">
+        <article data-glitch-node data-glitch-step="0"><span data-glitch-label data-text="INGEST">INGEST</span><strong>Raw data</strong><small>Source, schema, grain, assumptions</small></article><i data-glitch-arrow data-glitch-step="0">→</i>
+        <article data-glitch-node data-glitch-step="1"><span data-glitch-label data-text="VALIDATE">VALIDATE</span><strong>Quality profile</strong><small>Types, missingness, duplicates, suspicious values</small></article><i data-glitch-arrow data-glitch-step="1">→</i>
+        <article data-glitch-node data-glitch-step="2"><span data-glitch-label data-text="ANALYZE">ANALYZE</span><strong>EDA & KPIs</strong><small>Patterns, segments, definitions, context</small></article><i data-glitch-arrow data-glitch-step="2">→</i>
+        <article data-glitch-node data-glitch-step="3"><span data-glitch-label data-text="COMMUNICATE">COMMUNICATE</span><strong>Decision-ready report</strong><small>Answer, evidence, caveats, next action</small></article>
+      </GlitchGroup>
     </section>
 
     <section className="case-result"><div className="shell case-result-grid">
