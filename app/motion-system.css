@@ -1,0 +1,141 @@
+/* K3Labs three-layer motion system: ambient -> interaction -> signature glitch. */
+
+/* Layer 1 — Ambient motion: slow, low-contrast movement that keeps the page alive. */
+.hero-garden{animation:k3-ambient-float 9s ease-in-out infinite;transform-origin:50% 54%;will-change:transform}
+.hero-garden-wind{animation:k3-wind-drift 7s ease-in-out infinite alternate;transform-origin:center}
+.hero-garden-disc{animation:k3-disc-breathe 8s ease-in-out infinite;transform-origin:center}
+.sakura-branch{animation:k3-branch-drift 11s ease-in-out infinite alternate;transform-origin:50% 50%}
+.section-ornament .sakura-flower{animation:k3-flower-pulse 6.5s ease-in-out infinite;transform-origin:center}
+.capability-thread i{animation:k3-thread-pulse 3.8s ease-in-out infinite}
+.capability-thread i:nth-child(2){animation-delay:.9s}
+
+@keyframes k3-ambient-float{
+  0%,100%{transform:translate3d(0,0,0) rotate(0)}
+  50%{transform:translate3d(0,-7px,0) rotate(.18deg)}
+}
+@keyframes k3-wind-drift{
+  from{transform:translate3d(-3px,0,0);opacity:.64}
+  to{transform:translate3d(5px,-1px,0);opacity:.92}
+}
+@keyframes k3-disc-breathe{
+  0%,100%{transform:scale(1);opacity:.92}
+  50%{transform:scale(1.018);opacity:1}
+}
+@keyframes k3-branch-drift{
+  from{transform:translate3d(-2px,1px,0)}
+  to{transform:translate3d(4px,-2px,0)}
+}
+@keyframes k3-flower-pulse{
+  0%,100%{transform:scale(1) rotate(0)}
+  50%{transform:scale(1.045) rotate(.8deg)}
+}
+@keyframes k3-thread-pulse{
+  0%,100%{opacity:.38;transform:scale(1)}
+  50%{opacity:.9;transform:scale(1.12)}
+}
+
+/* Layer 2 — Interaction motion: cards, buttons and links react with depth and direction. */
+.feature-card,.selected-project,.homepage-demo-card,.cap-grid article{
+  transition:transform .34s cubic-bezier(.2,.8,.2,1),border-color .24s ease,box-shadow .34s ease,background-color .24s ease;
+  transform:translateZ(0);
+}
+.feature-card:hover,.feature-card:focus-within{
+  transform:translate3d(0,-5px,0);
+  box-shadow:0 24px 64px rgba(58,35,92,.14);
+}
+.selected-project:hover,.selected-project:focus-within,.homepage-demo-card:hover,.homepage-demo-card:focus-visible,.cap-grid article:hover,.cap-grid article:focus-within{
+  transform:translate3d(0,-6px,0);
+  box-shadow:0 18px 42px rgba(58,35,92,.12);
+}
+.selected-project-visual,.homepage-demo-card>*:first-child,.feature-visual{
+  transition:transform .42s cubic-bezier(.2,.8,.2,1),filter .32s ease;
+}
+.selected-project:hover .selected-project-visual,.homepage-demo-card:hover>*:first-child,.feature-card:hover .feature-visual{
+  transform:translate3d(0,-2px,0) scale(1.008);
+}
+.button,.text-link,.card-link,.section-route-link,.contact-link{
+  transition:transform .2s cubic-bezier(.2,.8,.2,1),border-color .2s ease,background-color .2s ease,color .2s ease,box-shadow .2s ease;
+}
+.button:hover,.button:focus-visible,.text-link:hover,.text-link:focus-visible,.card-link:hover,.card-link:focus-visible,.section-route-link:hover,.section-route-link:focus-visible,.contact-link:hover,.contact-link:focus-visible{
+  transform:translate3d(0,-2px,0);
+}
+.button:active,.text-link:active,.card-link:active{transform:translate3d(0,0,0) scale(.985)}
+.button span,.text-link span,.card-link span,.section-route-link span,.contact-link span{display:inline-block;transition:transform .2s cubic-bezier(.2,.8,.2,1)}
+.button:hover span,.text-link:hover span,.card-link:hover span,.section-route-link:hover span,.contact-link:hover span{transform:translate3d(3px,0,0)}
+
+/* Layer 3 — Signature glitch: brief system-fracture events tied to the existing controller. */
+main[data-glitch-active="true"] .hero-glitch-target{
+  position:relative;
+  isolation:isolate;
+  text-shadow:3px 0 rgba(183,156,255,.68),-3px 0 rgba(182,93,120,.45);
+}
+main[data-glitch-active="true"] .hero-glitch-target::before,
+main[data-glitch-active="true"] .hero-glitch-target::after{
+  content:attr(data-text);
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+}
+main[data-glitch-active="true"] .hero-glitch-target::before{
+  color:var(--k3-lavender,#b79cff);
+  clip-path:inset(7% 0 56% 0);
+  animation:k3-signature-slice-upper .18s steps(1,end) both;
+}
+main[data-glitch-active="true"] .hero-glitch-target::after{
+  color:#b65d78;
+  clip-path:inset(58% 0 8% 0);
+  animation:k3-signature-slice-lower .22s steps(1,end) both;
+}
+main[data-glitch-stage="text"][data-glitch-phase="primary"] .hero-statement{
+  animation:k3-signature-jump .24s steps(1,end) both;
+}
+main[data-glitch-stage="button"][data-glitch-phase="primary"] .hero-primary-cta{
+  animation:k3-button-fracture .28s steps(1,end) both;
+}
+main[data-glitch-stage="blossom"][data-glitch-phase="primary"] .hero-garden{
+  filter:drop-shadow(4px 0 rgba(183,156,255,.28)) drop-shadow(-3px 0 rgba(182,93,120,.18));
+}
+
+@keyframes k3-signature-slice-upper{
+  0%,100%{opacity:0;transform:translate3d(0,0,0)}
+  18%{opacity:.92;transform:translate3d(6px,-1px,0)}
+  42%{opacity:.62;transform:translate3d(-4px,0,0)}
+  64%{opacity:.34;transform:translate3d(2px,1px,0)}
+  82%{opacity:0;transform:translate3d(0,0,0)}
+}
+@keyframes k3-signature-slice-lower{
+  0%,14%,100%{opacity:0;transform:translate3d(0,0,0)}
+  28%{opacity:.74;transform:translate3d(-5px,1px,0)}
+  52%{opacity:.44;transform:translate3d(3px,0,0)}
+  76%{opacity:.12;transform:translate3d(-1px,0,0)}
+}
+@keyframes k3-signature-jump{
+  0%,100%{transform:translate3d(0,0,0)}
+  24%{transform:translate3d(2px,0,0)}
+  45%{transform:translate3d(-3px,1px,0)}
+  67%{transform:translate3d(1px,-1px,0)}
+}
+@keyframes k3-button-fracture{
+  0%,100%{transform:translate3d(0,0,0);box-shadow:none}
+  28%{transform:translate3d(3px,0,0);box-shadow:-5px 0 0 rgba(183,156,255,.36)}
+  52%{transform:translate3d(-2px,0,0);box-shadow:4px 0 0 rgba(182,93,120,.24)}
+  76%{transform:translate3d(1px,0,0);box-shadow:none}
+}
+
+/* Keep the system calm on touch-sized screens and fully respect reduced motion. */
+@media(max-width:720px){
+  .hero-garden{animation-duration:11s}
+  .feature-card:hover,.selected-project:hover,.homepage-demo-card:hover,.cap-grid article:hover{transform:none;box-shadow:none}
+  main[data-glitch-active="true"] .hero-glitch-target{text-shadow:2px 0 rgba(183,156,255,.5),-2px 0 rgba(182,93,120,.32)}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .hero-garden,.hero-garden-wind,.hero-garden-disc,.sakura-branch,.section-ornament .sakura-flower,.capability-thread i,
+  .feature-card,.selected-project,.homepage-demo-card,.cap-grid article,.selected-project-visual,.homepage-demo-card>*:first-child,.feature-visual,
+  .button,.text-link,.card-link,.section-route-link,.contact-link,.button span,.text-link span,.card-link span,.section-route-link span,.contact-link span,
+  main[data-glitch-active="true"] .hero-glitch-target,main[data-glitch-active="true"] .hero-glitch-target::before,main[data-glitch-active="true"] .hero-glitch-target::after,
+  main[data-glitch-stage="text"][data-glitch-phase="primary"] .hero-statement,main[data-glitch-stage="button"][data-glitch-phase="primary"] .hero-primary-cta{
+    animation:none!important;transition:none!important;transform:none!important;filter:none!important;text-shadow:none!important;box-shadow:none!important;
+  }
+  main[data-glitch-active="true"] .hero-glitch-target::before,main[data-glitch-active="true"] .hero-glitch-target::after{display:none!important}
+}
