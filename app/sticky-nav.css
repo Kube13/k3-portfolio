@@ -1,0 +1,27 @@
+/* Persistent portfolio navigation */
+.site-header{
+  position:sticky;
+  top:0;
+  z-index:1000;
+  background:rgba(248,245,255,.9);
+  backdrop-filter:blur(18px) saturate(135%);
+  -webkit-backdrop-filter:blur(18px) saturate(135%);
+  border-bottom:1px solid rgba(77,58,108,.12);
+}
+.site-header .nav{
+  border-bottom:0;
+}
+
+/* Avoid anchor targets hiding beneath the sticky header. */
+#top,#work,#capabilities,#websites,#about,#contact{
+  scroll-margin-top:96px;
+}
+
+@media(max-width:850px){
+  .site-header{
+    background:rgba(248,245,255,.94);
+  }
+  #top,#work,#capabilities,#websites,#about,#contact{
+    scroll-margin-top:88px;
+  }
+}
