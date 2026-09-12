@@ -3,13 +3,41 @@
   position:sticky;
   top:0;
   z-index:1000;
-  background:rgba(248,245,255,.9);
-  backdrop-filter:blur(18px) saturate(135%);
-  -webkit-backdrop-filter:blur(18px) saturate(135%);
-  border-bottom:1px solid rgba(77,58,108,.12);
+  background:rgba(248,245,255,.86);
+  backdrop-filter:blur(16px) saturate(128%);
+  -webkit-backdrop-filter:blur(16px) saturate(128%);
+  border-bottom:1px solid rgba(77,58,108,.10);
+  box-shadow:0 1px 0 rgba(77,58,108,.02);
+  transition:background-color .28s ease,border-color .28s ease,box-shadow .28s ease,backdrop-filter .28s ease;
 }
 .site-header .nav{
   border-bottom:0;
+}
+
+/* Progressive enhancement: the header gains separation as the page scrolls. */
+@supports (animation-timeline:scroll()){
+  .site-header{
+    animation:k3-sticky-nav-scroll linear both;
+    animation-timeline:scroll(root block);
+    animation-range:0 220px;
+  }
+}
+
+@keyframes k3-sticky-nav-scroll{
+  from{
+    background:rgba(248,245,255,.76);
+    backdrop-filter:blur(10px) saturate(118%);
+    -webkit-backdrop-filter:blur(10px) saturate(118%);
+    border-bottom-color:rgba(77,58,108,.08);
+    box-shadow:0 0 0 rgba(38,22,67,0);
+  }
+  to{
+    background:rgba(248,245,255,.96);
+    backdrop-filter:blur(22px) saturate(142%);
+    -webkit-backdrop-filter:blur(22px) saturate(142%);
+    border-bottom-color:rgba(77,58,108,.16);
+    box-shadow:0 10px 30px rgba(38,22,67,.07);
+  }
 }
 
 /* Avoid anchor targets hiding beneath the sticky header. */
@@ -19,9 +47,19 @@
 
 @media(max-width:850px){
   .site-header{
-    background:rgba(248,245,255,.94);
+    background:rgba(248,245,255,.93);
   }
   #top,#work,#capabilities,#websites,#about,#contact{
     scroll-margin-top:88px;
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  .site-header{
+    animation:none!important;
+    transition:none!important;
+    background:rgba(248,245,255,.96);
+    backdrop-filter:blur(20px) saturate(135%);
+    -webkit-backdrop-filter:blur(20px) saturate(135%);
   }
 }
