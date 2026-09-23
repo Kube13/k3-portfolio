@@ -98,7 +98,7 @@ export default function Home() {
     />
 
     <header className="hero hero-focused shell" id="top">
-      <div className="eyebrow"><span>{t.hero.eyebrow}</span><span>{t.hero.version}</span></div>
+      <div className="eyebrow"><span>{t.hero.eyebrow}</span></div>
       <div className="hero-grid">
         <div className="hero-copy">
           <h1 className="hero-role">{t.hero.kicker}</h1>
