@@ -136,22 +136,22 @@ export function GeometricDivider({ className = "" }: DecorativeProps) {
 export function HeroGarden() {
   return <div className="hero-garden" aria-label="Minimal pixel-glass sakura branch with three translucent blossoms and a K3 signature" role="img">
     <svg className="hero-garden-art" viewBox="0 0 640 560" aria-hidden="true" focusable="false">
-      <circle className="hero-garden-disc" cx="380" cy="270" r="188" />
+      <circle className="hero-garden-disc" cx="408" cy="224" r="154" />
       <HeroGlassBlossom />
 
-      <g className="hero-garden-signature hero-garden-signature-main" transform="translate(486 414) scale(.58)">
+      <g className="hero-garden-signature hero-garden-signature-main" transform="translate(468 352) scale(.52)">
         <path d="M8 8v74M8 46L42 8M8 46l36 36" />
         <path d="M60 14c26-5 43 5 43 20c0 11-8 18-21 21c16 3 25 11 25 24c0 17-18 27-47 23" />
       </g>
-      <g className="hero-garden-signature hero-garden-signature-ghost signature-slice-one" transform="translate(486 414) scale(.58)">
+      <g className="hero-garden-signature hero-garden-signature-ghost signature-slice-one" transform="translate(468 352) scale(.52)">
         <path d="M8 8v74M8 46L42 8M8 46l36 36" />
         <path d="M60 14c26-5 43 5 43 20c0 11-8 18-21 21c16 3 25 11 25 24c0 17-18 27-47 23" />
       </g>
-      <g className="hero-garden-signature hero-garden-signature-ghost signature-slice-two" transform="translate(486 414) scale(.58)">
+      <g className="hero-garden-signature hero-garden-signature-ghost signature-slice-two" transform="translate(468 352) scale(.52)">
         <path d="M8 8v74M8 46L42 8M8 46l36 36" />
         <path d="M60 14c26-5 43 5 43 20c0 11-8 18-21 21c16 3 25 11 25 24c0 17-18 27-47 23" />
       </g>
-      <g className="hero-garden-signature hero-garden-signature-ghost signature-slice-three" transform="translate(486 414) scale(.58)">
+      <g className="hero-garden-signature hero-garden-signature-ghost signature-slice-three" transform="translate(468 352) scale(.52)">
         <path d="M8 8v74M8 46L42 8M8 46l36 36" />
         <path d="M60 14c26-5 43 5 43 20c0 11-8 18-21 21c16 3 25 11 25 24c0 17-18 27-47 23" />
       </g>
