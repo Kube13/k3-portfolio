@@ -43,6 +43,7 @@ body:before{display:none}
 a{color:inherit}
 .index,.kicker,.project-type{color:var(--k3-violet)}
 .eyebrow,.demo-top{color:rgba(75,38,125,.55)}
+.hero-focused>.eyebrow{justify-content:flex-start}
 .section h2{color:var(--k3-plum)}
 .section-head>p,.service-intro>p,.contact p{color:var(--k3-text-muted)}
 
@@ -134,8 +135,8 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--k3-violet);outline-
 /* Hero: a digital garden built from geometry */
 .hero:before{display:none}
 .section{padding-block:clamp(56px,7vw,96px)}
-.hero-focused{position:relative;padding:58px 0 34px}
-.hero-focused .hero-grid{grid-template-columns:minmax(0,1.08fr) minmax(390px,.92fr);gap:34px;align-items:center;padding:44px 0 38px}
+.hero-focused{position:relative;padding:40px 0 34px}
+.hero-focused .hero-grid{grid-template-columns:minmax(0,1.08fr) minmax(390px,.92fr);gap:34px;align-items:center;padding:34px 0 38px}
 .hero-copy{position:relative;z-index:2}
 .hero-focused .hero-role{
   margin:0 0 14px;
@@ -149,7 +150,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--k3-violet);outline-
 .hero-intro{max-width:520px;margin:18px 0 0;color:rgba(70,54,88,.82);font:16px/1.64 var(--font-geist-sans)}
 .hero-copy .actions{margin-top:22px;align-items:center}
 .hero-garden{min-height:500px;display:grid;place-items:center;position:relative;isolation:isolate;overflow:visible}
-.hero-garden-art{width:min(100%,520px);height:auto;overflow:visible;transform:translate(34px,-38px)}
+.hero-garden-art{width:min(100%,520px);height:auto;overflow:visible;transform:translate(8px,-24px)}
 .hero-garden-disc{fill:rgba(183,156,255,.035)}
 
 .hero-garden-wind{display:none}
@@ -500,7 +501,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--k3-violet);outline-
 @media(max-width:1024px){
   .hero-focused .hero-grid{grid-template-columns:minmax(0,1fr) minmax(360px,.9fr);gap:22px}
   .hero-garden{min-height:470px}
-  .hero-garden-art{width:min(100%,480px);transform:translate(18px,-24px)}
+  .hero-garden-art{width:min(100%,480px);transform:translate(4px,-14px)}
   .hero-focused .hero-statement{font-size:clamp(48px,6vw,70px)}
   .section-branch{width:260px}
 }
@@ -509,7 +510,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--k3-violet);outline-
   .hero-focused .hero-grid,.lang-my .hero-focused .hero-grid{grid-template-columns:1fr;gap:14px}
   .hero-copy{max-width:720px}
   .hero-garden{min-height:420px;width:min(100%,640px);margin-inline:auto}
-  .hero-garden-art{width:min(100%,500px);transform:translate(24px,-18px)}
+  .hero-garden-art{width:min(100%,500px);transform:translate(4px,-8px)}
   .hero-focused .hero-statement{max-width:760px}
   .feature-card{grid-template-columns:1fr}
   .section-branch{opacity:.07}
@@ -522,7 +523,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--k3-violet);outline-
   .section-ornament{width:calc(100% - 30px)}
   .hero-focused{padding-top:50px}
   .hero-garden{min-height:390px}
-  .hero-garden-art{width:min(100%,470px);transform:translate(12px,-10px)}
+  .hero-garden-art{width:min(100%,470px);transform:translate(0,-2px)}
   .work-branch{display:none}
   .subpage-sakura,.case-hero-sakura{width:280px;right:0;opacity:.09}
   .case-section-orbit:before{display:none}
@@ -535,7 +536,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--k3-violet);outline-
   .lang-my .hero-focused .hero-statement{font-size:34px;line-height:1.52}
   .hero-intro{font-size:15px}
   .hero-garden{min-height:300px}
-  .hero-garden-art{width:100%;max-width:390px;transform:translate(0,-4px)}
+  .hero-garden-art{width:100%;max-width:390px;transform:translate(0,2px)}
   .hero-garden-mountains,.hero-garden-wind{display:none}
   [data-blossom-variant="center-flower-tear"]{--blossom-tear-a-x:7px;--blossom-tear-b-x:-5px;--blossom-ghost-x:6px}
   [data-blossom-variant="left-flower-fracture"]{--blossom-tear-a-x:-7px;--blossom-tear-b-x:5px;--blossom-ghost-x:-6px}
