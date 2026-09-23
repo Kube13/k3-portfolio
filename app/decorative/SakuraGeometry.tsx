@@ -109,9 +109,9 @@ function HeroGlassBlossom() {
       <path d="M478 168C501 176 524 176 550 165" />
     </g>
 
-    <HeroGlassFlower x={185} y={212} scale={1.25} className="hero-glass-flower-1" />
-    <HeroGlassFlower x={404} y={116} scale={1.52} className="hero-glass-flower-2" />
-    <HeroGlassFlower x={551} y={165} scale={1.06} className="hero-glass-flower-3" />
+    <HeroGlassFlower x={185} y={212} scale={1.08} className="hero-glass-flower-1" />
+    <HeroGlassFlower x={404} y={116} scale={1.62} className="hero-glass-flower-2" />
+    <HeroGlassFlower x={551} y={165} scale={0.88} className="hero-glass-flower-3" />
 
     <g className="hero-glass-buds">
       <rect x="246" y="278" width="7" height="7" />
