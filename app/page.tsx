@@ -104,7 +104,7 @@ export default function Home() {
           <h1 className="hero-role">{t.hero.kicker}</h1>
           <p className="hero-statement">{t.hero.titleLead}<em><GlitchAccent>{t.hero.titleAccent}</GlitchAccent></em></p>
           <p className="hero-intro">{t.hero.body}</p>
-          <div className="actions"><Link className="button primary hero-primary-cta" href="#work"><span className="hero-cta-label" data-text={t.hero.workCta}>{t.hero.workCta}</span><span className="hero-cta-arrow">↘</span></Link><a className="hero-secondary-cta" href="/k3-cv.html" download>{t.hero.cvCta} <span>↓</span></a></div>
+          <div className="actions"><Link className="button primary hero-primary-cta" href="#work"><span className="hero-cta-label" data-text={t.hero.workCta}>{t.hero.workCta}</span><span className="hero-cta-arrow">↘</span></Link><a className="hero-secondary-cta" href="/k3-cv.html" target="_blank" rel="noreferrer">{t.hero.cvCta} <span>↗</span></a></div>
         </div>
         <HeroGarden />
       </div>
@@ -159,7 +159,7 @@ export default function Home() {
     </section>
 
     <section className="contact dual-contact" id="contact"><div className="shell">
-      <article><span className="index">{t.contact.candidateLabel}</span><h2>{t.contact.candidateTitle}</h2><p>{t.contact.body}</p><div className="contact-actions"><a className="button light" href="/k3-cv.html" download>{t.contact.cv} <span>↓</span></a><a className="contact-link" href="https://www.linkedin.com/in/kaung-khant-kyaw-658a4a203/" target="_blank" rel="noreferrer">LinkedIn <span>↗</span></a></div></article>
+      <article><span className="index">{t.contact.candidateLabel}</span><h2>{t.contact.candidateTitle}</h2><p>{t.contact.body}</p><div className="contact-actions"><a className="button light" href="/k3-cv.html" target="_blank" rel="noreferrer">{t.contact.cv} <span>↗</span></a><a className="contact-link" href="https://www.linkedin.com/in/kaung-khant-kyaw-658a4a203/" target="_blank" rel="noreferrer">LinkedIn <span>↗</span></a></div></article>
       <article><span className="index">{t.contact.clientLabel}</span><h2>{t.contact.clientTitle}</h2><p>{t.contact.clientBody}</p><div className="contact-actions"><a className="button light" href="mailto:kgkhant456@gmail.com?subject=Website%20or%20automation%20project">{t.contact.discussProject} <span>↗</span></a><Link className="contact-link" href="/services">{t.contact.viewServices} <span>→</span></Link></div></article>
     </div></section>
 
