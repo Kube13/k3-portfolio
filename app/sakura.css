@@ -125,7 +125,79 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--k3-violet);outline-
 .hero-garden{min-height:600px;display:grid;place-items:center;position:relative;isolation:isolate;overflow:hidden}
 .hero-garden-art{width:min(100%,640px);height:auto;overflow:visible}
 .hero-garden-disc{fill:rgba(183,156,255,.07)}
+
 .hero-garden-wind path{fill:none;stroke:rgba(75,38,125,.13);stroke-width:var(--line-hairline);stroke-linecap:round;vector-effect:non-scaling-stroke}
+.hero-glass-blossom{transform-box:fill-box;transform-origin:center;pointer-events:none}
+.hero-glass-branch path{
+  fill:none;
+  stroke:rgba(75,38,125,.56);
+  stroke-width:3px;
+  stroke-linecap:square;
+  stroke-linejoin:miter;
+  vector-effect:non-scaling-stroke;
+  filter:drop-shadow(0 5px 9px rgba(75,38,125,.10));
+}
+.hero-glass-buds rect{
+  fill:rgba(255,255,255,.20);
+  stroke:rgba(225,209,255,.92);
+  stroke-width:1.2px;
+  shape-rendering:crispEdges;
+  filter:drop-shadow(0 0 5px rgba(183,156,255,.28));
+}
+.hero-glass-flowers .sakura-petal-shape{
+  fill:rgba(255,255,255,.12);
+  stroke:rgba(216,197,255,.98);
+  stroke-width:1.35px;
+  stroke-linejoin:miter;
+  filter:drop-shadow(0 0 2px rgba(255,255,255,.98)) drop-shadow(0 8px 13px rgba(93,52,145,.22));
+}
+.hero-glass-flowers .sakura-petal-glint{
+  stroke:rgba(255,255,255,.96);
+  stroke-width:1.25px;
+  opacity:.9;
+}
+.hero-glass-flowers .sakura-flower-core{
+  fill:rgba(248,245,255,.26);
+  stroke:rgba(183,156,255,.96);
+  stroke-width:1.15px;
+  filter:drop-shadow(0 0 7px rgba(183,156,255,.42));
+}
+.hero-glass-sparkles rect{
+  fill:rgba(255,255,255,.92);
+  shape-rendering:crispEdges;
+  filter:drop-shadow(0 0 5px rgba(183,156,255,.55));
+}
+.hero-glass-flower:nth-child(2) .sakura-petal-shape,
+.hero-glass-flower:nth-child(5) .sakura-petal-shape{
+  fill:rgba(183,156,255,.10);
+}
+[data-glitch-stage="blossom"][data-glitch-phase="primary"] .hero-glass-flower-2{
+  animation:hero-glass-fracture .34s steps(2,end) both;
+}
+[data-glitch-stage="blossom"][data-glitch-phase="primary"] .hero-glass-flower-5{
+  animation:hero-glass-fracture-alt .34s steps(2,end) both;
+}
+[data-glitch-stage="blossom"][data-glitch-phase="primary"] .hero-glass-sparkles{
+  animation:hero-glass-spark .34s steps(2,end) both;
+}
+@keyframes hero-glass-fracture{
+  0%,100%{transform:translate3d(0,0,0)}
+  28%{transform:translate3d(5px,-1px,0)}
+  52%{transform:translate3d(-3px,1px,0)}
+  76%{transform:translate3d(2px,0,0)}
+}
+@keyframes hero-glass-fracture-alt{
+  0%,100%{transform:translate3d(0,0,0)}
+  28%{transform:translate3d(-4px,1px,0)}
+  52%{transform:translate3d(3px,-1px,0)}
+  76%{transform:translate3d(-1px,0,0)}
+}
+@keyframes hero-glass-spark{
+  0%,100%{opacity:1}
+  30%{opacity:.18}
+  52%{opacity:.96}
+  72%{opacity:.34}
+}
 .concept3-blossom-image{image-rendering:pixelated;transform-box:fill-box;transform-origin:center;pointer-events:none}
 .concept3-blossom-base{
   opacity:.96;
@@ -454,6 +526,6 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--k3-violet);outline-
 
 @media(prefers-reduced-motion:reduce){
   .section,.subpage-section,.case-section,.case-diagram{animation:none!important;transform:none!important}
-  .concept3-blossom-image,.hero-garden-signature path,.hero-primary-cta,.hero-primary-cta:before,.hero-primary-cta:after,.hero-cta-label,.hero-cta-label:after,.hero-cta-arrow,.hero-glitch-word,.hero-glitch-word:before,.hero-glitch-word:after{animation:none!important;transition:none!important;transform:none!important;will-change:auto!important}
+  .concept3-blossom-image,.hero-glass-blossom,.hero-glass-flower,.hero-glass-sparkles,.hero-garden-signature path,.hero-primary-cta,.hero-primary-cta:before,.hero-primary-cta:after,.hero-cta-label,.hero-cta-label:after,.hero-cta-arrow,.hero-glitch-word,.hero-glitch-word:before,.hero-glitch-word:after{animation:none!important;transition:none!important;transform:none!important;will-change:auto!important}
   .concept3-blossom-glitch,.hero-garden-signature-ghost,.hero-glitch-word:before,.hero-glitch-word:after,.hero-cta-label:after,.hero-primary-cta:before,.hero-primary-cta:after{opacity:0!important}
 }
