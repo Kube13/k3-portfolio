@@ -104,14 +104,13 @@ export default function Home() {
           <h1 className="hero-role">{t.hero.kicker}</h1>
           <p className="hero-statement">{t.hero.titleLead}<em><GlitchAccent>{t.hero.titleAccent}</GlitchAccent></em></p>
           <p className="hero-intro">{t.hero.body}</p>
-          <div className="actions"><Link className="button primary hero-primary-cta" href="#work"><span className="hero-cta-label" data-text={t.hero.workCta}>{t.hero.workCta}</span><span className="hero-cta-arrow">↘</span></Link><a className="button ghost" href="/k3-cv.html" download>{t.hero.cvCta} <span>↓</span></a></div>
+          <div className="actions"><Link className="button primary hero-primary-cta" href="#work"><span className="hero-cta-label" data-text={t.hero.workCta}>{t.hero.workCta}</span><span className="hero-cta-arrow">↘</span></Link><a className="hero-secondary-cta" href="/k3-cv.html" download>{t.hero.cvCta} <span>↓</span></a></div>
         </div>
         <HeroGarden />
       </div>
     </header>
 
     <section className="section shell selected-work" id="work">
-      <SakuraBranch className="section-branch work-branch" />
       <div className="section-head"><div><span className="index">{t.work.label}</span><h2>{t.work.title}</h2></div><p>{t.work.intro}</p></div>
       <article className="feature-card">
         <div className="feature-copy">
