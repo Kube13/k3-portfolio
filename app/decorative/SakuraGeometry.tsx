@@ -44,42 +44,79 @@ export function SakuraBranch({ className = "" }: DecorativeProps) {
   </svg>;
 }
 
-function HeroGlassBlossom() {
-  const flowers = [
-    { x: 150, y: 150, scale: 1.3 },
-    { x: 275, y: 92, scale: 1.65 },
-    { x: 387, y: 150, scale: 1.15 },
-    { x: 454, y: 78, scale: 1.05 },
-    { x: 500, y: 134, scale: 1.35 },
-  ];
+function HeroGlassFlower({
+  x,
+  y,
+  scale = 1,
+  className = "",
+}: {
+  x: number;
+  y: number;
+  scale?: number;
+  className?: string;
+}) {
+  return <g className={`hero-glass-flower ${className}`} transform={`translate(${x} ${y}) scale(${scale})`}>
+    {[0, 72, 144, 216, 288].map(rotation => <g key={rotation} transform={`rotate(${rotation})`}>
+      <polygon
+        points="0,-7 -6,-14 -5,-21 0,-27 5,-21 6,-14"
+        fill="url(#heroPetalGlass)"
+        stroke="url(#heroPetalEdge)"
+        strokeWidth="1.35"
+        strokeLinejoin="miter"
+        style={{ filter: "drop-shadow(0 5px 9px rgba(75,38,125,.16))" }}
+      />
+      <path
+        d="M-2.5 -17L0 -23L2.2 -18.5"
+        fill="none"
+        stroke="rgba(255,255,255,.9)"
+        strokeWidth="1.1"
+        strokeLinecap="square"
+        opacity=".82"
+      />
+    </g>)}
+    <rect
+      x="-3.5"
+      y="-3.5"
+      width="7"
+      height="7"
+      fill="rgba(248,245,255,.35)"
+      stroke="rgba(183,156,255,.9)"
+      strokeWidth="1"
+      style={{ filter: "drop-shadow(0 0 6px rgba(183,156,255,.38))" }}
+    />
+  </g>;
+}
 
-  return <g className="hero-glass-blossom" transform="translate(38 150)">
+function HeroGlassBlossom() {
+  return <g className="hero-glass-blossom">
+    <defs>
+      <linearGradient id="heroPetalGlass" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stopColor="#ffffff" stopOpacity=".34" />
+        <stop offset="48%" stopColor="#eee8fa" stopOpacity=".13" />
+        <stop offset="100%" stopColor="#b79cff" stopOpacity=".11" />
+      </linearGradient>
+      <linearGradient id="heroPetalEdge" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stopColor="#ffffff" stopOpacity=".95" />
+        <stop offset="55%" stopColor="#d8c5ff" stopOpacity=".92" />
+        <stop offset="100%" stopColor="#8f68d8" stopOpacity=".78" />
+      </linearGradient>
+    </defs>
+
     <g className="hero-glass-branch">
-      <path d="M18 220C86 205 118 181 154 151C197 116 228 113 275 92C328 69 350 113 387 150C423 185 460 154 500 134" />
-      <path d="M150 151C125 130 104 116 73 112" />
-      <path d="M275 92C286 62 307 42 337 26" />
-      <path d="M386 150C420 130 444 100 454 78" />
-      <path d="M500 134C520 111 533 88 536 62" />
+      <path d="M92 405C160 373 205 331 252 286C301 240 346 221 403 203C447 189 490 157 535 112" />
+      <path d="M254 285C232 251 213 229 181 212" />
+      <path d="M402 203C392 168 397 140 414 116" />
+      <path d="M478 168C501 176 524 176 550 165" />
     </g>
+
+    <HeroGlassFlower x={185} y={212} scale={1.25} className="hero-glass-flower-1" />
+    <HeroGlassFlower x={404} y={116} scale={1.52} className="hero-glass-flower-2" />
+    <HeroGlassFlower x={551} y={165} scale={1.06} className="hero-glass-flower-3" />
 
     <g className="hero-glass-buds">
-      <rect x="67" y="106" width="8" height="8" />
-      <rect x="332" y="21" width="8" height="8" />
-      <rect x="531" y="57" width="8" height="8" />
-      <rect x="216" y="111" width="6" height="6" />
-    </g>
-
-    <g className="hero-glass-flowers">
-      {flowers.map((flower, index) => <g key={index} className={`hero-glass-flower hero-glass-flower-${index + 1}`}>
-        <FlowerGlyph {...flower} />
-      </g>)}
-    </g>
-
-    <g className="hero-glass-sparkles">
-      <rect x="246" y="38" width="5" height="5" />
-      <rect x="431" y="52" width="4" height="4" />
-      <rect x="115" y="91" width="4" height="4" />
-      <rect x="474" y="178" width="5" height="5" />
+      <rect x="246" y="278" width="7" height="7" />
+      <rect x="472" y="162" width="6" height="6" />
+      <rect x="527" y="111" width="7" height="7" />
     </g>
   </g>;
 }
@@ -97,37 +134,24 @@ export function GeometricDivider({ className = "" }: DecorativeProps) {
 }
 
 export function HeroGarden() {
-  return <div className="hero-garden" aria-label="Pixel glass sakura branch with translucent blossoms, attached buds, a thin K3 signature, mountains and wind lines" role="img">
-    <svg className="hero-garden-art" viewBox="0 0 640 600" aria-hidden="true" focusable="false">
-      <circle className="hero-garden-disc" cx="338" cy="292" r="227" />
-
-      <g className="hero-garden-wind">
-        <path d="M72 214h88c20 0 23 18 6 20h-31" />
-        <path d="M92 258h76" />
-        <path d="M476 276h88c16 0 19 16 4 17h-29" />
-      </g>
-
+  return <div className="hero-garden" aria-label="Minimal pixel-glass sakura branch with three translucent blossoms and a K3 signature" role="img">
+    <svg className="hero-garden-art" viewBox="0 0 640 560" aria-hidden="true" focusable="false">
+      <circle className="hero-garden-disc" cx="380" cy="270" r="188" />
       <HeroGlassBlossom />
 
-      <g className="hero-garden-mountains">
-        <path d="M42 556L144 478l54 49l94-114l80 102l48-54l82 95" />
-        <path d="M102 556l82-65l48 44l51-52l68 73" />
-        <path d="M42 556h502" />
-      </g>
-
-      <g className="hero-garden-signature hero-garden-signature-main" transform="translate(492 470) scale(.62)">
+      <g className="hero-garden-signature hero-garden-signature-main" transform="translate(486 414) scale(.58)">
         <path d="M8 8v74M8 46L42 8M8 46l36 36" />
         <path d="M60 14c26-5 43 5 43 20c0 11-8 18-21 21c16 3 25 11 25 24c0 17-18 27-47 23" />
       </g>
-      <g className="hero-garden-signature hero-garden-signature-ghost signature-slice-one" transform="translate(492 470) scale(.62)">
+      <g className="hero-garden-signature hero-garden-signature-ghost signature-slice-one" transform="translate(486 414) scale(.58)">
         <path d="M8 8v74M8 46L42 8M8 46l36 36" />
         <path d="M60 14c26-5 43 5 43 20c0 11-8 18-21 21c16 3 25 11 25 24c0 17-18 27-47 23" />
       </g>
-      <g className="hero-garden-signature hero-garden-signature-ghost signature-slice-two" transform="translate(492 470) scale(.62)">
+      <g className="hero-garden-signature hero-garden-signature-ghost signature-slice-two" transform="translate(486 414) scale(.58)">
         <path d="M8 8v74M8 46L42 8M8 46l36 36" />
         <path d="M60 14c26-5 43 5 43 20c0 11-8 18-21 21c16 3 25 11 25 24c0 17-18 27-47 23" />
       </g>
-      <g className="hero-garden-signature hero-garden-signature-ghost signature-slice-three" transform="translate(492 470) scale(.62)">
+      <g className="hero-garden-signature hero-garden-signature-ghost signature-slice-three" transform="translate(486 414) scale(.58)">
         <path d="M8 8v74M8 46L42 8M8 46l36 36" />
         <path d="M60 14c26-5 43 5 43 20c0 11-8 18-21 21c16 3 25 11 25 24c0 17-18 27-47 23" />
       </g>
