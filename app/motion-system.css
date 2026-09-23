@@ -17,28 +17,24 @@
   position:absolute;
   width:6px;
   height:6px;
-  background:rgba(183,156,255,.75);
+  background:rgba(183,156,255,.58);
   box-shadow:
-    38px 72px 0 rgba(183,156,255,.5),
-    118px 22px 0 rgba(130,92,255,.48),
-    176px 104px 0 rgba(183,156,255,.36),
-    248px 38px 0 rgba(182,93,120,.34),
-    322px 118px 0 rgba(183,156,255,.42),
-    396px 54px 0 rgba(130,92,255,.45),
-    455px 142px 0 rgba(183,156,255,.3);
+    82px 36px 0 rgba(130,92,255,.34),
+    214px 112px 0 rgba(183,156,255,.28),
+    386px 58px 0 rgba(130,92,255,.3);
   pointer-events:none;
   z-index:4;
 }
 .hero-garden::before{
   left:10%;
   top:14%;
-  animation:k3-petal-drift-a 13s cubic-bezier(.45,.05,.55,.95) infinite;
+  animation:k3-petal-drift-a 17s cubic-bezier(.45,.05,.55,.95) infinite;
 }
 .hero-garden::after{
   right:12%;
   top:12%;
   transform:scale(.72);
-  animation:k3-petal-drift-b 15s cubic-bezier(.42,0,.58,1) infinite;
+  animation:k3-petal-drift-b 23s cubic-bezier(.42,0,.58,1) infinite;
 }
 
 /* Internal motion for project previews so the portfolio visibly moves even without hover. */
@@ -70,8 +66,8 @@
   to{transform:none}
 }
 @keyframes k3-ambient-float{
-  0%,100%{transform:translate3d(0,0,0) rotate(0)}
-  50%{transform:translate3d(8px,-16px,0) rotate(.55deg)}
+  0%,100%{transform:translate3d(0,0,0)}
+  50%{transform:translate3d(6px,-12px,0)}
 }
 @keyframes k3-wind-drift{
   from{transform:translate3d(-10px,0,0);opacity:.48}
@@ -86,8 +82,8 @@
   to{transform:translate3d(10px,-5px,0) rotate(.35deg)}
 }
 @keyframes k3-flower-pulse{
-  0%,100%{transform:scale(1) rotate(0)}
-  50%{transform:scale(1.09) rotate(2deg)}
+  0%,100%{transform:scale(1)}
+  50%{transform:scale(1.045)}
 }
 @keyframes k3-thread-pulse{
   0%,100%{opacity:.28;transform:scale(1)}
@@ -152,7 +148,7 @@ main[data-glitch-active="true"] .hero-glitch-target::before{color:var(--k3-laven
 main[data-glitch-active="true"] .hero-glitch-target::after{color:#b65d78;clip-path:inset(58% 0 8% 0);animation:k3-signature-slice-lower .22s steps(1,end) both}
 main[data-glitch-stage="text"][data-glitch-phase="primary"] .hero-statement{animation:k3-signature-jump .24s steps(1,end) both}
 main[data-glitch-stage="button"][data-glitch-phase="primary"] .hero-primary-cta{animation:k3-button-fracture .28s steps(1,end) both}
-main[data-glitch-stage="blossom"][data-glitch-phase="primary"] .hero-garden{filter:drop-shadow(4px 0 rgba(183,156,255,.28)) drop-shadow(-3px 0 rgba(182,93,120,.18))}
+main[data-glitch-stage="blossom"][data-glitch-phase="primary"] .hero-glass-flower-2{filter:drop-shadow(3px 0 rgba(183,156,255,.24)) drop-shadow(-2px 0 rgba(182,93,120,.12))}
 @keyframes k3-signature-slice-upper{0%,100%{opacity:0;transform:translate3d(0,0,0)}18%{opacity:.92;transform:translate3d(6px,-1px,0)}42%{opacity:.62;transform:translate3d(-4px,0,0)}64%{opacity:.34;transform:translate3d(2px,1px,0)}82%{opacity:0;transform:translate3d(0,0,0)}}
 @keyframes k3-signature-slice-lower{0%,14%,100%{opacity:0;transform:translate3d(0,0,0)}28%{opacity:.74;transform:translate3d(-5px,1px,0)}52%{opacity:.44;transform:translate3d(3px,0,0)}76%{opacity:.12;transform:translate3d(-1px,0,0)}}
 @keyframes k3-signature-jump{0%,100%{transform:translate3d(0,0,0)}24%{transform:translate3d(2px,0,0)}45%{transform:translate3d(-3px,1px,0)}67%{transform:translate3d(1px,-1px,0)}}
