@@ -67,12 +67,37 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--k3-violet);outline-
 
 /* Reusable geometric sakura system */
 .sakura-flower{width:46px;height:46px;overflow:visible}
-.sakura-petal-shape{fill:rgba(183,156,255,.12);stroke:var(--k3-violet);stroke-width:var(--line-hairline);vector-effect:non-scaling-stroke}
-.sakura-flower-core{fill:var(--k3-bg);stroke:var(--k3-violet);stroke-width:var(--line-hairline);vector-effect:non-scaling-stroke}
+.sakura-petal-shape{
+  fill:rgba(255,255,255,.10);
+  stroke:rgba(238,226,255,.88);
+  stroke-width:1.15px;
+  stroke-linejoin:miter;
+  paint-order:stroke fill;
+  vector-effect:non-scaling-stroke;
+  filter:drop-shadow(0 0 1px rgba(255,255,255,.72)) drop-shadow(0 4px 8px rgba(75,38,125,.12));
+}
+.sakura-petal-glint{
+  fill:none;
+  stroke:rgba(255,255,255,.82);
+  stroke-width:1px;
+  stroke-linecap:square;
+  stroke-linejoin:miter;
+  opacity:.68;
+  vector-effect:non-scaling-stroke;
+  pointer-events:none;
+}
+.sakura-flower-core{
+  fill:rgba(255,255,255,.16);
+  stroke:rgba(238,226,255,.82);
+  stroke-width:var(--line-hairline);
+  vector-effect:non-scaling-stroke;
+  filter:drop-shadow(0 0 5px rgba(183,156,255,.24));
+}
 .sakura-branch{max-width:100%;overflow:hidden}
 .sakura-branch-lines path{fill:none;stroke:var(--k3-violet);stroke-width:var(--line-hairline);stroke-linecap:round;vector-effect:non-scaling-stroke}
 .sakura-branch-nodes circle{fill:var(--k3-bg);stroke:var(--k3-violet);stroke-width:var(--line-hairline)}
-.sakura-branch .sakura-petal-shape{fill:rgba(183,156,255,.14)}
+.sakura-branch .sakura-petal-shape{fill:rgba(255,255,255,.08);stroke:rgba(225,209,255,.76)}
+.sakura-branch .sakura-petal-glint{opacity:.52}
 .section-ornament{width:min(1180px,calc(100% - 48px));height:48px;margin:auto;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:18px}
 .section-ornament>span{height:1px;background:linear-gradient(90deg,transparent,var(--k3-line))}
 .section-ornament>span:last-child{background:linear-gradient(90deg,var(--k3-line),transparent)}
@@ -102,7 +127,10 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--k3-violet);outline-
 .hero-garden-disc{fill:rgba(183,156,255,.07)}
 .hero-garden-wind path{fill:none;stroke:rgba(75,38,125,.13);stroke-width:var(--line-hairline);stroke-linecap:round;vector-effect:non-scaling-stroke}
 .concept3-blossom-image{image-rendering:pixelated;transform-box:fill-box;transform-origin:center;pointer-events:none}
-.concept3-blossom-base{opacity:1}
+.concept3-blossom-base{
+  opacity:.96;
+  filter:drop-shadow(0 0 1px rgba(255,255,255,.72)) drop-shadow(0 10px 22px rgba(75,38,125,.10));
+}
 .concept3-blossom-glitch{opacity:0}
 .concept3-blossom-ghost{filter:saturate(1.12) hue-rotate(7deg)}
 .concept3-blossom-tear-a{clip-path:inset(31% 0 56% 0)}
