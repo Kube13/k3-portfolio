@@ -4,12 +4,16 @@ type DecorativeProps = {
 
 function FlowerGlyph({ x = 0, y = 0, scale = 1 }: { x?: number; y?: number; scale?: number }) {
   return <g transform={`translate(${x} ${y}) scale(${scale})`}>
-    {[0, 72, 144, 216, 288].map(rotation => <polygon
-      key={rotation}
-      points="0,-8 -4,-15 0,-24 4,-15"
-      transform={`rotate(${rotation})`}
-      className="sakura-petal-shape"
-    />)}
+    {[0, 72, 144, 216, 288].map(rotation => <g key={rotation} transform={`rotate(${rotation})`}>
+      <polygon
+        points="0,-8 -4,-15 0,-24 4,-15"
+        className="sakura-petal-shape"
+      />
+      <path
+        d="M-1.8 -16.2L0 -21L1.7 -17.3"
+        className="sakura-petal-glint"
+      />
+    </g>)}
     <circle r="3.1" className="sakura-flower-core" />
   </g>;
 }
