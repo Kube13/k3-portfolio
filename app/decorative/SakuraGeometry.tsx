@@ -44,24 +44,43 @@ export function SakuraBranch({ className = "" }: DecorativeProps) {
   </svg>;
 }
 
-const CONCEPT3_BLOSSOM_ASSET = "/k3_concept3_blossom_transparent.png";
+function HeroGlassBlossom() {
+  const flowers = [
+    { x: 150, y: 150, scale: 1.3 },
+    { x: 275, y: 92, scale: 1.65 },
+    { x: 387, y: 150, scale: 1.15 },
+    { x: 454, y: 78, scale: 1.05 },
+    { x: 500, y: 134, scale: 1.35 },
+  ];
 
-function Concept3Blossom() {
-  const imageProps = {
-    href: CONCEPT3_BLOSSOM_ASSET,
-    width: 534,
-    height: 283,
-    preserveAspectRatio: "xMidYMid meet",
-  } as const;
+  return <g className="hero-glass-blossom" transform="translate(38 150)">
+    <g className="hero-glass-branch">
+      <path d="M18 220C86 205 118 181 154 151C197 116 228 113 275 92C328 69 350 113 387 150C423 185 460 154 500 134" />
+      <path d="M150 151C125 130 104 116 73 112" />
+      <path d="M275 92C286 62 307 42 337 26" />
+      <path d="M386 150C420 130 444 100 454 78" />
+      <path d="M500 134C520 111 533 88 536 62" />
+    </g>
 
-  return <g className="concept3-blossom" data-blossom-source={CONCEPT3_BLOSSOM_ASSET} transform="translate(53 156) scale(.98)">
-    <image className="concept3-blossom-image concept3-blossom-base" data-blossom-layer="base" {...imageProps} />
-    <image className="concept3-blossom-image concept3-blossom-glitch concept3-blossom-ghost" data-blossom-layer="lavender-ghost" {...imageProps} />
-    <image className="concept3-blossom-image concept3-blossom-glitch concept3-blossom-tear-a" data-blossom-layer="horizontal-tear-a" {...imageProps} />
-    <image className="concept3-blossom-image concept3-blossom-glitch concept3-blossom-tear-b" data-blossom-layer="horizontal-tear-b" {...imageProps} />
-    <image className="concept3-blossom-image concept3-blossom-glitch concept3-blossom-streak concept3-blossom-streak-a" data-blossom-layer="data-streak-a" {...imageProps} />
-    <image className="concept3-blossom-image concept3-blossom-glitch concept3-blossom-streak concept3-blossom-streak-b" data-blossom-layer="data-streak-b" {...imageProps} />
-    <image className="concept3-blossom-image concept3-blossom-glitch concept3-blossom-streak concept3-blossom-streak-c" data-blossom-layer="data-streak-c" {...imageProps} />
+    <g className="hero-glass-buds">
+      <rect x="67" y="106" width="8" height="8" />
+      <rect x="332" y="21" width="8" height="8" />
+      <rect x="531" y="57" width="8" height="8" />
+      <rect x="216" y="111" width="6" height="6" />
+    </g>
+
+    <g className="hero-glass-flowers">
+      {flowers.map((flower, index) => <g key={index} className={`hero-glass-flower hero-glass-flower-${index + 1}`}>
+        <FlowerGlyph {...flower} />
+      </g>)}
+    </g>
+
+    <g className="hero-glass-sparkles">
+      <rect x="246" y="38" width="5" height="5" />
+      <rect x="431" y="52" width="4" height="4" />
+      <rect x="115" y="91" width="4" height="4" />
+      <rect x="474" y="178" width="5" height="5" />
+    </g>
   </g>;
 }
 
@@ -78,7 +97,7 @@ export function GeometricDivider({ className = "" }: DecorativeProps) {
 }
 
 export function HeroGarden() {
-  return <div className="hero-garden" aria-label="Exact Concept 3 pixel-art sakura branch with four blossoms, attached buds, a thin K3 signature, mountains and wind lines" role="img">
+  return <div className="hero-garden" aria-label="Pixel glass sakura branch with translucent blossoms, attached buds, a thin K3 signature, mountains and wind lines" role="img">
     <svg className="hero-garden-art" viewBox="0 0 640 600" aria-hidden="true" focusable="false">
       <circle className="hero-garden-disc" cx="338" cy="292" r="227" />
 
@@ -88,7 +107,7 @@ export function HeroGarden() {
         <path d="M476 276h88c16 0 19 16 4 17h-29" />
       </g>
 
-      <Concept3Blossom />
+      <HeroGlassBlossom />
 
       <g className="hero-garden-mountains">
         <path d="M42 556L144 478l54 49l94-114l80 102l48-54l82 95" />
