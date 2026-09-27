@@ -1,3 +1,53 @@
+/* K3Labs official Shelter player */
+.shelter-player{
+  display:grid;
+  gap:9px;
+  width:min(360px,calc(100vw - 40px));
+}
+
+.shelter-player__credit{
+  display:grid;
+  gap:4px;
+  padding:12px 14px;
+  border:1px solid rgba(91,69,126,.16);
+  border-radius:16px;
+  background:rgba(248,245,255,.88);
+  color:#35284a;
+  box-shadow:0 12px 32px rgba(38,22,67,.09);
+  backdrop-filter:blur(16px) saturate(135%);
+  -webkit-backdrop-filter:blur(16px) saturate(135%);
+}
+
+.shelter-player__credit span{
+  font:700 9px/1 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  letter-spacing:.16em;
+  opacity:.58;
+}
+
+.shelter-player__credit strong{
+  font:700 12px/1.3 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+
+.shelter-player__credit small{
+  font:500 10px/1.45 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  opacity:.72;
+}
+
+.shelter-player__frame{
+  overflow:hidden;
+  border:1px solid rgba(91,69,126,.18);
+  border-radius:16px;
+  background:#0f0d14;
+  box-shadow:0 12px 32px rgba(38,22,67,.12);
+}
+
+.shelter-player__frame iframe{
+  display:block;
+  width:100%;
+  aspect-ratio:16/9;
+  border:0;
+}
+
 /* K3Labs audio control */
 .sound-dock{
   position:fixed;
@@ -7,43 +57,6 @@
   display:grid;
   justify-items:end;
   gap:9px;
-}
-
-.sound-credit{
-  display:grid;
-  gap:4px;
-  width:min(330px,calc(100vw - 40px));
-  padding:12px 14px;
-  border:1px solid rgba(91,69,126,.16);
-  border-radius:16px;
-  background:rgba(248,245,255,.84);
-  color:#35284a;
-  text-decoration:none;
-  box-shadow:0 12px 32px rgba(38,22,67,.09);
-  backdrop-filter:blur(16px) saturate(135%);
-  -webkit-backdrop-filter:blur(16px) saturate(135%);
-  transition:transform .18s ease,border-color .18s ease,background .18s ease;
-}
-
-.sound-credit:hover{
-  transform:translateY(-2px);
-  border-color:rgba(91,69,126,.32);
-  background:rgba(248,245,255,.94);
-}
-
-.sound-credit span{
-  font:700 9px/1 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-  letter-spacing:.16em;
-  opacity:.58;
-}
-
-.sound-credit strong{
-  font:700 12px/1.3 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-}
-
-.sound-credit small{
-  font:500 10px/1.45 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-  opacity:.72;
 }
 
 .sound-toggle{
@@ -128,8 +141,8 @@
     bottom:14px;
   }
 
-  .sound-credit{
-    width:min(300px,calc(100vw - 28px));
+  .shelter-player{
+    width:min(320px,calc(100vw - 28px));
   }
 
   .sound-toggle{
