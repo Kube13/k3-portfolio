@@ -140,6 +140,7 @@ export default function AudioSystem() {
   const [musicEnabled, setMusicEnabled] = useState(false);
   const [playing, setPlaying] = useState(false);
   const [playerOpen, setPlayerOpen] = useState(false);
+  const [mobileAudioOpen, setMobileAudioOpen] = useState(false);
 
   const ensureSfx = useCallback(async () => {
     if (!sfxRef.current || sfxRef.current.context.state === "closed") {
@@ -352,6 +353,74 @@ export default function AudioSystem() {
           <span>K3</span><i />
         </div>
       ) : null}
+
+      <button
+        type="button"
+        className="mobile-audio-trigger"
+        data-audio-control
+        onClick={() => setMobileAudioOpen(value => !value)}
+        aria-expanded={mobileAudioOpen}
+        aria-label={mobileAudioOpen ? "Close audio controls" : "Open audio controls"}
+      >
+        {playing ? <Pause size={18} weight="fill" aria-hidden="true" /> : <SpeakerHigh size={18} weight="fill" aria-hidden="true" />}
+      </button>
+
+      <div className={`mobile-audio-sheet ${mobileAudioOpen ? "is-open" : ""}`} aria-hidden={!mobileAudioOpen}>
+        <div className="mobile-audio-sheet__head">
+          <div>
+            <span>AUDIO</span>
+            <strong>K3Labs sound</strong>
+          </div>
+          <button type="button" data-audio-control onClick={() => setMobileAudioOpen(false)} aria-label="Close audio controls">×</button>
+        </div>
+
+        <button
+          type="button"
+          className="mobile-audio-row"
+          data-audio-control
+          onClick={() => void toggleSfx()}
+          aria-pressed={sfxEnabled}
+        >
+          <span>UI SFX</span>
+          <strong>{sfxEnabled ? "ON" : "OFF"}</strong>
+        </button>
+
+        <button
+          type="button"
+          className="mobile-audio-row"
+          data-audio-control
+          onClick={() => void togglePlayback()}
+          aria-pressed={playing}
+        >
+          <span>Porter Robinson + Madeon — Shelter</span>
+          <strong>{playing ? "PAUSE" : "PLAY"}</strong>
+        </button>
+
+        <button
+          type="button"
+          className="mobile-audio-row mobile-audio-row--credit"
+          data-audio-control
+          onClick={() => setPlayerOpen(value => !value)}
+          aria-expanded={playerOpen}
+        >
+          <span>Official stream</span>
+          <strong>{playerOpen ? "HIDE PLAYER" : "VIEW PLAYER"}</strong>
+        </button>
+
+        {playerOpen ? (
+          <div className="mobile-audio-player">
+            <p>Shoutout to Porter Robinson and Madeon for making something this beautiful.</p>
+            <iframe
+              ref={playerRef}
+              src={src}
+              title="Porter Robinson and Madeon — Shelter"
+              allow="autoplay; encrypted-media; picture-in-picture"
+              referrerPolicy="strict-origin-when-cross-origin"
+              allowFullScreen
+            />
+          </div>
+        ) : null}
+      </div>
 
       <div className="sound-dock">
         <div className="audio-preferences" role="group" aria-label="Audio preferences">
