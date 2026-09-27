@@ -1,246 +1,94 @@
 "use client";
 
-import { SpeakerHigh, SpeakerSlash } from "@phosphor-icons/react";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { Pause, Play } from "@phosphor-icons/react";
+import { useEffect, useRef, useState } from "react";
 
-const STORAGE_KEY = "k3labs-sound-enabled";
+const STORAGE_KEY = "k3labs-shelter-player-open";
+const SHELTER_VIDEO_ID = "HQnC1UHBvWA";
 
-type AudioGraph = {
-  context: AudioContext;
-  master: GainNode;
-  ambient: GainNode;
-  oscillators: OscillatorNode[];
-};
+function sendPlayerCommand(iframe: HTMLIFrameElement | null, command: "playVideo" | "pauseVideo") {
+  if (!iframe?.contentWindow) return;
 
-function createAudioGraph(): AudioGraph {
-  const context = new AudioContext();
-  const master = context.createGain();
-  const ambient = context.createGain();
-  const filter = context.createBiquadFilter();
-
-  master.gain.value = 0.34;
-  ambient.gain.value = 0.0001;
-  filter.type = "lowpass";
-  filter.frequency.value = 1200;
-  filter.Q.value = 0.8;
-
-  ambient.connect(filter);
-  filter.connect(master);
-  master.connect(context.destination);
-
-  const oscillators = [174.61, 261.63].map((frequency, index) => {
-    const oscillator = context.createOscillator();
-    const gain = context.createGain();
-
-    oscillator.type = index === 0 ? "sine" : "triangle";
-    oscillator.frequency.value = frequency;
-    gain.gain.value = index === 0 ? 0.09 : 0.045;
-
-    oscillator.connect(gain);
-    gain.connect(ambient);
-    oscillator.start();
-
-    return oscillator;
-  });
-
-  ambient.gain.exponentialRampToValueAtTime(0.22, context.currentTime + 1.2);
-
-  return { context, master, ambient, oscillators };
-}
-
-function playEnableChime(graph: AudioGraph) {
-  const { context, master } = graph;
-  if (context.state !== "running") return;
-
-  const now = context.currentTime;
-  const notes = [523.25, 659.25, 783.99];
-
-  notes.forEach((frequency, index) => {
-    const oscillator = context.createOscillator();
-    const gain = context.createGain();
-    const start = now + index * 0.09;
-
-    oscillator.type = "sine";
-    oscillator.frequency.value = frequency;
-
-    gain.gain.setValueAtTime(0.0001, start);
-    gain.gain.exponentialRampToValueAtTime(0.12, start + 0.015);
-    gain.gain.exponentialRampToValueAtTime(0.0001, start + 0.16);
-
-    oscillator.connect(gain);
-    gain.connect(master);
-    oscillator.start(start);
-    oscillator.stop(start + 0.18);
-  });
-}
-
-function playUiTone(graph: AudioGraph, kind: "click" | "hover") {
-  const { context, master } = graph;
-  if (context.state !== "running") return;
-
-  const oscillator = context.createOscillator();
-  const gain = context.createGain();
-  const now = context.currentTime;
-
-  oscillator.type = kind === "click" ? "triangle" : "sine";
-  oscillator.frequency.setValueAtTime(kind === "click" ? 430 : 610, now);
-  oscillator.frequency.exponentialRampToValueAtTime(kind === "click" ? 260 : 540, now + 0.06);
-
-  gain.gain.setValueAtTime(0.0001, now);
-  gain.gain.exponentialRampToValueAtTime(kind === "click" ? 0.07 : 0.03, now + 0.008);
-  gain.gain.exponentialRampToValueAtTime(0.0001, now + (kind === "click" ? 0.09 : 0.055));
-
-  oscillator.connect(gain);
-  gain.connect(master);
-  oscillator.start(now);
-  oscillator.stop(now + 0.11);
+  iframe.contentWindow.postMessage(
+    JSON.stringify({
+      event: "command",
+      func: command,
+      args: [],
+    }),
+    "https://www.youtube.com",
+  );
 }
 
 export default function AudioSystem() {
-  const graphRef = useRef<AudioGraph | null>(null);
-  const [enabled, setEnabled] = useState(false);
+  const playerRef = useRef<HTMLIFrameElement>(null);
+  const [playing, setPlaying] = useState(false);
   const [ready, setReady] = useState(false);
-
-  const stopAudio = useCallback(() => {
-    const graph = graphRef.current;
-    if (!graph) return;
-
-    const now = graph.context.currentTime;
-    graph.ambient.gain.cancelScheduledValues(now);
-    graph.ambient.gain.setValueAtTime(Math.max(graph.ambient.gain.value, 0.0001), now);
-    graph.ambient.gain.exponentialRampToValueAtTime(0.0001, now + 0.22);
-
-    window.setTimeout(() => {
-      graph.oscillators.forEach(oscillator => {
-        try { oscillator.stop(); } catch {}
-      });
-      void graph.context.close();
-      if (graphRef.current === graph) graphRef.current = null;
-    }, 260);
-  }, []);
-
-  const startAudio = useCallback(async () => {
-    if (!graphRef.current || graphRef.current.context.state === "closed") {
-      graphRef.current = createAudioGraph();
-    }
-
-    if (graphRef.current.context.state === "suspended") {
-      await graphRef.current.context.resume();
-    }
-  }, []);
+  const [playerOpen, setPlayerOpen] = useState(false);
 
   useEffect(() => {
     setReady(true);
-    const stored = window.localStorage.getItem(STORAGE_KEY);
-    if (stored === "true") {
-      setEnabled(true);
-    }
+    setPlayerOpen(window.localStorage.getItem(STORAGE_KEY) === "true");
   }, []);
 
   useEffect(() => {
     if (!ready) return;
+    window.localStorage.setItem(STORAGE_KEY, String(playerOpen));
+  }, [playerOpen, ready]);
 
-    window.localStorage.setItem(STORAGE_KEY, String(enabled));
+  const togglePlayback = () => {
+    const next = !playing;
+    setPlaying(next);
+    setPlayerOpen(true);
 
-    if (!enabled) {
-      stopAudio();
-      return;
-    }
-
-    const unlock = () => {
-      void startAudio();
-      window.removeEventListener("pointerdown", unlock);
-      window.removeEventListener("keydown", unlock);
-    };
-
-    void startAudio().catch(() => {
-      window.addEventListener("pointerdown", unlock, { once: true });
-      window.addEventListener("keydown", unlock, { once: true });
+    requestAnimationFrame(() => {
+      sendPlayerCommand(playerRef.current, next ? "playVideo" : "pauseVideo");
     });
-
-    return () => {
-      window.removeEventListener("pointerdown", unlock);
-      window.removeEventListener("keydown", unlock);
-    };
-  }, [enabled, ready, startAudio, stopAudio]);
-
-  useEffect(() => {
-    if (!enabled) return;
-
-    const onClick = (event: MouseEvent) => {
-      const target = event.target;
-      if (!(target instanceof Element)) return;
-      if (!target.closest("a, button, [role='button']")) return;
-      if (target.closest("[data-sound-toggle]")) return;
-      if (graphRef.current) playUiTone(graphRef.current, "click");
-    };
-
-    const onPointerOver = (event: PointerEvent) => {
-      if (event.pointerType === "touch") return;
-      const target = event.target;
-      if (!(target instanceof Element)) return;
-      const interactive = target.closest(".selected-project, .feature-card, .homepage-demo-card, .text-link, .card-link");
-      if (!interactive) return;
-
-      const from = event.relatedTarget;
-      if (from instanceof Node && interactive.contains(from)) return;
-      if (graphRef.current) playUiTone(graphRef.current, "hover");
-    };
-
-    document.addEventListener("click", onClick);
-    document.addEventListener("pointerover", onPointerOver);
-
-    return () => {
-      document.removeEventListener("click", onClick);
-      document.removeEventListener("pointerover", onPointerOver);
-    };
-  }, [enabled]);
-
-  useEffect(() => () => stopAudio(), [stopAudio]);
-
-  const toggle = async () => {
-    const next = !enabled;
-    setEnabled(next);
-
-    if (next) {
-      try {
-        await startAudio();
-        if (graphRef.current) playEnableChime(graphRef.current);
-      } catch (error) {
-        console.warn("K3Labs audio could not start:", error);
-      }
-    }
   };
 
   if (!ready) return null;
 
+  const origin = typeof window === "undefined" ? "" : encodeURIComponent(window.location.origin);
+  const src = `https://www.youtube.com/embed/${SHELTER_VIDEO_ID}?enablejsapi=1&playsinline=1&rel=0&modestbranding=1&origin=${origin}`;
+
   return (
     <div className="sound-dock">
-      <a
-        className="sound-credit"
-        href="https://www.youtube.com/watch?v=fzQ6gRAEoy0"
-        target="_blank"
-        rel="noreferrer"
-        aria-label="Listen to Shelter by Porter Robinson and Madeon on the official Porter Robinson YouTube channel"
-      >
-        <span>SOUND INSPIRATION</span>
-        <strong>Porter Robinson + Madeon — Shelter ↗</strong>
-        <small>A small shoutout for making something this beautiful — music that makes digital worlds feel human.</small>
-      </a>
+      <div className={`shelter-player ${playerOpen ? "is-open" : ""}`}>
+        <div className="shelter-player__credit">
+          <span>NOW PLAYING</span>
+          <strong>Porter Robinson + Madeon — Shelter</strong>
+          <small>
+            Shoutout to Porter Robinson and Madeon for making something this beautiful — music that makes digital worlds feel human.
+          </small>
+        </div>
+
+        {playerOpen ? (
+          <div className="shelter-player__frame">
+            <iframe
+              ref={playerRef}
+              src={src}
+              title="Porter Robinson and Madeon — Shelter (Official Audio)"
+              allow="autoplay; encrypted-media; picture-in-picture"
+              referrerPolicy="strict-origin-when-cross-origin"
+              allowFullScreen
+            />
+          </div>
+        ) : null}
+      </div>
+
       <button
-      type="button"
-      className={`sound-toggle ${enabled ? "is-on" : "is-off"}`}
-      data-sound-toggle
-      onClick={toggle}
-      aria-pressed={enabled}
-      aria-label={enabled ? "Mute K3Labs sound" : "Enable K3Labs sound"}
-      title={enabled ? "Sound on" : "Sound off"}
-    >
-      <span className="sound-toggle__icon" aria-hidden="true">
-        {enabled ? <SpeakerHigh size={16} weight="fill" /> : <SpeakerSlash size={16} />}
-      </span>
-      <span className="sound-toggle__label">{enabled ? "SOUND ON" : "SOUND OFF"}</span>
-      <span className="sound-toggle__meter" aria-hidden="true"><i /><i /><i /></span>
+        type="button"
+        className={`sound-toggle ${playing ? "is-on" : "is-off"}`}
+        data-sound-toggle
+        onClick={togglePlayback}
+        aria-pressed={playing}
+        aria-label={playing ? "Pause Shelter by Porter Robinson and Madeon" : "Play Shelter by Porter Robinson and Madeon"}
+        title={playing ? "Pause Shelter" : "Play Shelter"}
+      >
+        <span className="sound-toggle__icon" aria-hidden="true">
+          {playing ? <Pause size={16} weight="fill" /> : <Play size={16} weight="fill" />}
+        </span>
+        <span className="sound-toggle__label">{playing ? "PAUSE SHELTER" : "PLAY SHELTER"}</span>
+        <span className="sound-toggle__meter" aria-hidden="true"><i /><i /><i /></span>
       </button>
     </div>
   );
