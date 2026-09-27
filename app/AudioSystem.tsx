@@ -21,20 +21,20 @@ function createAudioGraph(): AudioGraph {
   master.gain.value = 0.34;
   ambient.gain.value = 0.0001;
   filter.type = "lowpass";
-  filter.frequency.value = 520;
+  filter.frequency.value = 1200;
   filter.Q.value = 0.8;
 
   ambient.connect(filter);
   filter.connect(master);
   master.connect(context.destination);
 
-  const oscillators = [55, 82.5].map((frequency, index) => {
+  const oscillators = [174.61, 261.63].map((frequency, index) => {
     const oscillator = context.createOscillator();
     const gain = context.createGain();
 
     oscillator.type = index === 0 ? "sine" : "triangle";
     oscillator.frequency.value = frequency;
-    gain.gain.value = index === 0 ? 0.05 : 0.02;
+    gain.gain.value = index === 0 ? 0.09 : 0.045;
 
     oscillator.connect(gain);
     gain.connect(ambient);
@@ -43,9 +43,35 @@ function createAudioGraph(): AudioGraph {
     return oscillator;
   });
 
-  ambient.gain.exponentialRampToValueAtTime(0.13, context.currentTime + 1.6);
+  ambient.gain.exponentialRampToValueAtTime(0.22, context.currentTime + 1.2);
 
   return { context, master, ambient, oscillators };
+}
+
+function playEnableChime(graph: AudioGraph) {
+  const { context, master } = graph;
+  if (context.state !== "running") return;
+
+  const now = context.currentTime;
+  const notes = [523.25, 659.25, 783.99];
+
+  notes.forEach((frequency, index) => {
+    const oscillator = context.createOscillator();
+    const gain = context.createGain();
+    const start = now + index * 0.09;
+
+    oscillator.type = "sine";
+    oscillator.frequency.value = frequency;
+
+    gain.gain.setValueAtTime(0.0001, start);
+    gain.gain.exponentialRampToValueAtTime(0.12, start + 0.015);
+    gain.gain.exponentialRampToValueAtTime(0.0001, start + 0.16);
+
+    oscillator.connect(gain);
+    gain.connect(master);
+    oscillator.start(start);
+    oscillator.stop(start + 0.18);
+  });
 }
 
 function playUiTone(graph: AudioGraph, kind: "click" | "hover") {
@@ -179,9 +205,9 @@ export default function AudioSystem() {
     if (next) {
       try {
         await startAudio();
-        if (graphRef.current) playUiTone(graphRef.current, "click");
-      } catch {
-        // A later user gesture will retry through the unlock listeners.
+        if (graphRef.current) playEnableChime(graphRef.current);
+      } catch (error) {
+        console.warn("K3Labs audio could not start:", error);
       }
     }
   };
