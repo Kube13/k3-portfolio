@@ -9,8 +9,10 @@ import "./glitch-system.css";
 import "./motion-system.css";
 import "./sticky-nav.css";
 import "./audio-system.css";
+import "./site-motion-field.css";
 import { defaultMetadata, siteConfig } from "./site";
 import AudioSystem from "./AudioSystem";
+import SiteMotionField from "./SiteMotionField";
 
 export const metadata: Metadata = {
   metadataBase: siteConfig.url,
@@ -50,7 +52,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark">
-      <body>{children}<AudioSystem /></body>
+      <body><SiteMotionField />{children}<AudioSystem /></body>
     </html>
   );
 }
