@@ -49,9 +49,7 @@ export default function SiteMotionField() {
     const meterPhases = Array.from({ length: 18 }, (_, index) => index * 0.47 + Math.random() * 1.8);
 
     const particleCount = () => {
-      const area = Math.max(1, width * height);
-      const base = Math.round(area / 42000);
-      return Math.max(18, Math.min(reduced ? 18 : 52, base));
+      return reduced ? 2 : 7;
     };
 
     const createParticle = (): Particle => {
@@ -66,8 +64,8 @@ export default function SiteMotionField() {
         vy: 0.07 + Math.random() * 0.16,
         size: 2 + Math.random() * 5.2,
         phase: Math.random() * Math.PI * 2,
-        kind: Math.random() > 0.48 ? "petal" : "pixel",
-        alpha: 0.18 + Math.random() * 0.22,
+        kind: "petal",
+        alpha: 0.08 + Math.random() * 0.12,
         side,
       };
     };
@@ -113,7 +111,7 @@ export default function SiteMotionField() {
         x: detail.x,
         y: detail.y,
         born: performance.now(),
-        strength: detail.kind === "hover" ? 0.45 : 1,
+        strength: detail.kind === "hover" ? 0.32 : 0.75,
       });
       if (ripples.length > 10) ripples.shift();
     };
@@ -151,61 +149,59 @@ export default function SiteMotionField() {
     };
 
     const drawMusicMeters = (now: number) => {
-      const lineInset = Math.min(28, Math.max(16, width * 0.018));
-      const meterHeight = Math.min(height * 0.66, 540);
-      const startY = (height - meterHeight) / 2;
-      const segmentGap = 7;
-      const segmentHeight = Math.max(8, meterHeight / meterPhases.length - segmentGap);
-
-      const baseEnergy = musicPlaying ? 1 : 0.12;
+      const inset = Math.min(30, Math.max(18, width * 0.02));
+      const top = height * 0.16;
+      const bottom = height * 0.84;
+      const span = bottom - top;
       const time = now * 0.001;
+      const energy = musicPlaying ? 1 : 0.16;
 
       for (let sideIndex = 0; sideIndex < 2; sideIndex += 1) {
         const left = sideIndex === 0;
-        const x = left ? lineInset : width - lineInset;
+        const baseX = left ? inset : width - inset;
 
-        context.save();
-        context.lineCap = "round";
+        for (let lineIndex = 0; lineIndex < 3; lineIndex += 1) {
+          const offset = (lineIndex - 1) * 5;
+          const phase = time * (0.72 + lineIndex * 0.11) + sideIndex * 1.4;
+          const amplitude = (1.2 + lineIndex * 0.9) * energy;
 
-        for (let index = 0; index < meterPhases.length; index += 1) {
-          const phase = meterPhases[index];
-          const musicalPulse =
-            (Math.sin(time * 2.1 + phase) * 0.34 +
-              Math.sin(time * 3.7 + phase * 1.31) * 0.22 +
-              Math.sin(time * 1.16 + index * 0.53) * 0.18 +
-              0.64) *
-            baseEnergy;
-
-          const energy = Math.max(0.08, Math.min(1, musicalPulse));
-          const y = startY + index * (segmentHeight + segmentGap);
-          const widthPulse = 1.4 + energy * (musicPlaying ? 5.2 : 1.8);
-
-          const gradient = context.createLinearGradient(
-            left ? x : x - widthPulse,
-            y,
-            left ? x + widthPulse : x,
-            y + segmentHeight,
-          );
-          gradient.addColorStop(0, `rgba(255,255,255,${0.22 + energy * 0.28})`);
-          gradient.addColorStop(0.5, `rgba(183,156,255,${0.2 + energy * 0.36})`);
-          gradient.addColorStop(1, `rgba(75,38,125,${0.16 + energy * 0.42})`);
-
-          context.strokeStyle = gradient;
-          context.lineWidth = widthPulse;
           context.beginPath();
-          context.moveTo(x, y);
-          context.lineTo(x, y + segmentHeight * (0.72 + energy * 0.28));
-          context.stroke();
 
-          if (musicPlaying && energy > 0.78) {
-            context.fillStyle = `rgba(255,255,255,${0.2 + energy * 0.35})`;
-            context.beginPath();
-            context.arc(x, y, 1.5 + energy * 1.7, 0, Math.PI * 2);
-            context.fill();
+          const steps = 42;
+          for (let step = 0; step <= steps; step += 1) {
+            const t = step / steps;
+            const y = top + span * t;
+            const wave =
+              Math.sin(t * 7.2 + phase) * amplitude +
+              Math.sin(t * 13.4 - phase * 0.7) * amplitude * 0.28;
+
+            const x = baseX + (left ? 1 : -1) * (offset + wave);
+
+            if (step === 0) context.moveTo(x, y);
+            else context.lineTo(x, y);
           }
+
+          const alpha = musicPlaying
+            ? 0.34 - lineIndex * 0.06
+            : 0.12 - lineIndex * 0.02;
+
+          context.strokeStyle =
+            lineIndex === 1
+              ? `rgba(183,156,255,${alpha})`
+              : `rgba(75,38,125,${alpha})`;
+
+          context.lineWidth = lineIndex === 1 ? 1.15 : 0.7;
+          context.lineCap = "round";
+          context.stroke();
         }
 
-        context.restore();
+        if (musicPlaying) {
+          const pulseY = top + span * (0.5 + Math.sin(time * 0.58 + sideIndex) * 0.18);
+          context.fillStyle = "rgba(255,255,255,.52)";
+          context.beginPath();
+          context.arc(baseX, pulseY, 1.45, 0, Math.PI * 2);
+          context.fill();
+        }
       }
     };
 
@@ -229,12 +225,12 @@ export default function SiteMotionField() {
 
         const edgeBand = Math.min(160, Math.max(76, width * 0.13));
         const edgeTarget = particle.side === "left" ? edgeBand * 0.44 : width - edgeBand * 0.44;
-        const waveX = Math.sin(particle.phase + particle.y * 0.003) * 0.09 * fluidity;
-        const waveY = Math.cos(particle.phase * 0.7 + particle.x * 0.002) * 0.055 * fluidity;
+        const waveX = Math.sin(particle.phase + particle.y * 0.003) * 0.035 * fluidity;
+        const waveY = Math.cos(particle.phase * 0.7 + particle.x * 0.002) * 0.02 * fluidity;
         const edgePull = (edgeTarget - particle.x) * 0.0018;
 
-        particle.vx += edgePull + waveX * 0.01;
-        particle.vy += waveY * 0.008;
+        particle.vx += edgePull + waveX * 0.006;
+        particle.vy += waveY * 0.004;
 
         particle.vx *= 0.985;
         particle.vy *= 0.996;
@@ -274,9 +270,7 @@ export default function SiteMotionField() {
         }
 
         if (particle.kind === "petal") {
-          drawPetal(particle, particle.phase * 0.42, glow);
-        } else {
-          drawPixel(particle, glow);
+          drawPetal(particle, particle.phase * 0.28, glow);
         }
       }
 
