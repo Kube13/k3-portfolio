@@ -220,10 +220,15 @@ export default function SiteMotionField() {
       void delta;
 
       context.clearRect(0, 0, width, height);
-      drawRail("left", now);
-      drawRail("right", now);
 
-      for (const petal of petals) {
+      const mobile = width < 768;
+      if (!mobile) {
+        drawRail("left", now);
+        drawRail("right", now);
+      }
+
+      const activePetals = mobile ? petals.slice(0, 2) : petals;
+      for (const petal of activePetals) {
         drawPetal(petal, now);
       }
 
