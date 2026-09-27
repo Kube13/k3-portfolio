@@ -1,0 +1,107 @@
+/* K3Labs audio control */
+.sound-toggle{
+  position:fixed;
+  right:20px;
+  bottom:20px;
+  z-index:1200;
+  display:inline-flex;
+  align-items:center;
+  gap:9px;
+  min-height:38px;
+  padding:9px 11px;
+  border:1px solid rgba(91,69,126,.20);
+  border-radius:999px;
+  background:rgba(248,245,255,.78);
+  color:#35284a;
+  box-shadow:0 10px 30px rgba(38,22,67,.10);
+  backdrop-filter:blur(16px) saturate(135%);
+  -webkit-backdrop-filter:blur(16px) saturate(135%);
+  cursor:pointer;
+  font:700 10px/1 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  letter-spacing:.12em;
+  transition:transform .18s ease,border-color .18s ease,background .18s ease,box-shadow .18s ease;
+}
+
+.sound-toggle:hover{
+  transform:translateY(-2px);
+  border-color:rgba(91,69,126,.36);
+  box-shadow:0 14px 34px rgba(38,22,67,.14);
+}
+
+.sound-toggle:focus-visible{
+  outline:2px solid currentColor;
+  outline-offset:3px;
+}
+
+.sound-toggle__icon{
+  display:grid;
+  place-items:center;
+  width:18px;
+  height:18px;
+}
+
+.sound-toggle__meter{
+  display:flex;
+  align-items:flex-end;
+  gap:2px;
+  width:13px;
+  height:12px;
+}
+
+.sound-toggle__meter i{
+  display:block;
+  width:2px;
+  border-radius:2px;
+  background:currentColor;
+  opacity:.42;
+}
+
+.sound-toggle__meter i:nth-child(1){height:5px}
+.sound-toggle__meter i:nth-child(2){height:9px}
+.sound-toggle__meter i:nth-child(3){height:7px}
+
+.sound-toggle.is-on{
+  background:rgba(247,242,255,.90);
+  border-color:rgba(107,73,158,.34);
+}
+
+.sound-toggle.is-on .sound-toggle__meter i{
+  opacity:.9;
+  animation:k3-sound-meter .72s ease-in-out infinite alternate;
+}
+
+.sound-toggle.is-on .sound-toggle__meter i:nth-child(2){animation-delay:-.28s}
+.sound-toggle.is-on .sound-toggle__meter i:nth-child(3){animation-delay:-.5s}
+
+@keyframes k3-sound-meter{
+  from{transform:scaleY(.45)}
+  to{transform:scaleY(1)}
+}
+
+@media(max-width:650px){
+  .sound-toggle{
+    right:14px;
+    bottom:14px;
+    padding:10px;
+  }
+
+  .sound-toggle__label{
+    position:absolute;
+    width:1px;
+    height:1px;
+    padding:0;
+    margin:-1px;
+    overflow:hidden;
+    clip:rect(0,0,0,0);
+    white-space:nowrap;
+    border:0;
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  .sound-toggle,
+  .sound-toggle__meter i{
+    transition:none;
+    animation:none!important;
+  }
+}
