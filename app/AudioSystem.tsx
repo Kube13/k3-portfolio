@@ -189,7 +189,13 @@ export default function AudioSystem() {
     window.localStorage.setItem(SFX_ENABLED_KEY, String(sfxEnabled));
     window.localStorage.setItem(MUSIC_ENABLED_KEY, String(musicEnabled));
     window.localStorage.setItem(PLAYER_OPEN_KEY, String(playerOpen));
-  }, [ready, sfxEnabled, musicEnabled, playerOpen]);
+
+    document.documentElement.dataset.sfxEnabled = String(sfxEnabled);
+    document.documentElement.dataset.musicPlaying = String(playing);
+
+    window.dispatchEvent(new CustomEvent("k3:sfx-state", { detail: { enabled: sfxEnabled } }));
+    window.dispatchEvent(new CustomEvent("k3:music-state", { detail: { playing } }));
+  }, [ready, sfxEnabled, musicEnabled, playerOpen, playing]);
 
   useEffect(() => {
     if (!ready || !sfxEnabled || entryGate) return;
@@ -204,6 +210,14 @@ export default function AudioSystem() {
         const engine = await ensureSfx();
         const isNavigation = interactive.matches("a[href]") || interactive.getAttribute("role") === "link";
         playTone(engine, isNavigation ? "transition" : "click");
+        const rect = interactive.getBoundingClientRect();
+        window.dispatchEvent(new CustomEvent("k3:motion-ripple", {
+          detail: {
+            x: rect.left + rect.width / 2,
+            y: rect.top + rect.height / 2,
+            kind: isNavigation ? "transition" : "click",
+          },
+        }));
       } catch {}
     };
 
@@ -225,6 +239,14 @@ export default function AudioSystem() {
       try {
         const engine = await ensureSfx();
         playTone(engine, "hover");
+        const rect = interactive.getBoundingClientRect();
+        window.dispatchEvent(new CustomEvent("k3:motion-ripple", {
+          detail: {
+            x: rect.left + rect.width / 2,
+            y: rect.top + rect.height / 2,
+            kind: "hover",
+          },
+        }));
       } catch {}
     };
 
@@ -276,6 +298,8 @@ export default function AudioSystem() {
     setPlaying(next);
     setMusicEnabled(next);
     setPlayerOpen(true);
+    document.documentElement.dataset.musicPlaying = String(next);
+    window.dispatchEvent(new CustomEvent("k3:music-state", { detail: { playing: next } }));
 
     if (sfxEnabled) {
       try {
