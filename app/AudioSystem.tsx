@@ -18,7 +18,7 @@ function createAudioGraph(): AudioGraph {
   const ambient = context.createGain();
   const filter = context.createBiquadFilter();
 
-  master.gain.value = 0.22;
+  master.gain.value = 0.34;
   ambient.gain.value = 0.0001;
   filter.type = "lowpass";
   filter.frequency.value = 520;
@@ -34,7 +34,7 @@ function createAudioGraph(): AudioGraph {
 
     oscillator.type = index === 0 ? "sine" : "triangle";
     oscillator.frequency.value = frequency;
-    gain.gain.value = index === 0 ? 0.032 : 0.012;
+    gain.gain.value = index === 0 ? 0.05 : 0.02;
 
     oscillator.connect(gain);
     gain.connect(ambient);
@@ -43,7 +43,7 @@ function createAudioGraph(): AudioGraph {
     return oscillator;
   });
 
-  ambient.gain.exponentialRampToValueAtTime(0.075, context.currentTime + 1.8);
+  ambient.gain.exponentialRampToValueAtTime(0.13, context.currentTime + 1.6);
 
   return { context, master, ambient, oscillators };
 }
@@ -61,7 +61,7 @@ function playUiTone(graph: AudioGraph, kind: "click" | "hover") {
   oscillator.frequency.exponentialRampToValueAtTime(kind === "click" ? 260 : 540, now + 0.06);
 
   gain.gain.setValueAtTime(0.0001, now);
-  gain.gain.exponentialRampToValueAtTime(kind === "click" ? 0.045 : 0.018, now + 0.008);
+  gain.gain.exponentialRampToValueAtTime(kind === "click" ? 0.07 : 0.03, now + 0.008);
   gain.gain.exponentialRampToValueAtTime(0.0001, now + (kind === "click" ? 0.09 : 0.055));
 
   oscillator.connect(gain);
@@ -189,7 +189,19 @@ export default function AudioSystem() {
   if (!ready) return null;
 
   return (
-    <button
+    <div className="sound-dock">
+      <a
+        className="sound-credit"
+        href="https://www.youtube.com/watch?v=fzQ6gRAEoy0"
+        target="_blank"
+        rel="noreferrer"
+        aria-label="Listen to Shelter by Porter Robinson and Madeon on the official Porter Robinson YouTube channel"
+      >
+        <span>SOUND INSPIRATION</span>
+        <strong>Porter Robinson + Madeon — Shelter ↗</strong>
+        <small>A small shoutout for making something this beautiful — music that makes digital worlds feel human.</small>
+      </a>
+      <button
       type="button"
       className={`sound-toggle ${enabled ? "is-on" : "is-off"}`}
       data-sound-toggle
@@ -203,6 +215,7 @@ export default function AudioSystem() {
       </span>
       <span className="sound-toggle__label">{enabled ? "SOUND ON" : "SOUND OFF"}</span>
       <span className="sound-toggle__meter" aria-hidden="true"><i /><i /><i /></span>
-    </button>
+      </button>
+    </div>
   );
 }
