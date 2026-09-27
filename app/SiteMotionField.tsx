@@ -46,6 +46,7 @@ export default function SiteMotionField() {
 
     const particles: Particle[] = [];
     const ripples: Ripple[] = [];
+    const meterPhases = Array.from({ length: 18 }, (_, index) => index * 0.47 + Math.random() * 1.8);
 
     const particleCount = () => {
       const area = Math.max(1, width * height);
@@ -149,6 +150,65 @@ export default function SiteMotionField() {
       context.restore();
     };
 
+    const drawMusicMeters = (now: number) => {
+      const lineInset = Math.min(28, Math.max(16, width * 0.018));
+      const meterHeight = Math.min(height * 0.66, 540);
+      const startY = (height - meterHeight) / 2;
+      const segmentGap = 7;
+      const segmentHeight = Math.max(8, meterHeight / meterPhases.length - segmentGap);
+
+      const baseEnergy = musicPlaying ? 1 : 0.12;
+      const time = now * 0.001;
+
+      for (let sideIndex = 0; sideIndex < 2; sideIndex += 1) {
+        const left = sideIndex === 0;
+        const x = left ? lineInset : width - lineInset;
+
+        context.save();
+        context.lineCap = "round";
+
+        for (let index = 0; index < meterPhases.length; index += 1) {
+          const phase = meterPhases[index];
+          const musicalPulse =
+            (Math.sin(time * 2.1 + phase) * 0.34 +
+              Math.sin(time * 3.7 + phase * 1.31) * 0.22 +
+              Math.sin(time * 1.16 + index * 0.53) * 0.18 +
+              0.64) *
+            baseEnergy;
+
+          const energy = Math.max(0.08, Math.min(1, musicalPulse));
+          const y = startY + index * (segmentHeight + segmentGap);
+          const widthPulse = 1.4 + energy * (musicPlaying ? 5.2 : 1.8);
+
+          const gradient = context.createLinearGradient(
+            left ? x : x - widthPulse,
+            y,
+            left ? x + widthPulse : x,
+            y + segmentHeight,
+          );
+          gradient.addColorStop(0, `rgba(255,255,255,${0.22 + energy * 0.28})`);
+          gradient.addColorStop(0.5, `rgba(183,156,255,${0.2 + energy * 0.36})`);
+          gradient.addColorStop(1, `rgba(75,38,125,${0.16 + energy * 0.42})`);
+
+          context.strokeStyle = gradient;
+          context.lineWidth = widthPulse;
+          context.beginPath();
+          context.moveTo(x, y);
+          context.lineTo(x, y + segmentHeight * (0.72 + energy * 0.28));
+          context.stroke();
+
+          if (musicPlaying && energy > 0.78) {
+            context.fillStyle = `rgba(255,255,255,${0.2 + energy * 0.35})`;
+            context.beginPath();
+            context.arc(x, y, 1.5 + energy * 1.7, 0, Math.PI * 2);
+            context.fill();
+          }
+        }
+
+        context.restore();
+      }
+    };
+
     const animate = (now: number) => {
       const delta = Math.min(32, now - last) / 16.666;
       last = now;
@@ -157,6 +217,8 @@ export default function SiteMotionField() {
 
       const fluidity = reduced ? 0.18 : musicPlaying ? 1.18 : 0.68;
       scrollVelocity *= 0.86;
+
+      drawMusicMeters(now);
 
       const aliveRipples = ripples.filter(ripple => now - ripple.born < 900);
       ripples.length = 0;
