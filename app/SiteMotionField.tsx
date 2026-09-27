@@ -55,12 +55,12 @@ export default function SiteMotionField() {
     const createParticle = (): Particle => ({
       x: Math.random() * width,
       y: Math.random() * height,
-      vx: (Math.random() - 0.5) * 0.12,
-      vy: 0.05 + Math.random() * 0.16,
-      size: 1.5 + Math.random() * 4.8,
+      vx: (Math.random() - 0.5) * 0.34,
+      vy: 0.14 + Math.random() * 0.28,
+      size: 2.4 + Math.random() * 6.2,
       phase: Math.random() * Math.PI * 2,
       kind: Math.random() > 0.48 ? "petal" : "pixel",
-      alpha: 0.12 + Math.random() * 0.25,
+      alpha: 0.24 + Math.random() * 0.28,
     });
 
     const syncParticles = () => {
@@ -147,7 +147,7 @@ export default function SiteMotionField() {
 
       context.clearRect(0, 0, width, height);
 
-      const fluidity = reduced ? 0.15 : musicPlaying ? 1.45 : 0.72;
+      const fluidity = reduced ? 0.28 : musicPlaying ? 2.25 : 1.25;
       scrollVelocity *= 0.92;
 
       const aliveRipples = ripples.filter(ripple => now - ripple.born < 900);
@@ -157,17 +157,17 @@ export default function SiteMotionField() {
       for (const particle of particles) {
         particle.phase += 0.0065 * delta * fluidity;
 
-        const waveX = Math.sin(particle.phase + particle.y * 0.004) * 0.09 * fluidity;
-        const waveY = Math.cos(particle.phase * 0.8 + particle.x * 0.003) * 0.045 * fluidity;
+        const waveX = Math.sin(particle.phase + particle.y * 0.004) * 0.22 * fluidity;
+        const waveY = Math.cos(particle.phase * 0.8 + particle.x * 0.003) * 0.12 * fluidity;
 
-        particle.vx += waveX * 0.012;
-        particle.vy += waveY * 0.008;
+        particle.vx += waveX * 0.02;
+        particle.vy += waveY * 0.016;
 
-        particle.vx *= 0.985;
-        particle.vy *= 0.995;
+        particle.vx *= 0.992;
+        particle.vy *= 0.998;
 
-        particle.x += (particle.vx + waveX + scrollVelocity * 0.04) * delta;
-        particle.y += (particle.vy + Math.abs(scrollVelocity) * 0.018) * delta;
+        particle.x += (particle.vx + waveX + scrollVelocity * 0.085) * delta;
+        particle.y += (particle.vy + Math.abs(scrollVelocity) * 0.035) * delta;
 
         if (particle.x < -20) particle.x = width + 20;
         if (particle.x > width + 20) particle.x = -20;
