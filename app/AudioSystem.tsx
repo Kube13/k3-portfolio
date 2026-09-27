@@ -1,10 +1,13 @@
 "use client";
 
-import { Pause, Play } from "@phosphor-icons/react";
+import { Pause, Play, SpeakerHigh, SpeakerSlash } from "@phosphor-icons/react";
 import { useCallback, useEffect, useRef, useState } from "react";
 
-const STORAGE_KEY = "k3labs-shelter-player-open";
-const SESSION_BOOT_KEY = "k3labs-boot-seen";
+const PLAYER_OPEN_KEY = "k3labs-shelter-player-open";
+const SFX_ENABLED_KEY = "k3labs-sfx-enabled";
+const MUSIC_ENABLED_KEY = "k3labs-music-enabled";
+const FIRST_ENTRY_KEY = "k3labs-entry-complete";
+const SESSION_FLASH_KEY = "k3labs-session-flash-seen";
 const SHELTER_VIDEO_ID = "HQnC1UHBvWA";
 
 type SfxEngine = {
@@ -33,7 +36,13 @@ function playTone(engine: SfxEngine, kind: "hover" | "click" | "boot" | "transit
   if (context.state !== "running") return;
   const now = context.currentTime;
 
-  const makeNote = (frequency: number, start: number, duration: number, gainValue: number, type: OscillatorType = "sine") => {
+  const note = (
+    frequency: number,
+    start: number,
+    duration: number,
+    gainValue: number,
+    type: OscillatorType = "sine",
+  ) => {
     const oscillator = context.createOscillator();
     const gain = context.createGain();
 
@@ -50,24 +59,24 @@ function playTone(engine: SfxEngine, kind: "hover" | "click" | "boot" | "transit
   };
 
   if (kind === "hover") {
-    makeNote(720, now, 0.045, 0.05, "sine");
+    note(720, now, 0.045, 0.05);
     return;
   }
 
   if (kind === "click") {
-    makeNote(420, now, 0.07, 0.085, "triangle");
-    makeNote(620, now + 0.035, 0.055, 0.045, "sine");
+    note(420, now, 0.07, 0.085, "triangle");
+    note(620, now + 0.035, 0.055, 0.045);
     return;
   }
 
   if (kind === "transition") {
-    makeNote(360, now, 0.11, 0.07, "triangle");
-    makeNote(520, now + 0.045, 0.12, 0.055, "sine");
+    note(360, now, 0.11, 0.07, "triangle");
+    note(520, now + 0.045, 0.12, 0.055);
     return;
   }
 
   [523.25, 659.25, 783.99].forEach((frequency, index) => {
-    makeNote(frequency, now + index * 0.085, 0.16, 0.09, "sine");
+    note(frequency, now + index * 0.085, 0.16, 0.09);
   });
 }
 
@@ -75,10 +84,14 @@ export default function AudioSystem() {
   const playerRef = useRef<HTMLIFrameElement>(null);
   const sfxRef = useRef<SfxEngine | null>(null);
   const lastHoverRef = useRef(0);
-  const [playing, setPlaying] = useState(false);
+
   const [ready, setReady] = useState(false);
+  const [entryGate, setEntryGate] = useState(false);
+  const [returnFlash, setReturnFlash] = useState(false);
+  const [sfxEnabled, setSfxEnabled] = useState(false);
+  const [musicEnabled, setMusicEnabled] = useState(false);
+  const [playing, setPlaying] = useState(false);
   const [playerOpen, setPlayerOpen] = useState(false);
-  const [booting, setBooting] = useState(false);
 
   const ensureSfx = useCallback(async () => {
     if (!sfxRef.current || sfxRef.current.context.state === "closed") {
@@ -92,18 +105,30 @@ export default function AudioSystem() {
 
   useEffect(() => {
     setReady(true);
-    setPlayerOpen(window.localStorage.getItem(STORAGE_KEY) === "true");
 
-    if (window.sessionStorage.getItem(SESSION_BOOT_KEY) !== "true") {
-      setBooting(true);
-      window.sessionStorage.setItem(SESSION_BOOT_KEY, "true");
+    const entryComplete = window.localStorage.getItem(FIRST_ENTRY_KEY) === "true";
+    const storedSfx = window.localStorage.getItem(SFX_ENABLED_KEY) === "true";
+    const storedMusic = window.localStorage.getItem(MUSIC_ENABLED_KEY) === "true";
+    const storedPlayerOpen = window.localStorage.getItem(PLAYER_OPEN_KEY) === "true";
+
+    setSfxEnabled(storedSfx);
+    setMusicEnabled(storedMusic);
+    setPlayerOpen(storedPlayerOpen);
+
+    if (!entryComplete) {
+      setEntryGate(true);
       document.documentElement.classList.add("k3-booting");
+      return;
+    }
 
+    if (window.sessionStorage.getItem(SESSION_FLASH_KEY) !== "true") {
+      setReturnFlash(true);
+      window.sessionStorage.setItem(SESSION_FLASH_KEY, "true");
+      document.documentElement.classList.add("k3-booting");
       const timer = window.setTimeout(() => {
-        setBooting(false);
+        setReturnFlash(false);
         document.documentElement.classList.remove("k3-booting");
-      }, 1900);
-
+      }, 460);
       return () => {
         window.clearTimeout(timer);
         document.documentElement.classList.remove("k3-booting");
@@ -113,29 +138,19 @@ export default function AudioSystem() {
 
   useEffect(() => {
     if (!ready) return;
-    window.localStorage.setItem(STORAGE_KEY, String(playerOpen));
-  }, [playerOpen, ready]);
+    window.localStorage.setItem(SFX_ENABLED_KEY, String(sfxEnabled));
+    window.localStorage.setItem(MUSIC_ENABLED_KEY, String(musicEnabled));
+    window.localStorage.setItem(PLAYER_OPEN_KEY, String(playerOpen));
+  }, [ready, sfxEnabled, musicEnabled, playerOpen]);
 
   useEffect(() => {
-    if (!ready) return;
-
-    let bootChimePlayed = false;
-
-    const unlock = async () => {
-      try {
-        const engine = await ensureSfx();
-        if (!bootChimePlayed) {
-          playTone(engine, "boot");
-          bootChimePlayed = true;
-        }
-      } catch {}
-    };
+    if (!ready || !sfxEnabled || entryGate) return;
 
     const onClick = async (event: MouseEvent) => {
       const target = event.target;
       if (!(target instanceof Element)) return;
       if (!target.closest("a, button, [role='button']")) return;
-      if (target.closest("[data-sound-toggle]")) return;
+      if (target.closest("[data-audio-control]")) return;
 
       try {
         const engine = await ensureSfx();
@@ -166,18 +181,14 @@ export default function AudioSystem() {
       } catch {}
     };
 
-    window.addEventListener("pointerdown", unlock, { once: true });
-    window.addEventListener("keydown", unlock, { once: true });
     document.addEventListener("click", onClick);
     document.addEventListener("pointerover", onPointerOver);
 
     return () => {
-      window.removeEventListener("pointerdown", unlock);
-      window.removeEventListener("keydown", unlock);
       document.removeEventListener("click", onClick);
       document.removeEventListener("pointerover", onPointerOver);
     };
-  }, [ensureSfx, ready]);
+  }, [ensureSfx, entryGate, ready, sfxEnabled]);
 
   useEffect(() => () => {
     if (sfxRef.current && sfxRef.current.context.state !== "closed") {
@@ -185,15 +196,46 @@ export default function AudioSystem() {
     }
   }, []);
 
+  const finishEntry = async (withSound: boolean) => {
+    window.localStorage.setItem(FIRST_ENTRY_KEY, "true");
+    window.sessionStorage.setItem(SESSION_FLASH_KEY, "true");
+
+    setSfxEnabled(withSound);
+    setEntryGate(false);
+    document.documentElement.classList.remove("k3-booting");
+
+    if (withSound) {
+      try {
+        const engine = await ensureSfx();
+        playTone(engine, "boot");
+      } catch {}
+    }
+  };
+
+  const toggleSfx = async () => {
+    const next = !sfxEnabled;
+    setSfxEnabled(next);
+
+    if (next) {
+      try {
+        const engine = await ensureSfx();
+        playTone(engine, "click");
+      } catch {}
+    }
+  };
+
   const togglePlayback = async () => {
     const next = !playing;
     setPlaying(next);
+    setMusicEnabled(next);
     setPlayerOpen(true);
 
-    try {
-      const engine = await ensureSfx();
-      playTone(engine, "click");
-    } catch {}
+    if (sfxEnabled) {
+      try {
+        const engine = await ensureSfx();
+        playTone(engine, "click");
+      } catch {}
+    }
 
     requestAnimationFrame(() => {
       sendPlayerCommand(playerRef.current, next ? "playVideo" : "pauseVideo");
@@ -207,10 +249,10 @@ export default function AudioSystem() {
 
   return (
     <>
-      {booting ? (
-        <div className="k3-boot-screen" role="status" aria-live="polite" aria-label="K3Labs loading">
-          <div className="k3-boot-screen__inner">
-            <div className="k3-boot-mark"><span>K3</span><i /></div>
+      {entryGate ? (
+        <div className="k3-entry-screen" role="dialog" aria-modal="true" aria-label="Enter K3Labs">
+          <div className="k3-entry-screen__inner">
+            <div className="k3-boot-mark"><span>K3LABS</span><i /></div>
             <p>INITIALIZING SYSTEM</p>
             <div className="k3-boot-bar"><i /></div>
             <div className="k3-boot-steps">
@@ -219,15 +261,47 @@ export default function AudioSystem() {
               <span>HUMAN SIGNAL</span>
               <strong>READY</strong>
             </div>
+            <div className="k3-entry-actions">
+              <button type="button" data-audio-control onClick={() => void finishEntry(true)}>
+                <SpeakerHigh size={16} weight="fill" aria-hidden="true" />
+                ENTER WITH SOUND
+              </button>
+              <button type="button" className="is-quiet" data-audio-control onClick={() => void finishEntry(false)}>
+                <SpeakerSlash size={16} aria-hidden="true" />
+                ENTER SILENTLY
+              </button>
+            </div>
+            <small>Interface sound only. Shelter stays paused until you choose to play it.</small>
           </div>
         </div>
       ) : null}
 
+      {returnFlash ? (
+        <div className="k3-return-flash" aria-hidden="true">
+          <span>K3</span><i />
+        </div>
+      ) : null}
+
       <div className="sound-dock">
+        <div className="audio-preferences" role="group" aria-label="Audio preferences">
+          <button
+            type="button"
+            className={`sfx-toggle ${sfxEnabled ? "is-on" : ""}`}
+            data-audio-control
+            onClick={() => void toggleSfx()}
+            aria-pressed={sfxEnabled}
+            title={sfxEnabled ? "Turn interface sounds off" : "Turn interface sounds on"}
+          >
+            {sfxEnabled ? <SpeakerHigh size={15} weight="fill" aria-hidden="true" /> : <SpeakerSlash size={15} aria-hidden="true" />}
+            <span>UI SFX {sfxEnabled ? "ON" : "OFF"}</span>
+          </button>
+        </div>
+
         <div className={`shelter-player ${playerOpen ? "is-open" : ""}`}>
           <button
             type="button"
             className="shelter-player__credit"
+            data-audio-control
             onClick={() => setPlayerOpen(value => !value)}
             aria-expanded={playerOpen}
           >
@@ -258,8 +332,8 @@ export default function AudioSystem() {
         <button
           type="button"
           className={`sound-toggle ${playing ? "is-on" : "is-off"}`}
-          data-sound-toggle
-          onClick={togglePlayback}
+          data-audio-control
+          onClick={() => void togglePlayback()}
           aria-pressed={playing}
           aria-label={playing ? "Pause Shelter by Porter Robinson and Madeon" : "Play Shelter by Porter Robinson and Madeon"}
           title={playing ? "Pause Shelter" : "Play Shelter"}
