@@ -1,0 +1,23 @@
+.site-motion-field{
+  position:fixed;
+  inset:0;
+  z-index:0;
+  width:100vw;
+  height:100vh;
+  pointer-events:none;
+  opacity:.86;
+  mix-blend-mode:multiply;
+}
+
+body > main,
+.site-header,
+.sound-dock{
+  position:relative;
+  z-index:1;
+}
+
+@media(prefers-reduced-motion:reduce){
+  .site-motion-field{
+    opacity:.42;
+  }
+}
