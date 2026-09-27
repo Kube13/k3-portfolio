@@ -1,19 +1,28 @@
 .site-motion-field{
   position:fixed;
   inset:0;
-  z-index:0;
+  z-index:6;
   width:100vw;
   height:100vh;
   pointer-events:none;
-  opacity:.86;
-  mix-blend-mode:multiply;
+  opacity:.92;
+  mix-blend-mode:normal;
 }
 
-body > main,
+body > main{
+  position:relative;
+  z-index:1;
+}
+
 .site-header,
 .sound-dock{
   position:relative;
-  z-index:1;
+  z-index:20;
+}
+
+.k3-entry-screen,
+.k3-return-flash{
+  z-index:5000;
 }
 
 @media(prefers-reduced-motion:reduce){
