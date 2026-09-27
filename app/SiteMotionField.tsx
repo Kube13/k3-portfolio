@@ -11,6 +11,7 @@ type Particle = {
   phase: number;
   kind: "pixel" | "petal";
   alpha: number;
+  side: "left" | "right";
 };
 
 type Ripple = {
@@ -52,16 +53,23 @@ export default function SiteMotionField() {
       return Math.max(18, Math.min(reduced ? 18 : 52, base));
     };
 
-    const createParticle = (): Particle => ({
-      x: Math.random() * width,
-      y: Math.random() * height,
-      vx: (Math.random() - 0.5) * 0.34,
-      vy: 0.14 + Math.random() * 0.28,
-      size: 2.4 + Math.random() * 6.2,
-      phase: Math.random() * Math.PI * 2,
-      kind: Math.random() > 0.48 ? "petal" : "pixel",
-      alpha: 0.24 + Math.random() * 0.28,
-    });
+    const createParticle = (): Particle => {
+      const side = Math.random() > 0.5 ? "right" : "left";
+      const edgeBand = Math.min(150, Math.max(72, width * 0.12));
+      return {
+        x: side === "left"
+          ? Math.random() * edgeBand
+          : width - Math.random() * edgeBand,
+        y: Math.random() * height,
+        vx: (Math.random() - 0.5) * 0.16,
+        vy: 0.07 + Math.random() * 0.16,
+        size: 2 + Math.random() * 5.2,
+        phase: Math.random() * Math.PI * 2,
+        kind: Math.random() > 0.48 ? "petal" : "pixel",
+        alpha: 0.18 + Math.random() * 0.22,
+        side,
+      };
+    };
 
     const syncParticles = () => {
       const wanted = particleCount();
@@ -83,7 +91,7 @@ export default function SiteMotionField() {
 
     const onScroll = () => {
       const next = window.scrollY;
-      scrollVelocity += (next - scrollY) * 0.018;
+      scrollVelocity += (next - scrollY) * 0.004;
       scrollY = next;
     };
 
@@ -147,33 +155,44 @@ export default function SiteMotionField() {
 
       context.clearRect(0, 0, width, height);
 
-      const fluidity = reduced ? 0.28 : musicPlaying ? 2.25 : 1.25;
-      scrollVelocity *= 0.92;
+      const fluidity = reduced ? 0.18 : musicPlaying ? 1.18 : 0.68;
+      scrollVelocity *= 0.86;
 
       const aliveRipples = ripples.filter(ripple => now - ripple.born < 900);
       ripples.length = 0;
       ripples.push(...aliveRipples);
 
       for (const particle of particles) {
-        particle.phase += 0.0065 * delta * fluidity;
+        particle.phase += 0.0042 * delta * fluidity;
 
-        const waveX = Math.sin(particle.phase + particle.y * 0.004) * 0.22 * fluidity;
-        const waveY = Math.cos(particle.phase * 0.8 + particle.x * 0.003) * 0.12 * fluidity;
+        const edgeBand = Math.min(160, Math.max(76, width * 0.13));
+        const edgeTarget = particle.side === "left" ? edgeBand * 0.44 : width - edgeBand * 0.44;
+        const waveX = Math.sin(particle.phase + particle.y * 0.003) * 0.09 * fluidity;
+        const waveY = Math.cos(particle.phase * 0.7 + particle.x * 0.002) * 0.055 * fluidity;
+        const edgePull = (edgeTarget - particle.x) * 0.0018;
 
-        particle.vx += waveX * 0.02;
-        particle.vy += waveY * 0.016;
+        particle.vx += edgePull + waveX * 0.01;
+        particle.vy += waveY * 0.008;
 
-        particle.vx *= 0.992;
-        particle.vy *= 0.998;
+        particle.vx *= 0.985;
+        particle.vy *= 0.996;
 
-        particle.x += (particle.vx + waveX + scrollVelocity * 0.085) * delta;
-        particle.y += (particle.vy + Math.abs(scrollVelocity) * 0.035) * delta;
+        particle.x += (particle.vx + waveX + scrollVelocity * 0.012) * delta;
+        particle.y += (particle.vy + Math.abs(scrollVelocity) * 0.004) * delta;
 
-        if (particle.x < -20) particle.x = width + 20;
-        if (particle.x > width + 20) particle.x = -20;
+        const innerLimit = particle.side === "left" ? edgeBand * 1.12 : width - edgeBand * 1.12;
+        if (particle.side === "left" && particle.x > innerLimit) particle.vx -= 0.06;
+        if (particle.side === "right" && particle.x < innerLimit) particle.vx += 0.06;
+
+        if (particle.x < -24 || particle.x > width + 24) {
+          particle.side = Math.random() > 0.5 ? "right" : "left";
+          particle.x = particle.side === "left" ? edgeBand * 0.35 : width - edgeBand * 0.35;
+        }
         if (particle.y > height + 26) {
           particle.y = -26;
-          particle.x = Math.random() * width;
+          particle.x = particle.side === "left"
+            ? Math.random() * edgeBand
+            : width - Math.random() * edgeBand;
         }
 
         let glow = 0;
@@ -182,18 +201,18 @@ export default function SiteMotionField() {
           const dx = particle.x - ripple.x;
           const dy = particle.y - ripple.y;
           const distance = Math.sqrt(dx * dx + dy * dy);
-          const radius = 30 + age * 220;
+          const radius = 18 + age * 145;
           const edge = Math.abs(distance - radius);
-          if (edge < 70) {
-            const force = (1 - edge / 70) * (1 - age) * ripple.strength;
-            particle.vx += (dx / Math.max(distance, 1)) * force * 0.025;
-            particle.vy += (dy / Math.max(distance, 1)) * force * 0.025;
-            glow = Math.max(glow, force * 0.16);
+          if (edge < 46) {
+            const force = (1 - edge / 46) * (1 - age) * ripple.strength;
+            particle.vx += (dx / Math.max(distance, 1)) * force * 0.012;
+            particle.vy += (dy / Math.max(distance, 1)) * force * 0.012;
+            glow = Math.max(glow, force * 0.12);
           }
         }
 
         if (particle.kind === "petal") {
-          drawPetal(particle, particle.phase * 0.55 + scrollVelocity * 0.01, glow);
+          drawPetal(particle, particle.phase * 0.42, glow);
         } else {
           drawPixel(particle, glow);
         }
