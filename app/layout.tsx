@@ -8,7 +8,9 @@ import "./sakura.css";
 import "./glitch-system.css";
 import "./motion-system.css";
 import "./sticky-nav.css";
+import "./audio-system.css";
 import { defaultMetadata, siteConfig } from "./site";
+import AudioSystem from "./AudioSystem";
 
 export const metadata: Metadata = {
   metadataBase: siteConfig.url,
@@ -48,7 +50,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark">
-      <body>{children}</body>
+      <body>{children}<AudioSystem /></body>
     </html>
   );
 }
