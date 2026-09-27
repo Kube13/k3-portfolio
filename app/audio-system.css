@@ -1,24 +1,23 @@
-/* K3Labs startup + soundtrack + interface SFX */
+/* K3Labs entry gate, return flash, soundtrack and UI SFX */
 html.k3-booting,
 html.k3-booting body{
   overflow:hidden;
 }
 
-.k3-boot-screen{
+.k3-entry-screen{
   position:fixed;
   inset:0;
   z-index:5000;
   display:grid;
   place-items:center;
   background:
-    radial-gradient(circle at 50% 42%,rgba(143,112,197,.14),transparent 32%),
+    radial-gradient(circle at 50% 42%,rgba(143,112,197,.15),transparent 34%),
     #f8f5ff;
   color:#35284a;
-  animation:k3-boot-exit .34s ease 1.56s both;
 }
 
-.k3-boot-screen__inner{
-  width:min(430px,calc(100vw - 48px));
+.k3-entry-screen__inner{
+  width:min(440px,calc(100vw - 48px));
   display:grid;
   gap:18px;
 }
@@ -31,7 +30,8 @@ html.k3-booting body{
   letter-spacing:-.06em;
 }
 
-.k3-boot-mark i{
+.k3-boot-mark i,
+.k3-return-flash i{
   width:8px;
   height:8px;
   border-radius:50%;
@@ -40,7 +40,7 @@ html.k3-booting body{
   animation:k3-boot-pulse .7s ease-in-out infinite alternate;
 }
 
-.k3-boot-screen p{
+.k3-entry-screen p{
   margin:0;
   font:700 10px/1 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
   letter-spacing:.2em;
@@ -60,7 +60,7 @@ html.k3-booting body{
   height:100%;
   transform-origin:left;
   background:currentColor;
-  animation:k3-boot-load 1.45s cubic-bezier(.33,.01,.18,1) both;
+  animation:k3-entry-load 1.25s cubic-bezier(.33,.01,.18,1) both;
 }
 
 .k3-boot-steps{
@@ -76,18 +76,78 @@ html.k3-booting body{
   animation:k3-boot-step .3s ease both;
 }
 
-.k3-boot-steps span:nth-child(2){animation-delay:.4s}
-.k3-boot-steps span:nth-child(3){animation-delay:.8s}
+.k3-boot-steps span:nth-child(2){animation-delay:.32s}
+.k3-boot-steps span:nth-child(3){animation-delay:.64s}
 
 .k3-boot-steps strong{
   margin-left:auto;
   opacity:0;
-  animation:k3-boot-ready .25s ease 1.2s both;
+  animation:k3-boot-ready .25s ease .95s both;
 }
 
-@keyframes k3-boot-load{
+.k3-entry-actions{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-top:6px;
+  opacity:0;
+  animation:k3-entry-actions .28s ease 1.08s both;
+}
+
+.k3-entry-actions button{
+  min-height:44px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  border:1px solid rgba(91,69,126,.24);
+  border-radius:999px;
+  background:#35284a;
+  color:#fff;
+  cursor:pointer;
+  font:700 10px/1 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  letter-spacing:.1em;
+  transition:transform .18s ease,border-color .18s ease,background .18s ease;
+}
+
+.k3-entry-actions button:hover{
+  transform:translateY(-2px);
+}
+
+.k3-entry-actions button.is-quiet{
+  background:rgba(255,255,255,.54);
+  color:#35284a;
+}
+
+.k3-entry-screen__inner > small{
+  opacity:0;
+  text-align:center;
+  font:500 10px/1.45 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  animation:k3-entry-actions .28s ease 1.14s both;
+}
+
+.k3-return-flash{
+  position:fixed;
+  inset:0;
+  z-index:5000;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  background:#f8f5ff;
+  color:#35284a;
+  font:800 34px/1 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  letter-spacing:-.06em;
+  animation:k3-return-flash .46s ease both;
+}
+
+@keyframes k3-entry-load{
   from{transform:scaleX(0)}
   to{transform:scaleX(1)}
+}
+
+@keyframes k3-entry-actions{
+  to{opacity:1}
 }
 
 @keyframes k3-boot-step{
@@ -104,11 +164,13 @@ html.k3-booting body{
   to{transform:scale(1.15);opacity:1}
 }
 
-@keyframes k3-boot-exit{
-  to{opacity:0;visibility:hidden}
+@keyframes k3-return-flash{
+  0%{opacity:1}
+  65%{opacity:1}
+  100%{opacity:0;visibility:hidden}
 }
 
-/* Compact official Shelter player */
+/* Audio controls */
 .sound-dock{
   position:fixed;
   right:20px;
@@ -117,6 +179,34 @@ html.k3-booting body{
   display:grid;
   justify-items:end;
   gap:9px;
+}
+
+.audio-preferences{
+  display:flex;
+  justify-content:flex-end;
+}
+
+.sfx-toggle{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  min-height:32px;
+  padding:7px 9px;
+  border:1px solid rgba(91,69,126,.16);
+  border-radius:999px;
+  background:rgba(248,245,255,.78);
+  color:#35284a;
+  backdrop-filter:blur(16px) saturate(135%);
+  -webkit-backdrop-filter:blur(16px) saturate(135%);
+  cursor:pointer;
+  font:700 9px/1 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  letter-spacing:.1em;
+  opacity:.82;
+}
+
+.sfx-toggle.is-on{
+  opacity:1;
+  border-color:rgba(107,73,158,.34);
 }
 
 .shelter-player{
@@ -212,13 +302,16 @@ html.k3-booting body{
 }
 
 .sound-toggle:hover,
-.shelter-player__credit:hover{
+.shelter-player__credit:hover,
+.sfx-toggle:hover{
   transform:translateY(-2px);
   border-color:rgba(91,69,126,.36);
 }
 
 .sound-toggle:focus-visible,
-.shelter-player__credit:focus-visible{
+.shelter-player__credit:focus-visible,
+.sfx-toggle:focus-visible,
+.k3-entry-actions button:focus-visible{
   outline:2px solid currentColor;
   outline-offset:3px;
 }
@@ -269,6 +362,10 @@ html.k3-booting body{
 }
 
 @media(max-width:650px){
+  .k3-entry-actions{
+    grid-template-columns:1fr;
+  }
+
   .sound-dock{
     right:14px;
     bottom:14px;
@@ -282,7 +379,8 @@ html.k3-booting body{
     padding:10px;
   }
 
-  .sound-toggle__label{
+  .sound-toggle__label,
+  .sfx-toggle span{
     position:absolute;
     width:1px;
     height:1px;
@@ -296,17 +394,18 @@ html.k3-booting body{
 }
 
 @media(prefers-reduced-motion:reduce){
-  .k3-boot-screen{
-    animation:none;
-  }
-
+  .k3-entry-screen,
+  .k3-return-flash,
   .k3-boot-bar i,
   .k3-boot-steps span,
   .k3-boot-steps strong,
   .k3-boot-mark i,
+  .k3-entry-actions,
+  .k3-entry-screen__inner > small,
   .sound-toggle,
   .sound-toggle__meter i,
-  .shelter-player__credit{
+  .shelter-player__credit,
+  .sfx-toggle{
     transition:none;
     animation:none!important;
   }
