@@ -13,6 +13,7 @@ const SHELTER_VIDEO_ID = "HQnC1UHBvWA";
 type SfxEngine = {
   context: AudioContext;
   master: GainNode;
+  toneBus: GainNode;
 };
 
 function sendPlayerCommand(iframe: HTMLIFrameElement | null, command: "playVideo" | "pauseVideo") {
@@ -26,13 +27,39 @@ function sendPlayerCommand(iframe: HTMLIFrameElement | null, command: "playVideo
 function createSfxEngine(): SfxEngine {
   const context = new AudioContext();
   const master = context.createGain();
-  master.gain.value = 0.34;
+  const toneBus = context.createGain();
+  const filter = context.createBiquadFilter();
+  const delay = context.createDelay(0.8);
+  const feedback = context.createGain();
+  const wet = context.createGain();
+
+  master.gain.value = 0.42;
+  toneBus.gain.value = 1;
+
+  filter.type = "lowpass";
+  filter.frequency.value = 1800;
+  filter.Q.value = 0.45;
+
+  delay.delayTime.value = 0.16;
+  feedback.gain.value = 0.18;
+  wet.gain.value = 0.22;
+
+  toneBus.connect(filter);
+  filter.connect(master);
+
+  filter.connect(delay);
+  delay.connect(feedback);
+  feedback.connect(delay);
+  delay.connect(wet);
+  wet.connect(master);
+
   master.connect(context.destination);
-  return { context, master };
+
+  return { context, master, toneBus };
 }
 
 function playTone(engine: SfxEngine, kind: "hover" | "click" | "boot" | "transition") {
-  const { context, master } = engine;
+  const { context, toneBus } = engine;
   if (context.state !== "running") return;
   const now = context.currentTime;
 
@@ -42,42 +69,63 @@ function playTone(engine: SfxEngine, kind: "hover" | "click" | "boot" | "transit
     duration: number,
     gainValue: number,
     type: OscillatorType = "sine",
+    detune = 0,
   ) => {
     const oscillator = context.createOscillator();
     const gain = context.createGain();
 
     oscillator.type = type;
     oscillator.frequency.setValueAtTime(frequency, start);
+    oscillator.detune.value = detune;
+
     gain.gain.setValueAtTime(0.0001, start);
-    gain.gain.exponentialRampToValueAtTime(gainValue, start + 0.008);
+    gain.gain.exponentialRampToValueAtTime(gainValue, start + 0.028);
+    gain.gain.exponentialRampToValueAtTime(Math.max(gainValue * 0.42, 0.0002), start + duration * 0.55);
     gain.gain.exponentialRampToValueAtTime(0.0001, start + duration);
 
     oscillator.connect(gain);
-    gain.connect(master);
+    gain.connect(toneBus);
     oscillator.start(start);
-    oscillator.stop(start + duration + 0.03);
+    oscillator.stop(start + duration + 0.05);
+  };
+
+  const bloom = (
+    root: number,
+    start: number,
+    duration: number,
+    gainValue: number,
+  ) => {
+    note(root, start, duration, gainValue, "sine", -4);
+    note(root * 1.5, start + 0.012, duration * 0.86, gainValue * 0.34, "triangle", 3);
+    note(root * 2, start + 0.026, duration * 0.72, gainValue * 0.18, "sine", -2);
   };
 
   if (kind === "hover") {
-    note(720, now, 0.045, 0.05);
+    bloom(392, now, 0.18, 0.045);
     return;
   }
 
   if (kind === "click") {
-    note(420, now, 0.07, 0.085, "triangle");
-    note(620, now + 0.035, 0.055, 0.045);
+    bloom(329.63, now, 0.24, 0.075);
+    bloom(493.88, now + 0.055, 0.2, 0.032);
     return;
   }
 
   if (kind === "transition") {
-    note(360, now, 0.11, 0.07, "triangle");
-    note(520, now + 0.045, 0.12, 0.055);
+    bloom(293.66, now, 0.3, 0.065);
+    bloom(440, now + 0.07, 0.26, 0.045);
     return;
   }
 
-  [523.25, 659.25, 783.99].forEach((frequency, index) => {
-    note(frequency, now + index * 0.085, 0.16, 0.09);
+  [261.63, 329.63, 392, 523.25].forEach((frequency, index) => {
+    bloom(frequency, now + index * 0.085, 0.34, index === 3 ? 0.045 : 0.06);
   });
+}
+
+function getInteractiveTarget(target: Element) {
+  return target.closest(
+    "a[href], button:not([disabled]), [role='button'], summary, input:not([disabled]), select:not([disabled]), textarea:not([disabled]), label[for], [tabindex]:not([tabindex='-1']), [data-clickable='true']",
+  );
 }
 
 export default function AudioSystem() {
@@ -149,12 +197,13 @@ export default function AudioSystem() {
     const onClick = async (event: MouseEvent) => {
       const target = event.target;
       if (!(target instanceof Element)) return;
-      if (!target.closest("a, button, [role='button']")) return;
-      if (target.closest("[data-audio-control]")) return;
+      const interactive = getInteractiveTarget(target);
+      if (!interactive) return;
 
       try {
         const engine = await ensureSfx();
-        playTone(engine, target.closest("a[href]") ? "transition" : "click");
+        const isNavigation = interactive.matches("a[href]") || interactive.getAttribute("role") === "link";
+        playTone(engine, isNavigation ? "transition" : "click");
       } catch {}
     };
 
@@ -163,16 +212,14 @@ export default function AudioSystem() {
       const target = event.target;
       if (!(target instanceof Element)) return;
 
-      const interactive = target.closest(
-        ".selected-project, .feature-card, .homepage-demo-card, .text-link, .card-link, .button, .navlinks a, .language-switch button",
-      );
+      const interactive = getInteractiveTarget(target);
       if (!interactive) return;
 
       const from = event.relatedTarget;
       if (from instanceof Node && interactive.contains(from)) return;
 
       const now = performance.now();
-      if (now - lastHoverRef.current < 90) return;
+      if (now - lastHoverRef.current < 120) return;
       lastHoverRef.current = now;
 
       try {
