@@ -153,36 +153,40 @@ export default function AudioSystem() {
   }, []);
 
   useEffect(() => {
-    setReady(true);
+    // Initialize browser-only preferences after hydration. Scheduling the read
+    // avoids synchronous setState calls from the effect body.
+    let flashTimer: number | undefined;
+    const initializationFrame = window.requestAnimationFrame(() => {
+      const entryComplete = window.localStorage.getItem(FIRST_ENTRY_KEY) === "true";
+      const storedSfx = window.localStorage.getItem(SFX_ENABLED_KEY) === "true";
+      const storedMusic = window.localStorage.getItem(MUSIC_ENABLED_KEY) === "true";
+      const storedPlayerOpen = window.localStorage.getItem(PLAYER_OPEN_KEY) === "true";
 
-    const entryComplete = window.localStorage.getItem(FIRST_ENTRY_KEY) === "true";
-    const storedSfx = window.localStorage.getItem(SFX_ENABLED_KEY) === "true";
-    const storedMusic = window.localStorage.getItem(MUSIC_ENABLED_KEY) === "true";
-    const storedPlayerOpen = window.localStorage.getItem(PLAYER_OPEN_KEY) === "true";
+      setSfxEnabled(storedSfx);
+      setMusicEnabled(storedMusic);
+      setPlayerOpen(storedPlayerOpen);
 
-    setSfxEnabled(storedSfx);
-    setMusicEnabled(storedMusic);
-    setPlayerOpen(storedPlayerOpen);
+      if (!entryComplete) {
+        setEntryGate(true);
+        document.documentElement.classList.add("k3-booting");
+      } else if (window.sessionStorage.getItem(SESSION_FLASH_KEY) !== "true") {
+        setReturnFlash(true);
+        window.sessionStorage.setItem(SESSION_FLASH_KEY, "true");
+        document.documentElement.classList.add("k3-booting");
+        flashTimer = window.setTimeout(() => {
+          setReturnFlash(false);
+          document.documentElement.classList.remove("k3-booting");
+        }, 460);
+      }
 
-    if (!entryComplete) {
-      setEntryGate(true);
-      document.documentElement.classList.add("k3-booting");
-      return;
-    }
+      setReady(true);
+    });
 
-    if (window.sessionStorage.getItem(SESSION_FLASH_KEY) !== "true") {
-      setReturnFlash(true);
-      window.sessionStorage.setItem(SESSION_FLASH_KEY, "true");
-      document.documentElement.classList.add("k3-booting");
-      const timer = window.setTimeout(() => {
-        setReturnFlash(false);
-        document.documentElement.classList.remove("k3-booting");
-      }, 460);
-      return () => {
-        window.clearTimeout(timer);
-        document.documentElement.classList.remove("k3-booting");
-      };
-    }
+    return () => {
+      window.cancelAnimationFrame(initializationFrame);
+      if (flashTimer !== undefined) window.clearTimeout(flashTimer);
+      document.documentElement.classList.remove("k3-booting");
+    };
   }, []);
 
   useEffect(() => {
