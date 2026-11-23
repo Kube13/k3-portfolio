@@ -1,0 +1,25 @@
+name: K3 Agent Queue Observer (DRY RUN)
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '7,22,37,52 * * * *'
+permissions:
+  contents: read
+  issues: read
+concurrency:
+  group: k3-agent-observer
+  cancel-in-progress: false
+jobs:
+  observe:
+    if: github.repository == 'Kube13/k3-portfolio'
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+      - name: Discover approved tasks (read-only)
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: node scripts/agent-observer.mjs
