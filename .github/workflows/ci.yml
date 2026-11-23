@@ -16,7 +16,11 @@ jobs:
         with:
           node-version-file: .nvmrc
           cache: npm
-      - run: npm ci
-      - run: npm run lint
-      - run: npm test
-      - run: node --test tests/agent-observer.test.mjs
+      - name: Install locked dependencies
+        run: npm ci
+      - name: Validate new agent observer
+        run: node --test tests/agent-observer.test.mjs
+      - name: Validate production static export
+        run: npm test
+      - name: Validate repository lint
+        run: npm run lint
