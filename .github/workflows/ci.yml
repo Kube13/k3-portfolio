@@ -15,8 +15,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version-file: .nvmrc
-      - name: Verify isolated read-only observer
-        run: node --test tests/agent-observer.test.mjs
+      - name: Verify read-only observer and manual Codex approval gate
+        run: node --test tests/agent-observer.test.mjs tests/codex-task-gate.test.mjs
   portfolio-baseline:
     runs-on: ubuntu-latest
     timeout-minutes: 15
