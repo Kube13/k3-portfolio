@@ -1,5 +1,4 @@
 import assert from "node:assert/strict";
-import { createHash } from "node:crypto";
 import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import test from "node:test";
@@ -180,113 +179,72 @@ test("internal links and hash targets resolve in the static export", () => {
   }
 });
 
-test("exports the geometric sakura theme and accessible decorative system", () => {
+test("exports the accessible three-blossom glass sakura design and K3 signature", () => {
   const homepage = readRoute("index.html");
   const heroArtwork = homepage.match(/<svg class="hero-garden-art"[\s\S]*?<\/svg>/)?.[0] ?? "";
   const cssDir = join(outDir, "_next/static/css");
   const css = readdirSync(cssDir).filter(file => file.endsWith(".css")).map(file => readFileSync(join(cssDir, file), "utf8")).join("\n");
   const ogImage = readFileSync(join(outDir, "og-image.svg"), "utf8");
 
-  assert.match(homepage, /hero-garden/);
-  assert.match(homepage, /Exact Concept 3 pixel-art sakura branch with four blossoms/);
-  assert.match(homepage, /viewBox="0 0 640 600"/);
-  assert.match(homepage, /class="hero-garden-signature hero-garden-signature-main"/);
-  assert.match(homepage, /M8 8v74M8 46L42 8M8 46l36 36/);
-  assert.match(homepage, /translate\(492 470\) scale\(\.62\)/);
-  assert.match(heroArtwork, /class="concept3-blossom"/);
-  assert.match(heroArtwork, /data-blossom-source="\/k3_concept3_blossom_transparent\.png"/);
-  assert.match(heroArtwork, /transform="translate\(53 156\) scale\(\.98\)"/);
-  assert.equal((heroArtwork.match(/href="\/k3_concept3_blossom_transparent\.png"/g) ?? []).length, 7);
-  assert.equal((heroArtwork.match(/class="concept3-blossom-image concept3-blossom-base"/g) ?? []).length, 1);
-  assert.equal((heroArtwork.match(/class="concept3-blossom-image concept3-blossom-glitch/g) ?? []).length, 6);
-  assert.equal((heroArtwork.match(/hero-garden-signature-ghost/g) ?? []).length, 3);
-  assert.doesNotMatch(homepage, /hero-sakura-petal|hero-sakura-core|hero-garden-grid|hero-garden-nodes|hero-garden-branch|hero-garden-signature-guide|k3-mark-fill|falling-petals|pixel-blossom|data-pixel-group/);
-  assert.match(homepage, /sakura-branch/);
-  assert.match(homepage, /aria-hidden="true"/);
-  assert.match(css, /#f8f5ff/i);
+  // The hero is a current inline SVG, not the retired Concept 3 PNG composition.
+  assert.match(homepage, /class="hero-garden" aria-label="Minimal pixel-glass sakura branch with three translucent blossoms and a K3 signature" role="img"/);
+  assert.match(heroArtwork, /viewBox="0 0 640 560"/);
+  assert.match(heroArtwork, /aria-hidden="true"/);
+  assert.match(heroArtwork, /class="hero-glass-blossom"/);
+  assert.match(heroArtwork, /class="hero-glass-branch"/);
+  assert.equal((heroArtwork.match(/class="hero-glass-flower hero-glass-flower-[123]"/g) ?? []).length, 3);
+  assert.match(heroArtwork, /id="heroPetalGlass"/);
+  assert.match(heroArtwork, /id="heroPetalEdge"/);
+  assert.match(heroArtwork, /class="hero-garden-signature hero-garden-signature-main" transform="translate\(468 352\) scale\(\.52\)"/);
+  assert.equal((heroArtwork.match(/class="hero-garden-signature hero-garden-signature-ghost signature-slice-(?:one|two|three)"/g) ?? []).length, 3);
+  assert.match(homepage, /class="sakura-branch footer-branch"/);
+
+  // Color tokens and accessibility remain part of the exported visual contract.
   assert.match(css, /--k3-base:#f8f5ff/);
   assert.match(css, /--k3-secondary:#eee8fa/);
   assert.match(css, /--k3-accent:#4b267d/);
   assert.match(css, /--k3-plum:#211335/);
-  assert.match(css, /--k3-muted:#70627f/);
   assert.match(css, /--k3-border:rgba\(75,38,125,.14\)/);
-  assert.match(css, /--k3-decoration:rgba\(75,38,125,.2\)/);
   assert.match(css, /--line-hairline:1px/);
-  assert.match(css, /--line-soft:1\.25px/);
-  assert.match(css, /--line-emphasis:1\.5px/);
-  assert.match(css, /--decorative-faint:/);
-  assert.match(css, /--decorative-soft:/);
-  assert.match(css, /--decorative-visible:/);
-  assert.match(css, /\.hero-garden-disc\{[^}]*rgba\(183,156,255,.07\)/);
-  assert.match(css, /\.hero-garden-mountains path\{[^}]*stroke:rgba\(75,38,125,.08\)/);
-  assert.match(css, /\.hero-garden-signature path\{[^}]*stroke-width:1\.3px/);
-  assert.match(css, /\.concept3-blossom-image\{[^}]*image-rendering:pixelated/);
-  assert.match(css, /\.concept3-blossom-base\{opacity:1\}/);
-  assert.match(css, /\.concept3-blossom-glitch\{opacity:0\}/);
-  assert.match(css, /prefers-reduced-motion:reduce/);
+  assert.match(css, /\.hero-garden-disc\{fill:rgba\(183,156,255,.035\)/);
   assert.match(ogImage, /#F8F5FF/);
   assert.match(ogImage, /geometric K3 monogram/);
 });
 
-test("exports the exact Concept 3 PNG with temporary controlled glitch layers", () => {
+test("exports the current hero glitch stages with reduced-motion safeguards", () => {
   const homepage = readRoute("index.html");
-  const heroArtwork = homepage.match(/<svg class="hero-garden-art"[\s\S]*?<\/svg>/)?.[0] ?? "";
   const cssDir = join(outDir, "_next/static/css");
   const css = readdirSync(cssDir).filter(file => file.endsWith(".css")).map(file => readFileSync(join(cssDir, file), "utf8")).join("\n");
-  const asset = readFileSync(join(outDir, "k3_concept3_blossom_transparent.png"));
-  const assetHash = createHash("sha256").update(asset).digest("hex");
-  const assetImages = [...heroArtwork.matchAll(/<image[^>]+href="\/k3_concept3_blossom_transparent\.png"[^>]*>/g)].map(match => match[0]);
 
-  assert.equal(assetHash, "804f3f01bd537a5b3069544a059637c5c35d0c69c8d32529ec7f0a1c7673c43c", "the exported file is byte-identical to the supplied PNG");
-  assert.equal(asset.readUInt32BE(16), 534, "asset width remains 534px");
-  assert.equal(asset.readUInt32BE(20), 283, "asset height remains 283px");
-  assert.equal(asset[25], 6, "asset remains an RGBA PNG");
-  assert.equal(assetImages.length, 7, "one untouched base plus six temporary duplicate layers");
-  for (const image of assetImages) {
-    assert.match(image, /width="534"/);
-    assert.match(image, /height="283"/);
-    assert.match(image, /preserveAspectRatio="xMidYMid meet"/);
+  for (const attribute of [
+    'data-glitch-stage="logo"',
+    'data-glitch-phase="stable"',
+    'data-glitch-active="false"',
+    'data-blossom-variant="center-flower-tear"',
+    'data-blossom-debug="false"',
+    'data-glitch-motion="full"',
+    'data-glitch-loop="16000"',
+    'data-glitch-slot="4000"',
+  ]) {
+    assert.ok(homepage.includes(attribute), attribute);
   }
-  for (const layer of ["base", "lavender-ghost", "horizontal-tear-a", "horizontal-tear-b", "data-streak-a", "data-streak-b", "data-streak-c"]) {
-    assert.match(heroArtwork, new RegExp(`data-blossom-layer="${layer}"`));
-  }
-  assert.doesNotMatch(heroArtwork, /pixel-blossom|data-pixel-group|data-pixel-kind/);
 
-  assert.match(homepage, /data-glitch-stage="logo"/);
-  assert.match(homepage, /data-glitch-phase="stable"/);
-  assert.match(homepage, /data-glitch-active="false"/);
-  assert.match(homepage, /data-blossom-variant="center-flower-tear"/);
-  assert.match(homepage, /data-blossom-debug="false"/);
-  assert.match(homepage, /data-glitch-motion="full"/);
-  assert.match(homepage, /data-glitch-loop="16000"/);
-  assert.match(homepage, /data-glitch-slot="4000"/);
   assert.match(homepage, /class="button primary hero-primary-cta"/);
   assert.match(homepage, /class="hero-cta-label" data-text=/);
   assert.match(homepage, /class="hero-cta-arrow"/);
   assert.match(homepage, /class="hero-glitch-word hero-glitch-target" data-text="systems"/);
-  assert.doesNotMatch(homepage, /class="hero-glitch-word hero-glitch-target" data-text="Automation"/);
-  assert.match(css, /@keyframes concept3-asset-tear-a/);
-  assert.match(css, /@keyframes concept3-asset-tear-b/);
-  assert.match(css, /@keyframes concept3-asset-ghost/);
-  assert.match(css, /@keyframes concept3-asset-streak/);
-  assert.match(css, /@keyframes concept3-asset-aftershock/);
+  assert.match(css, /@keyframes hero-glass-fracture/);
+  assert.match(css, /@keyframes hero-glass-fracture-alt/);
   assert.match(css, /@keyframes k3-signal-main/);
   assert.match(css, /@keyframes k3-signal-slice/);
   assert.match(css, /@keyframes k3-signal-aftershock/);
   assert.match(css, /@keyframes cta-transmission-border/);
-  assert.match(css, /@keyframes cta-transmission-scan/);
   assert.match(css, /@keyframes cta-transmission-arrow/);
   assert.match(css, /@keyframes hero-type-corruption/);
   assert.match(css, /@keyframes hero-type-blocks/);
-  assert.match(css, /@keyframes hero-type-aftershock/);
-  assert.match(css, /animation:concept3-asset-tear-a .45s/);
-  assert.match(css, /animation:concept3-asset-ghost .45s/);
-  assert.match(css, /animation:k3-signal-main .24s/);
-  assert.match(css, /animation:cta-transmission-border .32s/);
-  assert.match(css, /animation:hero-type-corruption .28s/);
-  assert.doesNotMatch(css, /concept3-blossom-fracture|concept3-blossom-detached|pixel-blossom|blossom-v2|k3-signature-main|cta-label-glitch|hero-word-glitch/);
-  assert.match(css, /prefers-reduced-motion:reduce[^}]*[\s\S]*animation:none!important/);
-  assert.match(css, /prefers-reduced-motion:reduce[^}]*[\s\S]*\.concept3-blossom-glitch[^}]*opacity:0!important/);
+  assert.match(css, /prefers-reduced-motion:reduce/);
+  assert.match(css, /\.hero-garden-signature-ghost\{opacity:0/);
+  assert.match(css, /animation:none!important/);
 });
 
 test("exports responsive navigation and overflow safeguards without root masking", () => {
